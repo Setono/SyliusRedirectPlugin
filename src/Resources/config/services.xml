@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="setono_sylius_redirect.form.type.redirect.validation_groups" type="collection">
+            <parameter>sylius</parameter>
+        </parameter>
+    </parameters>
+
+    <services>
+        <defaults public="true" />
+
+        <service id="Setono\SyliusRedirectPlugin\HashGenerator\Sha1HashGenerator" public="false" />
+
+        <service id="setono.sylius_redirect.hash_generator.default" alias="Setono\SyliusRedirectPlugin\HashGenerator\Sha1HashGenerator" />
+
+        <service id="setono.sylius_redirect.form.type.redirect" class="Setono\SyliusRedirectPlugin\Form\Type\RedirectType">
+            <argument>%setono_sylius_redirect.model.redirect.class%</argument>
+            <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
+            <tag name="form.type" />
+        </service>
+
+        <!-- Event Listeners -->
+        <service id="Setono\SyliusRedirectPlugin\Menu\AdminMenuListener" public="false">
+            <tag name="kernel.event_listener" event="sylius.menu.admin.main" method="addAdminMenuItems" />
+        </service>
+
+        <service id="Setono\SyliusRedirectPlugin\EventListener\NotFoundListener" public="false">
+            <argument type="service" id="setono.sylius_redirect.hash_generator.default" />
+            <argument type="service" id="setono_sylius_redirect.repository.redirect" />
+            <tag name="kernel.event_listener" event="kernel.exception" />
+        </service>
+
+        <service id="Setono\SyliusRedirectPlugin\EventListener\PreUpdateRedirectListener" public="false">
+            <argument type="service" id="setono.sylius_redirect.hash_generator.default" />
+            <tag name="kernel.event_listener" event="setono_sylius_redirect.redirect.pre_update" method="update" />
+        </service>
+    </services>
+</container>

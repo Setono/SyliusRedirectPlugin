@@ -1,0 +1,21 @@
+setono_sylius_redirect:
+    ui:
+        redirects: Redirects
+        manage_redirects: Manage redirects
+        new_redirect: New redirect
+        edit_redirect: Edit redirect
+        source: Source
+        destination: Destination
+        permanent: Permanent
+
+    menu:
+        admin:
+            main:
+                configuration:
+                    redirects: Redirects
+
+    form:
+        redirect:
+            source: Source
+            destination: Destination
+            permanent: Permanent

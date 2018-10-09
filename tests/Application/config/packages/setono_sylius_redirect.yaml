@@ -1,0 +1,2 @@
+imports:
+    - { resource: "@SetonoSyliusRedirectPlugin/Resources/config/config.yml" }

@@ -1,0 +1,13 @@
+setono_sylius_redirect_admin_redirect:
+    resource: |
+        alias: setono_sylius_redirect.redirect
+        section: admin
+        templates: SyliusAdminBundle:Crud
+        redirect: update
+        grid: setono_sylius_redirect_admin_redirect
+        vars:
+            all:
+                subheader: setono_sylius_redirect.ui.manage_redirects
+            index:
+                icon: 'chart bar'
+    type: sylius.resource

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                                      http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="Setono\SyliusRedirectPlugin\Model\Redirect" table="setono_redirect">
+        <unique-constraints>
+            <unique-constraint columns="source" name="uniq_source" />
+            <unique-constraint columns="source_hash" name="uniq_source_hash" />
+        </unique-constraints>
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="source" type="string" />
+        <field name="sourceHash" column="source_hash" type="string" />
+        <field name="destination" type="string" />
+        <field name="permanent" type="boolean" />
+        <field name="count" type="integer" />
+        <field name="lastAccessed" column="last_accessed" type="datetime" nullable="true" />
+
+    </mapped-superclass>
+
+</doctrine-mapping>

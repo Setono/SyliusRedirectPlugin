@@ -1,0 +1,28 @@
+sylius_grid:
+    grids:
+        setono_sylius_redirect_admin_redirect:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: "%setono_sylius_redirect.model.redirect.class%"
+            fields:
+                source:
+                    type: string
+                    label: setono_sylius_redirect.ui.source
+                destination:
+                    type: string
+                    label: setono_sylius_redirect.ui.destination
+                permanent:
+                    type: twig
+                    label: setono_sylius_redirect.ui.permanent
+                    options:
+                        template: "@SyliusUi/Grid/Field/yesNo.html.twig"
+            actions:
+                main:
+                    create:
+                        type: create
+                item:
+                    update:
+                        type: update
+                    delete:
+                        type: delete
