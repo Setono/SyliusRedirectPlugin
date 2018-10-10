@@ -17,6 +17,12 @@ sylius_grid:
                     label: setono_sylius_redirect.ui.permanent
                     options:
                         template: "@SyliusUi/Grid/Field/yesNo.html.twig"
+                count:
+                    type: string
+                    label: setono_sylius_redirect.ui.count
+                lastAccessed:
+                    type: datetime
+                    label: setono_sylius_redirect.ui.last_accessed
             actions:
                 main:
                     create:

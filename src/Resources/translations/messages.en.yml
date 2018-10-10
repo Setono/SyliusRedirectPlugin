@@ -7,6 +7,8 @@ setono_sylius_redirect:
         source: Source
         destination: Destination
         permanent: Permanent
+        count: Count
+        last_accessed: Last accessed
 
     menu:
         admin:
