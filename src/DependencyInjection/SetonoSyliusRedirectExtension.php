@@ -21,6 +21,8 @@ final class SetonoSyliusRedirectExtension extends AbstractResourceExtension
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
+        $container->setParameter('setono_sylius_redirect.remove_after', $config['remove_after']);
+
         $loader->load('services.xml');
 
         $this->registerResources('setono_sylius_redirect', $config['driver'], $config['resources'], $container);

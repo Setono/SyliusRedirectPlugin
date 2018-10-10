@@ -29,6 +29,10 @@ final class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('driver')->defaultValue(SyliusResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->integerNode('remove_after')
+                    ->info('0 means disabled. If the value is > 0 then redirects that have not been accessed in the last x days will be removed')
+                    ->defaultValue(0)
+                ->end()
             ->end()
         ;
 
