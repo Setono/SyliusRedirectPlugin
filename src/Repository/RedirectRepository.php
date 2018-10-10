@@ -24,4 +24,27 @@ class RedirectRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @param int $threshold
+     *
+     * @throws \Exception
+     */
+    public function removeNotAccessed(int $threshold): void
+    {
+        if ($threshold <= 0) {
+            return;
+        }
+
+        $dateTimeThreshold = (new \DateTime())->sub(new \DateInterval('P' . $threshold . 'D'));
+
+        $this->createQueryBuilder('r')
+            ->delete()
+            ->andWhere('r.lastAccessed is not null')
+            ->andWhere('r.lastAccessed <= :threshold')
+            ->setParameter('threshold', $dateTimeThreshold)
+            ->getQuery()
+            ->execute()
+        ;
+    }
 }
