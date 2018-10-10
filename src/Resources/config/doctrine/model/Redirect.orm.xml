@@ -11,6 +11,10 @@
             <unique-constraint columns="source_hash" name="uniq_source_hash" />
         </unique-constraints>
 
+        <indexes>
+            <index columns="last_accessed" name="idx_last_accessed" />
+        </indexes>
+
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>
