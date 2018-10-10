@@ -16,7 +16,7 @@ final class AdminMenuListener
         $menu = $event->getMenu();
 
         $child = $menu->getChild('configuration');
-        if($child !== null) {
+        if ($child !== null) {
             $child->addChild('redirects', [
                 'route' => 'setono_sylius_redirect_admin_redirect_index',
             ])
