@@ -144,4 +144,13 @@ class Redirect implements RedirectInterface
     {
         $this->lastAccessed = $lastAccessed;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onAccess(): void
+    {
+        ++$this->count;
+        $this->setLastAccessed(new \DateTime());
+    }
 }

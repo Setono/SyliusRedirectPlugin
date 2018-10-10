@@ -72,4 +72,9 @@ interface RedirectInterface extends ResourceInterface
      * @param \DateTimeInterface $lastAccessed
      */
     public function setLastAccessed(\DateTimeInterface $lastAccessed): void;
+
+    /**
+     * Is called when the redirect source path is accessed
+     */
+    public function onAccess(): void;
 }
