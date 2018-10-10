@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Setono\SyliusRedirectPlugin\HashGenerator\HashGeneratorInterface;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,12 +24,23 @@ class NotFoundListener
      */
     private $redirectRepository;
 
-    public function __construct(HashGeneratorInterface $hashGenerator, RedirectRepository $redirectRepository)
+    /**
+     * @var ObjectManager
+     */
+    private $objectManager;
+
+    public function __construct(HashGeneratorInterface $hashGenerator, RedirectRepository $redirectRepository, ObjectManager $objectManager)
     {
         $this->hashGenerator = $hashGenerator;
         $this->redirectRepository = $redirectRepository;
+        $this->objectManager = $objectManager;
     }
 
+    /**
+     * @param GetResponseForExceptionEvent $event
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function onKernelException(GetResponseForExceptionEvent $event): void
     {
         if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
@@ -46,6 +58,9 @@ class NotFoundListener
         if (null === $redirect) {
             return;
         }
+
+        $redirect->onAccess();
+        $this->objectManager->flush();
 
         $event->setResponse(new RedirectResponse($redirect->getDestination(), $redirect->isPermanent() ? 301 : 302));
     }

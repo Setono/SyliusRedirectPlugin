@@ -28,12 +28,13 @@
         <service id="Setono\SyliusRedirectPlugin\EventListener\NotFoundListener" public="false">
             <argument type="service" id="setono.sylius_redirect.hash_generator.default" />
             <argument type="service" id="setono_sylius_redirect.repository.redirect" />
+            <argument type="service" id="setono_sylius_redirect.manager.redirect" />
             <tag name="kernel.event_listener" event="kernel.exception" />
         </service>
 
-        <service id="Setono\SyliusRedirectPlugin\EventListener\PreUpdateRedirectListener" public="false">
+        <service id="Setono\SyliusRedirectPlugin\EventListener\PreUpdateRedirectSubscriber" public="false">
             <argument type="service" id="setono.sylius_redirect.hash_generator.default" />
-            <tag name="kernel.event_listener" event="setono_sylius_redirect.redirect.pre_update" method="update" />
+            <tag name="kernel.event_subscriber" />
         </service>
     </services>
 </container>
