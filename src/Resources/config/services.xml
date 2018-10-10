@@ -20,6 +20,12 @@
             <tag name="form.type" />
         </service>
 
+        <service id="Setono\SyliusRedirectPlugin\Command\RemoveRedirectsCommand">
+            <argument type="service" id="setono_sylius_redirect.repository.redirect" />
+            <argument>%setono_sylius_redirect.remove_after%</argument>
+            <tag name="console.command" />
+        </service>
+
         <!-- Event Listeners -->
         <service id="Setono\SyliusRedirectPlugin\Menu\AdminMenuListener" public="false">
             <tag name="kernel.event_listener" event="sylius.menu.admin.main" method="addAdminMenuItems" />
