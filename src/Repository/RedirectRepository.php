@@ -10,17 +10,17 @@ use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 class RedirectRepository extends EntityRepository
 {
     /**
-     * @param string $sourceHash
+     * @param string $source
      *
      * @return RedirectInterface|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findBySourceHash(string $sourceHash): ?RedirectInterface
+    public function findBySource(string $source): ?RedirectInterface
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.sourceHash = :sourceHash')
-            ->setParameter('sourceHash', $sourceHash)
+            ->andWhere('r.source = :source')
+            ->setParameter('source', $source)
             ->getQuery()
             ->getOneOrNullResult();
     }

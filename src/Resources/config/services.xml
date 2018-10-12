@@ -10,10 +10,6 @@
     <services>
         <defaults public="true" />
 
-        <service id="Setono\SyliusRedirectPlugin\HashGenerator\Sha1HashGenerator" public="false" />
-
-        <service id="setono.sylius_redirect.hash_generator.default" alias="Setono\SyliusRedirectPlugin\HashGenerator\Sha1HashGenerator" />
-
         <service id="setono.sylius_redirect.form.type.redirect" class="Setono\SyliusRedirectPlugin\Form\Type\RedirectType">
             <argument>%setono_sylius_redirect.model.redirect.class%</argument>
             <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
@@ -32,15 +28,9 @@
         </service>
 
         <service id="Setono\SyliusRedirectPlugin\EventListener\NotFoundListener" public="false">
-            <argument type="service" id="setono.sylius_redirect.hash_generator.default" />
             <argument type="service" id="setono_sylius_redirect.repository.redirect" />
             <argument type="service" id="setono_sylius_redirect.manager.redirect" />
             <tag name="kernel.event_listener" event="kernel.exception" />
-        </service>
-
-        <service id="Setono\SyliusRedirectPlugin\EventListener\PreUpdateRedirectSubscriber" public="false">
-            <argument type="service" id="setono.sylius_redirect.hash_generator.default" />
-            <tag name="kernel.event_subscriber" />
         </service>
     </services>
 </container>

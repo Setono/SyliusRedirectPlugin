@@ -24,11 +24,6 @@ interface RedirectInterface extends ResourceInterface
     public function setSource(string $source): void;
 
     /**
-     * @param string $sourceHash
-     */
-    public function setSourceHash(string $sourceHash): void;
-
-    /**
      * @return string
      */
     public function getDestination(): ?string;

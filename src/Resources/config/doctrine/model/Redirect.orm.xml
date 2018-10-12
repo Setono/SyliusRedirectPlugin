@@ -8,7 +8,6 @@
     <mapped-superclass name="Setono\SyliusRedirectPlugin\Model\Redirect" table="setono_redirect">
         <unique-constraints>
             <unique-constraint columns="source" name="uniq_source" />
-            <unique-constraint columns="source_hash" name="uniq_source_hash" />
         </unique-constraints>
 
         <indexes>
@@ -20,7 +19,6 @@
         </id>
 
         <field name="source" type="string" />
-        <field name="sourceHash" column="source_hash" type="string" />
         <field name="destination" type="string" />
         <field name="permanent" type="boolean" />
         <field name="count" type="integer" />

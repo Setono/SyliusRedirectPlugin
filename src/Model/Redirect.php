@@ -19,11 +19,6 @@ class Redirect implements RedirectInterface
     /**
      * @var string
      */
-    private $sourceHash;
-
-    /**
-     * @var string
-     */
     private $destination;
 
     /**
@@ -63,14 +58,6 @@ class Redirect implements RedirectInterface
     public function setSource(string $source): void
     {
         $this->source = $source;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSourceHash(string $sourceHash): void
-    {
-        $this->sourceHash = $sourceHash;
     }
 
     /**

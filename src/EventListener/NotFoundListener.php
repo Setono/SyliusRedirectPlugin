@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Setono\SyliusRedirectPlugin\HashGenerator\HashGeneratorInterface;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -14,11 +13,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class NotFoundListener
 {
-    /**
-     * @var HashGeneratorInterface
-     */
-    private $hashGenerator;
-
     /**
      * @var RedirectRepository
      */
@@ -29,9 +23,8 @@ class NotFoundListener
      */
     private $objectManager;
 
-    public function __construct(HashGeneratorInterface $hashGenerator, RedirectRepository $redirectRepository, ObjectManager $objectManager)
+    public function __construct(RedirectRepository $redirectRepository, ObjectManager $objectManager)
     {
-        $this->hashGenerator = $hashGenerator;
         $this->redirectRepository = $redirectRepository;
         $this->objectManager = $objectManager;
     }
@@ -52,8 +45,7 @@ class NotFoundListener
             return;
         }
 
-        $hash = $this->hashGenerator->hash($event->getRequest()->getPathInfo());
-        $redirect = $this->redirectRepository->findBySourceHash($hash);
+        $redirect = $this->redirectRepository->findBySource($event->getRequest()->getPathInfo());
 
         if (null === $redirect) {
             return;
