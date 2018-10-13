@@ -67,4 +67,38 @@ interface RedirectInterface extends ResourceInterface
      * Is called when the redirect source path is accessed
      */
     public function onAccess(): void;
+    
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool;
+    
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(?bool $enabled): void;
+    
+    public function enable(): void;
+    
+    public function disable(): void;
+    
+    /**
+     * @return bool
+     */
+    public function isRelative(): bool;
+    
+    /**
+     * @param bool $relative
+     */
+    public function setRelative(bool $relative): void;
+    
+    /**
+     * @return bool
+     */
+    public function isRedirectFound(): bool;
+    
+    /**
+     * @param bool $redirectFound
+     */
+    public function setRedirectFound(bool $redirectFound): void;
 }

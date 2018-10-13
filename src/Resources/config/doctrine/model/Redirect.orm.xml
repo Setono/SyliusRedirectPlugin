@@ -23,6 +23,9 @@
         <field name="permanent" type="boolean" />
         <field name="count" type="integer" />
         <field name="lastAccessed" column="last_accessed" type="datetime" nullable="true" />
+        <field name="enabled" type="boolean" />
+        <field name="relative" type="boolean" />
+        <field name="redirectFound" column="redirect_found" type="boolean" />
 
     </mapped-superclass>
 

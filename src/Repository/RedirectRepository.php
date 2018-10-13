@@ -7,14 +7,10 @@ namespace Setono\SyliusRedirectPlugin\Repository;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
-class RedirectRepository extends EntityRepository
+class RedirectRepository extends EntityRepository implements RedirectRepositoryInterface
 {
     /**
-     * @param string $source
-     *
-     * @return RedirectInterface|null
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * {@inheritdoc}
      */
     public function findBySource(string $source): ?RedirectInterface
     {
@@ -24,11 +20,27 @@ class RedirectRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
-
+    
     /**
-     * @param int $threshold
-     *
-     * @throws \Exception
+     * {@inheritdoc}
+     */
+    public function findEnabledBySource(string $source, bool $onlyNotFound = false): ?RedirectInterface
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->andWhere('r.source = :source')
+            ->andWhere('r.enabled = 1')
+            ->setParameter('source', $source);
+        
+        if ($onlyNotFound) {
+            $qb->andWhere('r.redirectFound = 0');
+        }
+        
+        return $qb->getQuery()
+            ->getOneOrNullResult();
+    }
+    
+    /**
+     * {@inheritdoc}
      */
     public function removeNotAccessed(int $threshold): void
     {
@@ -46,5 +58,15 @@ class RedirectRepository extends EntityRepository
             ->getQuery()
             ->execute()
         ;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function searchNextRedirection(RedirectInterface $redirection): ?RedirectInterface
+    {
+        $nextRedirection = $this->findOneBy(['source' => $redirection->getDestination(), 'enabled' => true]);
+        
+        return $nextRedirection;
     }
 }

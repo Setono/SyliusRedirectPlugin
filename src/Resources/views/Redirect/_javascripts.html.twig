@@ -1,0 +1,15 @@
+<script>
+    (function ($) {
+        let $body = $('body');
+        $body.on('change', '#setono_sylius_redirect_redirect_relative', function() {
+            let $block = $('.js-http-scheme-and-host-destination');
+            if ($(this).is(':checked')) {
+                $block.addClass('labeled');
+                $block.children('div.ui.label.hidden').removeClass('hidden');
+            } else {
+                $block.removeClass('labeled');
+                $block.children('div.ui.label').addClass('hidden');
+            }
+        });
+    })(jQuery);
+</script>

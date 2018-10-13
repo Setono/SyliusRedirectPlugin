@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Model;
 
+use Sylius\Component\Resource\Model\ToggleableTrait;
+
 class Redirect implements RedirectInterface
 {
+    use ToggleableTrait;
+    
     /**
      * @var int
      */
@@ -35,6 +39,16 @@ class Redirect implements RedirectInterface
      * @var \DateTimeInterface|null
      */
     private $lastAccessed;
+    
+    /**
+     * @var bool
+     */
+    private $relative = false;
+    
+    /**
+     * @var bool
+     */
+    private $redirectFound = false;
 
     /**
      * {@inheritdoc}
@@ -131,5 +145,37 @@ class Redirect implements RedirectInterface
     {
         ++$this->count;
         $this->setLastAccessed(new \DateTime());
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isRelative(): bool
+    {
+        return $this->relative;
+    }
+    
+    /**
+     * @param bool $relative
+     */
+    public function setRelative(bool $relative): void
+    {
+        $this->relative = $relative;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isRedirectFound(): bool
+    {
+        return $this->redirectFound;
+    }
+    
+    /**
+     * @param bool $redirectFound
+     */
+    public function setRedirectFound(bool $redirectFound): void
+    {
+        $this->redirectFound = $redirectFound;
     }
 }

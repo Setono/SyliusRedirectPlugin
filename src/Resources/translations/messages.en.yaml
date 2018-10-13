@@ -9,6 +9,7 @@ setono_sylius_redirect:
         permanent: Permanent
         count: Count
         last_accessed: Last accessed
+        enabled: Enabled
 
     menu:
         admin:
@@ -21,3 +22,6 @@ setono_sylius_redirect:
             source: Source
             destination: Destination
             permanent: Permanent
+            enabled: Enabled
+            relative: Relative Destination
+            redirect_found: Redirect existing pages

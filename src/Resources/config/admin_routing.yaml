@@ -8,6 +8,8 @@ setono_sylius_redirect_admin_redirect:
         vars:
             all:
                 subheader: setono_sylius_redirect.ui.manage_redirects
+                templates:
+                    form: SetonoSyliusRedirectPlugin:Redirect:_form.html.twig
             index:
                 icon: 'chart bar'
     type: sylius.resource

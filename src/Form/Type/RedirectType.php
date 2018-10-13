@@ -19,12 +19,27 @@ final class RedirectType extends AbstractResourceType
         $builder
             ->add('source', TextType::class, [
                 'label' => 'setono_sylius_redirect.form.redirect.source',
+                'required' => true,
             ])
             ->add('destination', TextType::class, [
                 'label' => 'setono_sylius_redirect.form.redirect.destination',
+                'required' => true,
             ])
             ->add('permanent', CheckboxType::class, [
                 'label' => 'setono_sylius_redirect.form.redirect.permanent',
+                'required' => false,
+            ])
+            ->add('enabled', CheckboxType::class, [
+                'label' => 'setono_sylius_redirect.form.redirect.enabled',
+                'required' => false,
+            ])
+            ->add('relative', CheckboxType::class, [
+                'label' => 'setono_sylius_redirect.form.redirect.relative',
+                'required' => false,
+            ])
+            ->add('redirectFound', CheckboxType::class, [
+                'label' => 'setono_sylius_redirect.form.redirect.redirect_found',
+                'required' => false,
             ])
         ;
     }

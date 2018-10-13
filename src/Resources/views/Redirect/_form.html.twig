@@ -1,0 +1,37 @@
+{% from '@SyliusAdmin/Macro/translationForm.html.twig' import translationForm %}
+
+<div class="ui stackable grid one column">
+    <div class="column">
+        <div class="ui segment">
+            <div class="two fields">
+                <div class="field required">
+                    {{ form_label(form.source) }}
+                    <div class="ui labeled input">
+                        <div class="ui label">
+                            {{ app.request.scheme }}://{{ app.request.httpHost }}
+                        </div>
+                        {{ form_widget(form.source) }}
+                    </div>
+                    {{ form_errors(form.source) }}
+                </div>
+                <div class="field required">
+                    {{ form_label(form.destination) }}
+                    <div class="ui{% if resource.relative %} labeled{% endif %} input js-http-scheme-and-host-destination">
+                        <div class="ui label{% if not resource.relative %} hidden{% endif %}">
+                            {{ app.request.scheme }}://{{ app.request.httpHost }}
+                        </div>
+                        {{ form_widget(form.destination) }}
+                    </div>
+                    {{ form_errors(form.destination) }}
+                </div>
+            </div>
+            <div class="four fields">
+                {{ form_row(form.permanent) }}
+                {{ form_row(form.enabled) }}
+                {{ form_row(form.relative) }}
+                {{ form_row(form.redirectFound) }}
+            </div>
+        </div>
+
+    </div>
+</div>
