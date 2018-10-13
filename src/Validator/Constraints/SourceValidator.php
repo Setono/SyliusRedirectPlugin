@@ -10,11 +10,6 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-/**
- * Class SourceValidator
- *
- * @package BeHappy\SyliusRedirectionPlugin\Validator\Constraints
- */
 final class SourceValidator extends ConstraintValidator
 {
     /** @var RedirectRepositoryInterface */
