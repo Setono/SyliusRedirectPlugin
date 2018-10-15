@@ -49,7 +49,7 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
             ->execute()
         ;
     }
-    
+
     /**
      * {@inheritdoc}
      *
@@ -61,7 +61,7 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
 
         return $nextRedirection;
     }
-    
+
     /**
      * @param RedirectInterface $redirect
      * @param bool              $onlyNotFound
