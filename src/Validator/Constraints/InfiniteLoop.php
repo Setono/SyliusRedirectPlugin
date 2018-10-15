@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Validator\Constraints;
 
@@ -10,7 +10,7 @@ final class InfiniteLoop extends Constraint
 {
     /** @var string */
     public $message = 'setono_sylius_redirect.form.errors.target_result_in_infinite_loop';
-    
+
     /**
      * @return string
      */

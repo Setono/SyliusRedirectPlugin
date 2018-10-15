@@ -11,18 +11,8 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
 {
     /**
      * {@inheritdoc}
-     */
-    public function findBySource(string $source): ?RedirectInterface
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.source = :source')
-            ->setParameter('source', $source)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-    
-    /**
-     * {@inheritdoc}
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findEnabledBySource(string $source, bool $onlyNotFound = false): ?RedirectInterface
     {
@@ -30,15 +20,15 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
             ->andWhere('r.source = :source')
             ->andWhere('r.enabled = 1')
             ->setParameter('source', $source);
-        
+
         if ($onlyNotFound) {
             $qb->andWhere('r.redirectFound = 0');
         }
-        
+
         return $qb->getQuery()
             ->getOneOrNullResult();
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -62,11 +52,36 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
     
     /**
      * {@inheritdoc}
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function searchNextRedirection(RedirectInterface $redirection): ?RedirectInterface
+    public function searchNextRedirect(RedirectInterface $redirect, bool $onlyNotFound = false): ?RedirectInterface
     {
-        $nextRedirection = $this->findOneBy(['source' => $redirection->getDestination(), 'enabled' => true]);
-        
+        $nextRedirection = $this->findEnabledBySource($redirect->getDestination(), $onlyNotFound);
+
         return $nextRedirection;
+    }
+    
+    /**
+     * @param RedirectInterface $redirect
+     * @param bool              $onlyNotFound
+     *
+     * @return RedirectInterface
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findLastRedirect(RedirectInterface $redirect, bool $onlyNotFound = false): RedirectInterface
+    {
+        do {
+            $nextRedirect = $this->searchNextRedirect($redirect, $onlyNotFound);
+        } while ($nextRedirect instanceof RedirectInterface && $redirect = $nextRedirect);
+
+        if ($nextRedirect instanceof RedirectInterface) {
+            $lastRedirect = $nextRedirect;
+        } else {
+            $lastRedirect = $redirect;
+        }
+
+        return $lastRedirect;
     }
 }

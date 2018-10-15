@@ -12,6 +12,8 @@
 
         <indexes>
             <index columns="last_accessed" name="idx_last_accessed" />
+            <index columns="enabled" name="idx_enabled" />
+            <index columns="redirect_found" name="idx_redirect_found" />
         </indexes>
 
         <id name="id" column="id" type="integer">

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Validator\Constraints;
 
@@ -13,18 +13,18 @@ use Symfony\Component\Validator\ConstraintValidator;
 final class SourceValidator extends ConstraintValidator
 {
     /** @var RedirectRepositoryInterface */
-    private $redirectionRepository;
-    
+    private $redirectRepository;
+
     /**
      * SourceValidator constructor.
      *
-     * @param RedirectRepositoryInterface $redirectionRepository
+     * @param RedirectRepositoryInterface $redirectRepository
      */
-    public function __construct(RedirectRepositoryInterface $redirectionRepository)
+    public function __construct(RedirectRepositoryInterface $redirectRepository)
     {
-        $this->redirectionRepository = $redirectionRepository;
+        $this->redirectRepository = $redirectRepository;
     }
-    
+
     /**
      * @param mixed             $value
      * @param Constraint|Source $constraint
@@ -34,35 +34,36 @@ final class SourceValidator extends ConstraintValidator
         if (null === $value || '' === $value) {
             return;
         }
-        
+
         if (!is_string($value)) {
             throw new UnexpectedTypeException($value, 'string');
         }
-        
+
         /** @var RedirectInterface|null $redirection */
-        $redirection = $this->context->getObject();
-        if (!$redirection->isEnabled()) {
+        $redirect = $this->context->getObject();
+        if (!$redirect->isEnabled()) {
             return;
         }
-        
-        /** @var array|RedirectInterface[] $conflictingRedirections */
-        $conflictingRedirections = $this->redirectionRepository->findBy(['source' => $value, 'enabled' => true]);
-        if ($redirection !== null && $redirection->getId() !== null) {
-            foreach ($conflictingRedirections as $key => $conflictingRedirection) {
-                if ($conflictingRedirection->getId() === $redirection->getId()) {
-                    unset($conflictingRedirections[$key]);
-                    $conflictingRedirections = array_values($conflictingRedirections);
+
+        /** @var array|RedirectInterface[] $conflictingRedirects */
+        $conflictingRedirects = $this->redirectRepository->findBy(['source' => $value, 'enabled' => true]);
+        if ($redirect !== null && $redirect->getId() !== null) {
+            foreach ($conflictingRedirects as $key => $conflictingRedirect) {
+                if ($conflictingRedirect->getId() === $redirection->getId()) {
+                    unset($conflictingRedirects[$key]);
+                    $conflictingRedirects = array_values($conflictingRedirects);
+
                     break;
                 }
             }
         }
-        if (!empty($conflictingRedirections)) {
+        if (!empty($conflictingRedirects)) {
             $conflictingIds = '';
-            foreach ($conflictingRedirections as $key => $conflictingRedirection) {
+            foreach ($conflictingRedirects as $key => $conflictingRedirect) {
                 if ($key) {
                     $conflictingIds .= ', ';
                 }
-                $conflictingIds .= $conflictingRedirection->getId();
+                $conflictingIds .= $conflictingRedirect->getId();
             }
             $this->context->buildViolation($constraint->message)
                 ->atPath('source')

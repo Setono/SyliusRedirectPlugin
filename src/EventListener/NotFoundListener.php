@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,8 +32,6 @@ class NotFoundListener
 
     /**
      * @param GetResponseForExceptionEvent $event
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function onKernelException(GetResponseForExceptionEvent $event): void
     {
@@ -55,31 +52,13 @@ class NotFoundListener
 
         $redirect->onAccess();
         $this->objectManager->flush();
-    
-        $nextRedirect = $this->searchNextRedirection($redirect);
-        while ($nextRedirect instanceof RedirectInterface) {
-            $redirect = $nextRedirect;
-            $nextRedirect = $this->searchNextRedirection($redirect);
-        }
-    
+
+        $lastRedirect = $this->redirectRepository->findLastRedirect($redirect, true);
+
         $request = $event->getRequest();
         $baseUrl = $request->getBaseUrl();
-        $targetPath = $redirect->isRelative() ? $baseUrl . $redirect->getDestination() : $redirect->getDestination();
+        $targetPath = $redirect->isRelative() ? $baseUrl . $lastRedirect->getDestination() : $lastRedirect->getDestination();
 
-        $event->setResponse(new RedirectResponse($targetPath, $redirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND));
-    }
-    
-    /**
-     * @param RedirectInterface $redirect
-     *
-     * @return null|RedirectInterface
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    private function searchNextRedirection(RedirectInterface $redirect): ?RedirectInterface
-    {
-        $nextRedirect = $this->redirectRepository->findEnabledBySource($redirect->getDestination(), true);
-        
-        return $nextRedirect;
+        $event->setResponse(new RedirectResponse($targetPath, $lastRedirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND));
     }
 }

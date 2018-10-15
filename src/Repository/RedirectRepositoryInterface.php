@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Setono\SyliusRedirectPlugin\Repository;
 
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
@@ -9,34 +11,32 @@ interface RedirectRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param string $source
-     *
-     * @return RedirectInterface|null
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function findBySource(string $source): ?RedirectInterface;
-    
-    /**
-     * @param string $source
      * @param bool   $onlyNotFound
      *
      * @return RedirectInterface|null
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findEnabledBySource(string $source, bool $onlyNotFound = false): ?RedirectInterface;
-    
+
     /**
      * @param int $threshold
      *
      * @throws \Exception
      */
     public function removeNotAccessed(int $threshold): void;
-    
+
     /**
      * @param RedirectInterface $redirection
+     * @param bool              $onlyNotFound
      *
-     * @return null|RedirectInterface
+     * @return RedirectInterface|null
      */
-    public function searchNextRedirection(RedirectInterface $redirection): ?RedirectInterface;
+    public function searchNextRedirect(RedirectInterface $redirection, bool $onlyNotFound = false): ?RedirectInterface;
+
+    /**
+     * @param RedirectInterface $redirect
+     * @param bool              $onlyNotFound
+     *
+     * @return RedirectInterface
+     */
+    public function findLastRedirect(RedirectInterface $redirect, bool $onlyNotFound = false): RedirectInterface;
 }

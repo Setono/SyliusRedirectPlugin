@@ -9,7 +9,7 @@ use Sylius\Component\Resource\Model\ToggleableTrait;
 class Redirect implements RedirectInterface
 {
     use ToggleableTrait;
-    
+
     /**
      * @var int
      */
@@ -39,12 +39,12 @@ class Redirect implements RedirectInterface
      * @var \DateTimeInterface|null
      */
     private $lastAccessed;
-    
+
     /**
      * @var bool
      */
     private $relative = false;
-    
+
     /**
      * @var bool
      */
@@ -146,7 +146,7 @@ class Redirect implements RedirectInterface
         ++$this->count;
         $this->setLastAccessed(new \DateTime());
     }
-    
+
     /**
      * @return bool
      */
@@ -154,7 +154,7 @@ class Redirect implements RedirectInterface
     {
         return $this->relative;
     }
-    
+
     /**
      * @param bool $relative
      */
@@ -162,7 +162,7 @@ class Redirect implements RedirectInterface
     {
         $this->relative = $relative;
     }
-    
+
     /**
      * @return bool
      */
@@ -170,7 +170,7 @@ class Redirect implements RedirectInterface
     {
         return $this->redirectFound;
     }
-    
+
     /**
      * @param bool $redirectFound
      */
