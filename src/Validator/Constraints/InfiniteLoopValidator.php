@@ -31,6 +31,10 @@ final class InfiniteLoopValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint): void
     {
+        if (!$constraint instanceof Source) {
+            return;
+        }
+        
         if (null === $value || '' === $value) {
             return;
         }
@@ -41,6 +45,10 @@ final class InfiniteLoopValidator extends ConstraintValidator
 
         /** @var RedirectInterface|null $redirection */
         $redirection = $this->context->getObject();
+        if (!$redirection instanceof RedirectInterface) {
+            return;
+        }
+        
         if (!$redirection->isEnabled()) {
             return;
         }
