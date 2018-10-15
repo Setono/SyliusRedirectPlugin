@@ -31,6 +31,10 @@ final class SourceValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint): void
     {
+        if (!$constraint instanceof Source) {
+            return;
+        }
+        
         if (null === $value || '' === $value) {
             return;
         }
@@ -39,8 +43,12 @@ final class SourceValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        /** @var RedirectInterface|null $redirection */
+        /** @var RedirectInterface|null $redirect */
         $redirect = $this->context->getObject();
+        if (!$redirect instanceof RedirectInterface) {
+            return;
+        }
+        
         if (!$redirect->isEnabled()) {
             return;
         }
@@ -49,7 +57,7 @@ final class SourceValidator extends ConstraintValidator
         $conflictingRedirects = $this->redirectRepository->findBy(['source' => $value, 'enabled' => true]);
         if ($redirect !== null && $redirect->getId() !== null) {
             foreach ($conflictingRedirects as $key => $conflictingRedirect) {
-                if ($conflictingRedirect->getId() === $redirection->getId()) {
+                if ($conflictingRedirect->getId() === $redirect->getId()) {
                     unset($conflictingRedirects[$key]);
                     $conflictingRedirects = array_values($conflictingRedirects);
 

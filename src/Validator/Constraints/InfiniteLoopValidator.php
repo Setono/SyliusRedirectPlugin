@@ -26,12 +26,12 @@ final class InfiniteLoopValidator extends ConstraintValidator
     }
 
     /**
-     * @param mixed             $value
-     * @param Constraint|Source $constraint
+     * @param mixed                   $value
+     * @param Constraint|InfiniteLoop $constraint
      */
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof Source) {
+        if (!$constraint instanceof InfiniteLoop) {
             return;
         }
         
