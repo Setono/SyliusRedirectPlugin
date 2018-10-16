@@ -74,7 +74,7 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
     {
         do {
             $nextRedirect = $this->searchNextRedirect($redirect, $onlyNotFound);
-        } while ($nextRedirect instanceof RedirectInterface && $redirect = $nextRedirect);
+        } while ($nextRedirect instanceof RedirectInterface && ($redirect = $nextRedirect) !== null);
     
         return $nextRedirect ?? $redirect;
     }
