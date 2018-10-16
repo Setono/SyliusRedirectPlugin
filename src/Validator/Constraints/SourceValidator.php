@@ -34,7 +34,7 @@ final class SourceValidator extends ConstraintValidator
         if (!$constraint instanceof Source) {
             return;
         }
-        
+
         if (null === $value || '' === $value) {
             return;
         }
@@ -48,7 +48,7 @@ final class SourceValidator extends ConstraintValidator
         if (!$redirect instanceof RedirectInterface) {
             return;
         }
-        
+    
         if (!$redirect->isEnabled()) {
             return;
         }
@@ -61,7 +61,7 @@ final class SourceValidator extends ConstraintValidator
             });
         }
         if (!empty($conflictingRedirects)) {
-            $conflictingIds = join(
+            $conflictingIds = implode(
                 ', ',
                 array_map(function (RedirectInterface $item) {
                     return $item->getId();

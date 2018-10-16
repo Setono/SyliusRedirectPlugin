@@ -34,7 +34,7 @@ final class InfiniteLoopValidator extends ConstraintValidator
         if (!$constraint instanceof InfiniteLoop) {
             return;
         }
-        
+    
         if (null === $value || '' === $value) {
             return;
         }
