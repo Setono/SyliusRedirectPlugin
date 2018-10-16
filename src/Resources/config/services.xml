@@ -48,11 +48,5 @@
             <argument type="service" id="setono_sylius_redirect.repository.redirect" />
             <tag name="validator.constraint_validator" alias="setono_sylius_redirect.validator.infinite_loop_validator" />
         </service>
-
-        <service id="setono_sylius_redirect.block_event_listener.admin.layout.javascripts" class="Sylius\Bundle\UiBundle\Block\BlockEventListener">
-            <argument>@SetonoSyliusRedirectPlugin/Redirect/_javascripts.html.twig</argument>
-            <tag name="kernel.event_listener" event="sonata.block.event.setono_sylius_redirect.admin.redirect.update.javascripts" method="onBlockEvent" />
-            <tag name="kernel.event_listener" event="sonata.block.event.setono_sylius_redirect.admin.redirect.create.javascripts" method="onBlockEvent" />
-        </service>
     </services>
 </container>

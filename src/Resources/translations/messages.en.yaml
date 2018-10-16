@@ -23,5 +23,4 @@ setono_sylius_redirect:
             destination: Destination
             permanent: Permanent
             enabled: Enabled
-            relative: Relative Destination
-            redirect_found: Redirect existing pages
+            only_404: Redirect only Not found pages

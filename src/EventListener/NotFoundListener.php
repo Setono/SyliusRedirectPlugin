@@ -54,11 +54,7 @@ class NotFoundListener
         $this->objectManager->flush();
 
         $lastRedirect = $this->redirectRepository->findLastRedirect($redirect, true);
-
-        $request = $event->getRequest();
-        $baseUrl = $request->getBaseUrl();
-        $targetPath = $redirect->isRelative() ? $baseUrl . $lastRedirect->getDestination() : $lastRedirect->getDestination();
-
-        $event->setResponse(new RedirectResponse($targetPath, $lastRedirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND));
+    
+        $event->setResponse(new RedirectResponse($lastRedirect->getDestination(), $lastRedirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND));
     }
 }

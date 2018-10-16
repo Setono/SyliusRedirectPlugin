@@ -47,9 +47,7 @@ final class ControllerListener
 
             $lastRedirect = $this->redirectRepository->findLastRedirect($redirect, false);
             $event->setController(function () use ($lastRedirect, $baseUrl): RedirectResponse {
-                $targetPath = $lastRedirect->isRelative() ? $baseUrl . $lastRedirect->getDestination() : $lastRedirect->getDestination();
-
-                return new RedirectResponse($targetPath, $lastRedirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND);
+                return new RedirectResponse($lastRedirect->getDestination(), $lastRedirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND);
             });
         }
     }

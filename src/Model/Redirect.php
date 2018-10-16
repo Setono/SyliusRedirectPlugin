@@ -43,12 +43,7 @@ class Redirect implements RedirectInterface
     /**
      * @var bool
      */
-    private $relative = false;
-
-    /**
-     * @var bool
-     */
-    private $redirectFound = false;
+    private $only404 = false;
 
     /**
      * {@inheritdoc}
@@ -146,36 +141,20 @@ class Redirect implements RedirectInterface
         ++$this->count;
         $this->setLastAccessed(new \DateTime());
     }
-
+    
     /**
      * @return bool
      */
-    public function isRelative(): bool
+    public function isOnly404(): bool
     {
-        return $this->relative;
+        return $this->only404;
     }
-
+    
     /**
-     * @param bool $relative
+     * @param bool $only404
      */
-    public function setRelative(bool $relative): void
+    public function setOnly404(bool $only404): void
     {
-        $this->relative = $relative;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isRedirectFound(): bool
-    {
-        return $this->redirectFound;
-    }
-
-    /**
-     * @param bool $redirectFound
-     */
-    public function setRedirectFound(bool $redirectFound): void
-    {
-        $this->redirectFound = $redirectFound;
+        $this->only404 = $only404;
     }
 }

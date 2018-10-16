@@ -13,7 +13,7 @@
         <indexes>
             <index columns="last_accessed" name="idx_last_accessed" />
             <index columns="enabled" name="idx_enabled" />
-            <index columns="redirect_found" name="idx_redirect_found" />
+            <index columns="only_404" name="idx_only_404"/>
         </indexes>
 
         <id name="id" column="id" type="integer">
@@ -26,8 +26,7 @@
         <field name="count" type="integer" />
         <field name="lastAccessed" column="last_accessed" type="datetime" nullable="true" />
         <field name="enabled" type="boolean" />
-        <field name="relative" type="boolean" />
-        <field name="redirectFound" column="redirect_found" type="boolean" />
+        <field name="only404" column="only_404" type="boolean"/>
 
     </mapped-superclass>
 

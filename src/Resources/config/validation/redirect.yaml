@@ -4,6 +4,7 @@ Setono\SyliusRedirectPlugin\Model\Redirect:
         - NotBlank:
               groups: ['sylius']
         - Setono\SyliusRedirectPlugin\Validator\Constraints\Source:
+              groups: ['sylius']
         destination:
         - NotBlank:
               groups: ['sylius']

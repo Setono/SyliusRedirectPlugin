@@ -22,7 +22,7 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
             ->setParameter('source', $source);
 
         if ($onlyNotFound) {
-            $qb->andWhere('r.redirectFound = 0');
+            $qb->andWhere('r.only404 = 1');
         }
 
         return $qb->getQuery()

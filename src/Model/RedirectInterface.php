@@ -81,24 +81,14 @@ interface RedirectInterface extends ResourceInterface
     public function enable(): void;
 
     public function disable(): void;
-
+    
     /**
      * @return bool
      */
-    public function isRelative(): bool;
-
+    public function isOnly404(): bool;
+    
     /**
-     * @param bool $relative
+     * @param bool $only404
      */
-    public function setRelative(bool $relative): void;
-
-    /**
-     * @return bool
-     */
-    public function isRedirectFound(): bool;
-
-    /**
-     * @param bool $redirectFound
-     */
-    public function setRedirectFound(bool $redirectFound): void;
+    public function setOnly404(bool $only404): void;
 }

@@ -55,24 +55,18 @@ final class SourceValidator extends ConstraintValidator
 
         /** @var array|RedirectInterface[] $conflictingRedirects */
         $conflictingRedirects = $this->redirectRepository->findBy(['source' => $value, 'enabled' => true]);
-        if ($redirect !== null && $redirect->getId() !== null) {
-            foreach ($conflictingRedirects as $key => $conflictingRedirect) {
-                if ($conflictingRedirect->getId() === $redirect->getId()) {
-                    unset($conflictingRedirects[$key]);
-                    $conflictingRedirects = array_values($conflictingRedirects);
-
-                    break;
-                }
-            }
+        if ($redirect !== null) {
+            $conflictingRedirects = array_filter($conflictingRedirects, function (RedirectInterface $conflictingRedirect) use ($redirect): bool {
+                return $conflictingRedirect->getId() !== $redirect->getId();
+            });
         }
         if (!empty($conflictingRedirects)) {
-            $conflictingIds = '';
-            foreach ($conflictingRedirects as $key => $conflictingRedirect) {
-                if ($key) {
-                    $conflictingIds .= ', ';
-                }
-                $conflictingIds .= $conflictingRedirect->getId();
-            }
+            $conflictingIds = join(
+                ', ',
+                array_map(function (RedirectInterface $item) {
+                    return $item->getId();
+                }, $conflictingRedirects)
+            );
             $this->context->buildViolation($constraint->message)
                 ->atPath('source')
                 ->setParameter('{{ source }}', $value)

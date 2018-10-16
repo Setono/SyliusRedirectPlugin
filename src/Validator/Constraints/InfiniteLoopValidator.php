@@ -42,27 +42,27 @@ final class InfiniteLoopValidator extends ConstraintValidator
         if (!is_string($value)) {
             throw new UnexpectedTypeException($value, 'string');
         }
-
-        /** @var RedirectInterface|null $redirection */
-        $redirection = $this->context->getObject();
-        if (!$redirection instanceof RedirectInterface) {
+    
+        /** @var RedirectInterface|null $redirect */
+        $redirect = $this->context->getObject();
+        if (!$redirect instanceof RedirectInterface) {
             return;
         }
-        
-        if (!$redirection->isEnabled()) {
+    
+        if (!$redirect->isEnabled()) {
             return;
         }
-
-        $nextRedirection = $this->redirectRepository->searchNextRedirect($redirection);
-        while ($nextRedirection instanceof RedirectInterface) {
-            if ($nextRedirection->getDestination() === $redirection->getSource()) {
+    
+        $nextRedirect = $this->redirectRepository->searchNextRedirect($redirect);
+        while ($nextRedirect instanceof RedirectInterface) {
+            if ($nextRedirect->getDestination() === $redirect->getSource()) {
                 $this->context->buildViolation($constraint->message)
                     ->atPath('destination')
                     ->addViolation();
 
                 break;
             }
-            $nextRedirection = $this->redirectRepository->searchNextRedirect($nextRedirection);
+            $nextRedirect = $this->redirectRepository->searchNextRedirect($nextRedirect);
         }
     }
 }
