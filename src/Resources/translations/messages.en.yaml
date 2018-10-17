@@ -20,7 +20,9 @@ setono_sylius_redirect:
     form:
         redirect:
             source: Source
+            source_placeholder: /en_US/redirect-from
             destination: Destination
+            destination_placeholder: /en_US/redirect-to or https://redirect.to/
             permanent: Permanent
             enabled: Enabled
-            only_404: Redirect only pages that return a 404
+            only_404: Redirect only if source returns a 404
