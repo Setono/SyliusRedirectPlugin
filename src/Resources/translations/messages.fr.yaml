@@ -1,0 +1,28 @@
+setono_sylius_redirect:
+    ui:
+        redirects: 'Redirections'
+        manage_redirects: 'Gérez les redirections'
+        new_redirect: 'Créer une redirection'
+        edit_redirect: 'Modifier une redirection'
+        source: 'Source'
+        destination: 'Destination'
+        permanent: 'Permanente'
+        count: 'Nombre'
+        last_accessed: 'Dernier accès'
+        enabled: 'Activée'
+
+    menu:
+        admin:
+            main:
+                configuration:
+                    redirects: 'Redirections'
+
+    form:
+        redirect:
+            source: 'Source'
+            source_placeholder: '/fr_FR/redirect-from'
+            destination: 'Destination'
+            destination_placeholder: '/fr_FR/redirect-to or https://redirect.to/'
+            permanent: 'Permanente'
+            enabled: 'Activée'
+            only_404: 'Rediriger seulement si la source retourne une 404'
