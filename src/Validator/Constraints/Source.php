@@ -14,10 +14,10 @@ final class Source extends Constraint
     public $message = 'setono_sylius_redirect.form.errors.source_already_existing';
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function validatedBy(): string
+    public function getTargets(): string
     {
-        return 'setono_sylius_redirect.validator.source_validator';
+        return Constraint::CLASS_CONSTRAINT;
     }
 }

@@ -26,7 +26,7 @@ final class SourceValidator extends ConstraintValidator
     }
 
     /**
-     * @param mixed             $value
+     * @param RedirectInterface|null $value
      * @param Constraint|Source $constraint
      */
     public function validate($value, Constraint $constraint): void
@@ -35,28 +35,22 @@ final class SourceValidator extends ConstraintValidator
             return;
         }
 
-        if (null === $value || '' === $value) {
+        if (null === $value) {
             return;
         }
 
-        if (!\is_string($value)) {
-            throw new UnexpectedTypeException($value, 'string');
+        if (!$value instanceof RedirectInterface) {
+            throw new UnexpectedTypeException($value, RedirectInterface::class);
         }
 
-        /** @var RedirectInterface|null $redirect */
-        $redirect = $this->context->getObject();
-        if (!$redirect instanceof RedirectInterface) {
+        if (!$value->isEnabled()) {
             return;
         }
 
-        if (!$redirect->isEnabled()) {
-            return;
-        }
-
-        /** @var array|RedirectInterface[] $conflictingRedirects */
+        /** @var RedirectInterface[] $conflictingRedirects */
         $conflictingRedirects = $this->redirectRepository->findBy(['source' => $value, 'enabled' => true]);
-        $conflictingRedirects = array_filter($conflictingRedirects, function (RedirectInterface $conflictingRedirect) use ($redirect): bool {
-            return $conflictingRedirect->getId() !== $redirect->getId();
+        $conflictingRedirects = array_filter($conflictingRedirects, function (RedirectInterface $conflictingRedirect) use ($value): bool {
+            return $conflictingRedirect->getId() !== $value->getId();
         });
 
         if (!empty($conflictingRedirects)) {
@@ -69,7 +63,7 @@ final class SourceValidator extends ConstraintValidator
 
             $this->context->buildViolation($constraint->message)
                 ->atPath('source')
-                ->setParameter('{{ source }}', $value)
+                ->setParameter('{{ source }}', $value->getSource())
                 ->setParameter('{{ conflictingIds }}', $conflictingIds)
                 ->addViolation();
         }

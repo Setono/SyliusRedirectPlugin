@@ -14,10 +14,10 @@ final class InfiniteLoop extends Constraint
     public $message = 'setono_sylius_redirect.form.errors.target_result_in_infinite_loop';
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function validatedBy(): string
+    public function getTargets(): string
     {
-        return 'setono_sylius_redirect.validator.infinite_loop_validator';
+        return Constraint::CLASS_CONSTRAINT;
     }
 }

@@ -12,12 +12,12 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class InfiniteLoopValidator extends ConstraintValidator
 {
-    /** @var RedirectRepositoryInterface */
+    /**
+     * @var RedirectRepositoryInterface
+     */
     private $redirectRepository;
 
     /**
-     * InfiniteLoopValidator constructor.
-     *
      * @param RedirectRepositoryInterface $redirectRepository
      */
     public function __construct(RedirectRepositoryInterface $redirectRepository)
@@ -26,7 +26,7 @@ final class InfiniteLoopValidator extends ConstraintValidator
     }
 
     /**
-     * @param mixed                   $value
+     * @param RedirectInterface|null $value
      * @param Constraint|InfiniteLoop $constraint
      */
     public function validate($value, Constraint $constraint): void
@@ -35,27 +35,21 @@ final class InfiniteLoopValidator extends ConstraintValidator
             return;
         }
 
-        if (null === $value || '' === $value) {
+        if (null === $value) {
             return;
         }
 
-        if (!\is_string($value)) {
-            throw new UnexpectedTypeException($value, 'string');
+        if (!$value instanceof RedirectInterface) {
+            throw new UnexpectedTypeException($value, RedirectInterface::class);
         }
 
-        /** @var RedirectInterface|null $redirect */
-        $redirect = $this->context->getObject();
-        if (!$redirect instanceof RedirectInterface) {
+        if (!$value->isEnabled()) {
             return;
         }
 
-        if (!$redirect->isEnabled()) {
-            return;
-        }
-
-        $nextRedirect = $this->redirectRepository->searchNextRedirect($redirect);
+        $nextRedirect = $this->redirectRepository->searchNextRedirect($value);
         while ($nextRedirect instanceof RedirectInterface) {
-            if ($nextRedirect->getDestination() === $redirect->getSource()) {
+            if ($nextRedirect->getDestination() === $value->getSource()) {
                 $this->context->buildViolation($constraint->message)
                     ->atPath('destination')
                     ->addViolation();

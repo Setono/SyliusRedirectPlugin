@@ -3,3 +3,4 @@ setono_sylius_redirect:
         errors:
             source_already_existing: 'There is already a redirection with source "{{ source }}". Redirection ID : {{ conflictingIds }}'
             target_result_in_infinite_loop: 'This results in an infinite loop.'
+            source_must_not_equal_destination: Source must not equal destination
