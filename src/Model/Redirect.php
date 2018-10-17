@@ -141,7 +141,7 @@ class Redirect implements RedirectInterface
         ++$this->count;
         $this->setLastAccessed(new \DateTime());
     }
-    
+
     /**
      * @return bool
      */
@@ -149,7 +149,7 @@ class Redirect implements RedirectInterface
     {
         return $this->only404;
     }
-    
+
     /**
      * @param bool $only404
      */

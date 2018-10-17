@@ -48,7 +48,7 @@ final class SourceValidator extends ConstraintValidator
         if (!$redirect instanceof RedirectInterface) {
             return;
         }
-    
+
         if (!$redirect->isEnabled()) {
             return;
         }

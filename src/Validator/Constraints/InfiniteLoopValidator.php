@@ -34,7 +34,7 @@ final class InfiniteLoopValidator extends ConstraintValidator
         if (!$constraint instanceof InfiniteLoop) {
             return;
         }
-    
+
         if (null === $value || '' === $value) {
             return;
         }
@@ -42,17 +42,17 @@ final class InfiniteLoopValidator extends ConstraintValidator
         if (!is_string($value)) {
             throw new UnexpectedTypeException($value, 'string');
         }
-    
+
         /** @var RedirectInterface|null $redirect */
         $redirect = $this->context->getObject();
         if (!$redirect instanceof RedirectInterface) {
             return;
         }
-    
+
         if (!$redirect->isEnabled()) {
             return;
         }
-    
+
         $nextRedirect = $this->redirectRepository->searchNextRedirect($redirect);
         while ($nextRedirect instanceof RedirectInterface) {
             if ($nextRedirect->getDestination() === $redirect->getSource()) {

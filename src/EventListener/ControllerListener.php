@@ -13,14 +13,17 @@ use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 final class ControllerListener
 {
-    /** @var RedirectRepositoryInterface */
+    /**
+     * @var RedirectRepositoryInterface
+     */
     private $redirectRepository;
-    /** @var ObjectManager */
+
+    /**
+     * @var ObjectManager
+     */
     private $objectManager;
 
     /**
-     * ControllerListener constructor.
-     *
      * @param RedirectRepositoryInterface $redirectRepository
      * @param ObjectManager               $objectManager
      */
@@ -37,7 +40,6 @@ final class ControllerListener
     {
         $request = $event->getRequest();
         $pathInfo = $request->getPathInfo();
-        $baseUrl = $request->getBaseUrl();
 
         $redirect = $this->redirectRepository->findEnabledBySource($pathInfo, false);
 

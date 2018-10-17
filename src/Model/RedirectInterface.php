@@ -81,12 +81,12 @@ interface RedirectInterface extends ResourceInterface
     public function enable(): void;
 
     public function disable(): void;
-    
+
     /**
      * @return bool
      */
     public function isOnly404(): bool;
-    
+
     /**
      * @param bool $only404
      */
