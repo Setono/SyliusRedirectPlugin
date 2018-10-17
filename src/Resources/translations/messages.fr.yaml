@@ -20,9 +20,9 @@ setono_sylius_redirect:
     form:
         redirect:
             source: 'Source'
-            source_placeholder: '/fr_FR/redirect-from'
+            source_placeholder: '/fr_FR/source'
             destination: 'Destination'
-            destination_placeholder: '/fr_FR/redirect-to or https://redirect.to/'
+            destination_placeholder: '/fr_FR/destination ou https://destination.externe/'
             permanent: 'Permanente'
             enabled: 'Activée'
             only_404: 'Rediriger seulement si la source retourne une 404'
