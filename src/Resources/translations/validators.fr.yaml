@@ -1,0 +1,6 @@
+setono_sylius_redirect:
+    form:
+        errors:
+            source_already_existing: 'Il y a déjà une redirection ayant pour source "{{ source }}". ID de la redirection : {{ conflictingIds }}'
+            target_result_in_infinite_loop: 'Ceci entraine une boucle infinie.'
+            source_must_not_equal_destination: 'La source doit être différente de la destination.'
