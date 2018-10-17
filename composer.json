@@ -52,7 +52,10 @@
         "sort-packages": true
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit",
+        "test": [
+            "./vendor/bin/phpunit",
+            "./vendor/bin/phpspec run"
+        ],
         "check-style": "./vendor/bin/ecs check src/",
         "fix-style": "./vendor/bin/ecs check --fix src/",
         "analyse": "./vendor/bin/phpstan analyse -c phpstan.neon -l max src"
