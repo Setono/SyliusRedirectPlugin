@@ -14,14 +14,14 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findEnabledBySource(string $source, bool $onlyNotFound = false): ?RedirectInterface
+    public function findEnabledBySource(string $source, bool $only404 = false): ?RedirectInterface
     {
         $qb = $this->createQueryBuilder('r')
             ->andWhere('r.source = :source')
             ->andWhere('r.enabled = 1')
             ->setParameter('source', $source);
 
-        if ($onlyNotFound) {
+        if ($only404) {
             $qb->andWhere('r.only404 = 1');
         }
 
@@ -55,9 +55,9 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function searchNextRedirect(RedirectInterface $redirect, bool $onlyNotFound = false): ?RedirectInterface
+    public function searchNextRedirect(RedirectInterface $redirect, bool $only404 = false): ?RedirectInterface
     {
-        $nextRedirection = $this->findEnabledBySource($redirect->getDestination(), $onlyNotFound);
+        $nextRedirection = $this->findEnabledBySource($redirect->getDestination(), $only404);
 
         return $nextRedirection;
     }
@@ -67,10 +67,10 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findLastRedirect(RedirectInterface $redirect, bool $onlyNotFound = false): RedirectInterface
+    public function findLastRedirect(RedirectInterface $redirect, bool $only404 = false): RedirectInterface
     {
         do {
-            $nextRedirect = $this->searchNextRedirect($redirect, $onlyNotFound);
+            $nextRedirect = $this->searchNextRedirect($redirect, $only404);
         } while ($nextRedirect instanceof RedirectInterface && ($redirect = $nextRedirect) !== null);
 
         return $nextRedirect ?? $redirect;

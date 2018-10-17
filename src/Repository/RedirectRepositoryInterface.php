@@ -11,11 +11,11 @@ interface RedirectRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param string $source
-     * @param bool   $onlyNotFound
+     * @param bool   $only404
      *
      * @return RedirectInterface|null
      */
-    public function findEnabledBySource(string $source, bool $onlyNotFound = false): ?RedirectInterface;
+    public function findEnabledBySource(string $source, bool $only404 = false): ?RedirectInterface;
 
     /**
      * @param int $threshold
@@ -26,17 +26,17 @@ interface RedirectRepositoryInterface extends RepositoryInterface
 
     /**
      * @param RedirectInterface $redirection
-     * @param bool              $onlyNotFound
+     * @param bool              $only404
      *
      * @return RedirectInterface|null
      */
-    public function searchNextRedirect(RedirectInterface $redirection, bool $onlyNotFound = false): ?RedirectInterface;
+    public function searchNextRedirect(RedirectInterface $redirection, bool $only404 = false): ?RedirectInterface;
 
     /**
      * @param RedirectInterface $redirect
-     * @param bool              $onlyNotFound
+     * @param bool              $only404
      *
      * @return RedirectInterface
      */
-    public function findLastRedirect(RedirectInterface $redirect, bool $onlyNotFound = false): RedirectInterface;
+    public function findLastRedirect(RedirectInterface $redirect, bool $only404 = false): RedirectInterface;
 }
