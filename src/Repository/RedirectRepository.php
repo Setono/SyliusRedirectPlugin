@@ -63,10 +63,7 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
     }
 
     /**
-     * @param RedirectInterface $redirect
-     * @param bool              $onlyNotFound
-     *
-     * @return RedirectInterface
+     * {@inheritdoc}
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
