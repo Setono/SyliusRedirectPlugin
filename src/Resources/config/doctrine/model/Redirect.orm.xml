@@ -6,6 +6,11 @@
                                       http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <mapped-superclass name="Setono\SyliusRedirectPlugin\Model\Redirect" table="setono_redirect">
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
         <unique-constraints>
             <unique-constraint columns="source" name="uniq_source" />
         </unique-constraints>
@@ -13,12 +18,8 @@
         <indexes>
             <index columns="last_accessed" name="idx_last_accessed" />
             <index columns="enabled" name="idx_enabled" />
-            <index columns="only_404" name="idx_only_404"/>
+            <index columns="only_404" name="idx_only_404" />
         </indexes>
-
-        <id name="id" column="id" type="integer">
-            <generator strategy="AUTO" />
-        </id>
 
         <field name="source" type="string" />
         <field name="destination" type="string" />

@@ -12,12 +12,12 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 final class SourceValidator extends ConstraintValidator
 {
-    /** @var RedirectRepositoryInterface */
+    /**
+     * @var RedirectRepositoryInterface
+     */
     private $redirectRepository;
 
     /**
-     * SourceValidator constructor.
-     *
      * @param RedirectRepositoryInterface $redirectRepository
      */
     public function __construct(RedirectRepositoryInterface $redirectRepository)
@@ -39,7 +39,7 @@ final class SourceValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             throw new UnexpectedTypeException($value, 'string');
         }
 
@@ -55,11 +55,10 @@ final class SourceValidator extends ConstraintValidator
 
         /** @var array|RedirectInterface[] $conflictingRedirects */
         $conflictingRedirects = $this->redirectRepository->findBy(['source' => $value, 'enabled' => true]);
-        if ($redirect !== null) {
-            $conflictingRedirects = array_filter($conflictingRedirects, function (RedirectInterface $conflictingRedirect) use ($redirect): bool {
-                return $conflictingRedirect->getId() !== $redirect->getId();
-            });
-        }
+        $conflictingRedirects = array_filter($conflictingRedirects, function (RedirectInterface $conflictingRedirect) use ($redirect): bool {
+            return $conflictingRedirect->getId() !== $redirect->getId();
+        });
+
         if (!empty($conflictingRedirects)) {
             $conflictingIds = implode(
                 ', ',
@@ -67,6 +66,7 @@ final class SourceValidator extends ConstraintValidator
                     return $item->getId();
                 }, $conflictingRedirects)
             );
+
             $this->context->buildViolation($constraint->message)
                 ->atPath('source')
                 ->setParameter('{{ source }}', $value)

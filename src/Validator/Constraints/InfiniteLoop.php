@@ -8,13 +8,15 @@ use Symfony\Component\Validator\Constraint;
 
 final class InfiniteLoop extends Constraint
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     public $message = 'setono_sylius_redirect.form.errors.target_result_in_infinite_loop';
 
     /**
      * @return string
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'setono_sylius_redirect.validator.infinite_loop_validator';
     }
