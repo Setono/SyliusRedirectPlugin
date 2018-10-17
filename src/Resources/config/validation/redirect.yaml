@@ -1,0 +1,12 @@
+Setono\SyliusRedirectPlugin\Model\Redirect:
+    properties:
+        source:
+        - NotBlank:
+              groups: ['sylius']
+        - Setono\SyliusRedirectPlugin\Validator\Constraints\Source:
+              groups: ['sylius']
+        destination:
+        - NotBlank:
+              groups: ['sylius']
+        -   Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoop:
+                groups: ['sylius']

@@ -25,6 +25,15 @@ final class RedirectType extends AbstractResourceType
             ])
             ->add('permanent', CheckboxType::class, [
                 'label' => 'setono_sylius_redirect.form.redirect.permanent',
+                'required' => false,
+            ])
+            ->add('enabled', CheckboxType::class, [
+                'label' => 'setono_sylius_redirect.form.redirect.enabled',
+                'required' => false,
+            ])
+            ->add('only404', CheckboxType::class, [
+                'label' => 'setono_sylius_redirect.form.redirect.only_404',
+                'required' => false,
             ])
         ;
     }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Model;
 
+use Sylius\Component\Resource\Model\ToggleableTrait;
+
 class Redirect implements RedirectInterface
 {
+    use ToggleableTrait;
+
     /**
      * @var int
      */
@@ -35,6 +39,11 @@ class Redirect implements RedirectInterface
      * @var \DateTimeInterface|null
      */
     private $lastAccessed;
+
+    /**
+     * @var bool
+     */
+    private $only404 = false;
 
     /**
      * {@inheritdoc}
@@ -131,5 +140,21 @@ class Redirect implements RedirectInterface
     {
         ++$this->count;
         $this->setLastAccessed(new \DateTime());
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isOnly404(): bool
+    {
+        return $this->only404;
+    }
+    
+    /**
+     * @param bool $only404
+     */
+    public function setOnly404(bool $only404): void
+    {
+        $this->only404 = $only404;
     }
 }

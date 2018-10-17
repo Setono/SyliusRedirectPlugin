@@ -7,28 +7,30 @@ namespace Setono\SyliusRedirectPlugin\Repository;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
-class RedirectRepository extends EntityRepository
+class RedirectRepository extends EntityRepository implements RedirectRepositoryInterface
 {
     /**
-     * @param string $source
-     *
-     * @return RedirectInterface|null
+     * {@inheritdoc}
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findBySource(string $source): ?RedirectInterface
+    public function findEnabledBySource(string $source, bool $onlyNotFound = false): ?RedirectInterface
     {
-        return $this->createQueryBuilder('r')
+        $qb = $this->createQueryBuilder('r')
             ->andWhere('r.source = :source')
-            ->setParameter('source', $source)
-            ->getQuery()
+            ->andWhere('r.enabled = 1')
+            ->setParameter('source', $source);
+
+        if ($onlyNotFound) {
+            $qb->andWhere('r.only404 = 1');
+        }
+
+        return $qb->getQuery()
             ->getOneOrNullResult();
     }
 
     /**
-     * @param int $threshold
-     *
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function removeNotAccessed(int $threshold): void
     {
@@ -46,5 +48,34 @@ class RedirectRepository extends EntityRepository
             ->getQuery()
             ->execute()
         ;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function searchNextRedirect(RedirectInterface $redirect, bool $onlyNotFound = false): ?RedirectInterface
+    {
+        $nextRedirection = $this->findEnabledBySource($redirect->getDestination(), $onlyNotFound);
+
+        return $nextRedirection;
+    }
+
+    /**
+     * @param RedirectInterface $redirect
+     * @param bool              $onlyNotFound
+     *
+     * @return RedirectInterface
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findLastRedirect(RedirectInterface $redirect, bool $onlyNotFound = false): RedirectInterface
+    {
+        do {
+            $nextRedirect = $this->searchNextRedirect($redirect, $onlyNotFound);
+        } while ($nextRedirect instanceof RedirectInterface && ($redirect = $nextRedirect) !== null);
+    
+        return $nextRedirect ?? $redirect;
     }
 }

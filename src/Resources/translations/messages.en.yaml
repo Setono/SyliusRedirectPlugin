@@ -9,6 +9,7 @@ setono_sylius_redirect:
         permanent: Permanent
         count: Count
         last_accessed: Last accessed
+        enabled: Enabled
 
     menu:
         admin:
@@ -21,3 +22,5 @@ setono_sylius_redirect:
             source: Source
             destination: Destination
             permanent: Permanent
+            enabled: Enabled
+            only_404: Redirect only Not found pages
