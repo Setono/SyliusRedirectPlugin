@@ -42,6 +42,15 @@ return [
 
 It is **IMPORTANT** to add the plugin before the grid bundle else you will get a an exception saying `You have requested a non-existent parameter "setono_sylius_redirect.model.redirect.class".`
 
+### Step 3: Update database
+
+Use Dotrine migrations to create a migration file and update the database.
+
+```bash
+$ bin/console doctrine:migrations:diff
+$ bin/console doctrine:migrations:migrate
+```
+
 ## Contributors
 - [Joachim Løvgaard](https://github.com/loevgaard)
 - [Stephane Decock](https://github.com/Roshyo)
