@@ -42,6 +42,10 @@ return [
 
 It is **IMPORTANT** to add the plugin before the grid bundle else you will get a an exception saying `You have requested a non-existent parameter "setono_sylius_redirect.model.redirect.class".`
 
+## Contributors
+- [Joachim Løvgaard](https://github.com/loevgaard)
+- [Stephane Decock](https://github.com/Roshyo)
+
 [ico-version]: https://img.shields.io/packagist/v/setono/sylius-redirect-plugin.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/Setono/SyliusRedirectPlugin/master.svg?style=flat-square
