@@ -20,14 +20,14 @@ final class RedirectType extends AbstractResourceType
             ->add('source', TextType::class, [
                 'label' => 'setono_sylius_redirect.form.redirect.source',
                 'attr' => [
-                    'placeholder' => 'setono_sylius_redirect.form.redirect.source_placeholder'
-                ]
+                    'placeholder' => 'setono_sylius_redirect.form.redirect.source_placeholder',
+                ],
             ])
             ->add('destination', TextType::class, [
                 'label' => 'setono_sylius_redirect.form.redirect.destination',
                 'attr' => [
-                    'placeholder' => 'setono_sylius_redirect.form.redirect.destination_placeholder'
-                ]
+                    'placeholder' => 'setono_sylius_redirect.form.redirect.destination_placeholder',
+                ],
             ])
             ->add('permanent', CheckboxType::class, [
                 'label' => 'setono_sylius_redirect.form.redirect.permanent',
