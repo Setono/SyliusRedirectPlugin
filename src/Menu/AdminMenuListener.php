@@ -18,7 +18,7 @@ final class AdminMenuListener
         $child = $menu->getChild('configuration');
         if ($child !== null) {
             $child->addChild('redirects', [
-                'route' => 'setono_sylius_redirect_admin_redirect_index',
+                'route' => 'setono_sylius_redirect_admin_redirect',
             ])
                 ->setLabel('setono_sylius_redirect.menu.admin.main.configuration.redirects')
                 ->setLabelAttribute('icon', 'arrow alternate circle right outline')
