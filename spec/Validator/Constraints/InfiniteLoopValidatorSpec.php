@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace spec\Setono\SyliusRedirectPlugin\Validator\Constraints;
 
@@ -12,30 +12,29 @@ use Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoop;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 final class InfiniteLoopValidatorSpec extends ObjectBehavior
 {
-    public function let(ExecutionContextInterface $context, RedirectRepositoryInterface $redirectRepository) : void
+    public function let(ExecutionContextInterface $context, RedirectRepositoryInterface $redirectRepository): void
     {
         $this->beConstructedWith($redirectRepository);
         $this->initialize($context);
     }
 
-    public function it_is_constraint_validator() : void
+    public function it_is_constraint_validator(): void
     {
         $this->shouldHaveType(ConstraintValidatorInterface::class);
     }
 
-    public function it_does_not_apply_to_null_values(ExecutionContextInterface $context) : void
+    public function it_does_not_apply_to_null_values(ExecutionContextInterface $context): void
     {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate(null, new InfiniteLoop());
     }
 
-    public function it_throws_an_exception_if_subject_is_not_a_string(ExecutionContextInterface $context) : void
+    public function it_throws_an_exception_if_subject_is_not_a_string(ExecutionContextInterface $context): void
     {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
@@ -48,7 +47,7 @@ final class InfiniteLoopValidatorSpec extends ObjectBehavior
         RedirectInterface $subject,
         RedirectInterface $nextRedirect,
         ConstraintViolationBuilderInterface $violationBuilder
-    ) : void {
+    ): void {
         $subject->isEnabled()->willReturn(true);
         $subject->getSource()->willReturn('/source');
 
@@ -66,7 +65,7 @@ final class InfiniteLoopValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_if_subject_is_disabled(
         ExecutionContextInterface $context,
         RedirectInterface $subject
-    ) : void {
+    ): void {
         $subject->isEnabled()->willReturn(false);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();

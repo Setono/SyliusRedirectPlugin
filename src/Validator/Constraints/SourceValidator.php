@@ -31,11 +31,7 @@ final class SourceValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof Source) {
-            return;
-        }
-
-        if (null === $value) {
+        if (!$constraint instanceof Source || null === $value) {
             return;
         }
 
