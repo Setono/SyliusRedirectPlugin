@@ -42,7 +42,21 @@ return [
 
 It is **IMPORTANT** to add the plugin before the grid bundle else you will get a an exception saying `You have requested a non-existent parameter "setono_sylius_redirect.model.redirect.class".`
 
-### Step 3: Update database
+### Step 3: Import configuration
+
+```yaml
+- { resource: "@SetonoSyliusRedirectPlugin/Resources/config/config.yaml" }
+```
+
+### Step 4: Import routing
+
+```yaml
+sylius_redirect_plugin:
+    resource: "@SetonoSyliusRedirectPlugin/Resources/config/admin_routing.yaml"
+    prefix: /admin
+```
+
+### Step 5: Update database
 
 Use Dotrine migrations to create a migration file and update the database.
 
