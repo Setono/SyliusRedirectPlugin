@@ -1,5 +1,4 @@
 setono_sylius_redirect_admin_redirect:
-    prefix: /admin
     resource: |
         alias: setono_sylius_redirect.redirect
         section: admin
