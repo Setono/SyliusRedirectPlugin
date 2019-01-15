@@ -45,7 +45,7 @@ It is **IMPORTANT** to add the plugin before the grid bundle else you will get a
 Add overrides configuration:
 
     ```yaml
-    # config/packages/setono_sylius_redirect.yml
+    # config/packages/setono_sylius_redirect.yaml
     imports:
         - { resource: "@SetonoSyliusRedirectPlugin/Resources/config/config.yaml" }
     ```
