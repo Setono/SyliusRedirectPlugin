@@ -4,15 +4,17 @@
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/5.6/phpunit.xsd"
          backupGlobals="false"
          colors="true"
-         bootstrap="vendor/autoload.php">
+         bootstrap="tests/Application/config/bootstrap.php">
     <testsuites>
         <testsuite name="SetonoSyliusRedirectPlugin Test Suite">
             <directory>tests</directory>
         </testsuite>
+        <env name="APP_ENV" value="test"/>
+        <env name="SHELL_VERBOSITY" value="-1" />
     </testsuites>
 
     <php>
-        <server name="KERNEL_CLASS_PATH" value="/tests/Application/AppKernel.php" />
+        <server name="KERNEL_CLASS_PATH" value="/tests/Application/Kernel.php" />
         <server name="IS_DOCTRINE_ORM_SUPPORTED" value="true" />
     </php>
 </phpunit>

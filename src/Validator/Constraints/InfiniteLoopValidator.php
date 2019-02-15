@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Validator\Constraints;
 
@@ -29,7 +29,7 @@ final class InfiniteLoopValidator extends ConstraintValidator
      * @param RedirectInterface|null $value
      * @param Constraint|InfiniteLoop $constraint
      */
-    public function validate($value, Constraint $constraint) : void
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof InfiniteLoop || null === $value) {
             return;

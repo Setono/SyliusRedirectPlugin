@@ -1,0 +1,11 @@
+default:
+    suites:
+        redirect:
+            contexts:
+                - sylius.behat.context.hook.doctrine_orm
+
+                - setono.sylius_redirect.behat.context.setup.redirect
+                - setono.sylius_redirect.behat.context.ui.shop.redirect
+
+            filters:
+                tags: "@redirect"

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults public="true" />
+
+        <service id="setono.sylius_redirect.behat.context.setup.redirect" class="Tests\Setono\SyliusRedirectPlugin\Behat\Context\Setup\RedirectContext">
+            <argument type="service" id="setono_sylius_redirect.repository.redirect" />
+            <argument type="service" id="setono_sylius_redirect.factory.redirect" />
+        </service>
+
+        <service id="setono.sylius_redirect.behat.context.ui.shop.redirect" class="Tests\Setono\SyliusRedirectPlugin\Behat\Context\Ui\Shop\RedirectContext">
+            <argument type="service" id="setono.sylius_redirect.behat.page.shop.old_path" />
+        </service>
+
+        <service id="setono.sylius_redirect.behat.page.shop.old_path" class="Tests\Setono\SyliusRedirectPlugin\Behat\Page\Shop\OldPathPage" parent="sylius.behat.page" public="false" />
+    </services>
+</container>
