@@ -30,7 +30,7 @@ final class RedirectContext implements Context
     /**
      * @Given the store has a redirect from path :oldPath to :newPath
      */
-    public function storeHasABrand($oldPath, $newPath): void
+    public function storeHasARedirect($oldPath, $newPath): void
     {
         $redirect = $this->createRedirect($oldPath, $newPath);
 
