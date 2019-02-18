@@ -4,10 +4,10 @@ includes:
     - vendor/phpstan/phpstan-webmozart-assert/extension.neon
 
 parameters:
-    reportUnmatchedIgnoredErrors: false
+    reportUnmatchedIgnoredErrors: true
 
     symfony:
-        container_xml_path: tests/Application/var/cache/test/ApplicationTestDebugProjectContainer.xml
+        container_xml_path: tests/Application/var/cache/test/ApplicationTests_Setono_SyliusRedirectPlugin_Application_KernelTestDebugContainer.xml
 
     excludes_analyse:
         # Makes PHPStan crash
