@@ -5,6 +5,8 @@
 [![Build Status][ico-travis]][link-travis]
 [![Quality Score][ico-code-quality]][link-code-quality]
 
+<a href="https://sylius.com/plugins/" target="_blank"><img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="100"></a>
+
 Gives you the ability to manage redirects in your Sylius shop.
 
 ## Installation
