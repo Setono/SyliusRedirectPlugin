@@ -1,13 +1,23 @@
 {
     "name": "setono/sylius-redirect-plugin",
     "type": "sylius-plugin",
-    "keywords": ["sylius", "sylius-plugin"],
     "description": "Sylius plugin for managing redirects",
+    "keywords": [
+        "sylius",
+        "sylius-plugin"
+    ],
     "license": "MIT",
     "require": {
         "php": "^7.2",
-
         "sylius/sylius": "^1.2"
+    },
+    "conflict": {
+        "friends-of-behat/symfony-extension": ">=2.0.5 <= 2.0.8",
+        "symfony/browser-kit": "4.1.8",
+        "symfony/dependency-injection": "4.1.8",
+        "symfony/dom-crawler": "4.1.8",
+        "symfony/routing": "4.1.8",
+        "symfony/symfony": "4.1.8"
     },
     "require-dev": {
         "behat/behat": "^3.4",
@@ -30,22 +40,21 @@
         "roave/security-advisories": "dev-master",
         "sensiolabs/security-checker": "^5.0",
         "sylius-labs/coding-standard": "^2.0",
-        "symfony/browser-kit": "^3.4|^4.1",
-        "symfony/debug-bundle": "^3.4|^4.1",
+        "symfony/browser-kit": "^3.4 || ^4.1",
+        "symfony/debug-bundle": "^3.4 || ^4.1",
         "symfony/dotenv": "^4.2",
-        "symfony/intl": "^3.4|^4.1",
-        "symfony/web-profiler-bundle": "^3.4|^4.1",
-        "symfony/web-server-bundle": "^3.4|^4.1"
+        "symfony/intl": "^3.4 || ^4.1",
+        "symfony/web-profiler-bundle": "^3.4 || ^4.1",
+        "symfony/web-server-bundle": "^3.4 || ^4.1"
     },
-    "conflict": {
-        "friends-of-behat/symfony-extension": ">=2.0.5 <= 2.0.8",
-        "symfony/browser-kit": "4.1.8",
-        "symfony/dependency-injection": "4.1.8",
-        "symfony/dom-crawler": "4.1.8",
-        "symfony/routing": "4.1.8",
-        "symfony/symfony": "4.1.8"
+    "config": {
+        "sort-packages": true
     },
-    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
     "autoload": {
         "psr-4": {
             "Setono\\SyliusRedirectPlugin\\": "src/",
@@ -53,27 +62,22 @@
         }
     },
     "autoload-dev": {
-        "classmap": ["tests/Application/Kernel.php"]
+        "classmap": [
+            "tests/Application/Kernel.php"
+        ]
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
-    },
-    "config": {
-        "sort-packages": true
-    },
+    "prefer-stable": true,
     "scripts": {
-        "test": [
-            "./vendor/bin/phpunit",
-            "./vendor/bin/phpspec run"
-        ],
-        "check-style": "./vendor/bin/ecs check src/",
-        "fix-style": "./vendor/bin/ecs check --fix src/",
         "analyse": [
             "@ensure-test-container-exists",
             "./vendor/bin/phpstan analyse -c phpstan.neon -l max src"
         ],
-        "ensure-test-container-exists": "[[ -f tests/Application/var/cache/test/ApplicationTests_Setono_SyliusRedirectPlugin_Application_KernelTestDebugContainer.xml ]] || (cd tests/Application && php -d memory_limit=-1 bin/console cache:clear --env=test)"
+        "check-style": "./vendor/bin/ecs check src/",
+        "ensure-test-container-exists": "[[ -f tests/Application/var/cache/test/ApplicationTests_Setono_SyliusRedirectPlugin_Application_KernelTestDebugContainer.xml ]] || (cd tests/Application && php -d memory_limit=-1 bin/console cache:clear --env=test)",
+        "fix-style": "./vendor/bin/ecs check --fix src/",
+        "test": [
+            "./vendor/bin/phpunit",
+            "./vendor/bin/phpspec run"
+        ]
     }
 }
