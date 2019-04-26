@@ -9,12 +9,12 @@
         <testsuite name="SetonoSyliusRedirectPlugin Test Suite">
             <directory>tests</directory>
         </testsuite>
-        <env name="APP_ENV" value="test"/>
-        <env name="SHELL_VERBOSITY" value="-1" />
     </testsuites>
 
     <php>
         <server name="KERNEL_CLASS_PATH" value="/tests/Application/Kernel.php" />
         <server name="IS_DOCTRINE_ORM_SUPPORTED" value="true" />
+        <env name="APP_ENV" value="test"/>
+        <env name="SHELL_VERBOSITY" value="-1" />
     </php>
 </phpunit>
