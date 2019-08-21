@@ -18,11 +18,11 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
     {
         $qb = $this->createQueryBuilder('r')
             ->andWhere('r.source = :source')
-            ->andWhere('r.enabled = 1')
+            ->andWhere('r.enabled = true')
             ->setParameter('source', $source);
 
         if ($only404) {
-            $qb->andWhere('r.only404 = 1');
+            $qb->andWhere('r.only404 = true');
         }
 
         return $qb->getQuery()
