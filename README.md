@@ -71,6 +71,31 @@ $ bin/console doctrine:migrations:diff
 $ bin/console doctrine:migrations:migrate
 ```
 
+## What it does
+
+This plugin allows you to create new redirections.
+
+Under the new menu entry `Redirection` in `Configuration`, you can manage redirections.
+
+### Redirection entry
+
+An entry is composed by:
+* Source url, relative to your website
+* Target URL, can be relative or absolute in case you want to redirect to another website
+* Permanent or Temporary (This impact the HTTP response code of the redirection, 301 or 302)
+* Enabled
+* Redirect only if 404 (to manage potentially dead links)
+
+### Security
+
+There is a built-in security when creating/modifying redirection that prevent creating an infinite loop. This work with infinite recursive checking.
+
+A second security is to prevent same source redirection leading to inconstant redirect.
+
+### Points of improvements 
+
+At the moment, there is no automatic redirection created at any point. Though you can easily do so by creating an event listener where needed. And even create a PR in this repo. 
+
 ## Contributors
 - [Joachim Løvgaard](https://github.com/loevgaard)
 - [Stephane Decock](https://github.com/Roshyo)
