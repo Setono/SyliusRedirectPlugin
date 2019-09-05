@@ -6,6 +6,7 @@ namespace spec\Setono\SyliusRedirectPlugin\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Prophecy\Promise\ReturnPromise;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoop;
@@ -72,10 +73,14 @@ class SourceValidatorSpec extends ObjectBehavior
         RedirectInterface $redirect,
         RedirectRepositoryInterface $redirectRepository
     ): void {
+        $source = '/dumb-source';
         $redirect->isEnabled()->willReturn(true);
-        $redirect->getId()->willReturn(1);
+        $redirect->getSource()->willReturn($source);
+        $redirect->isEnabled()->shouldBeCalled();
+        $redirect->getSource()->shouldBeCalled();
+        $redirect->getId()->shouldBeCalled();
 
-        $redirectRepository->findBy(['source' => $redirect, 'enabled' => true])
+        $redirectRepository->findBy(['source' => $source, 'enabled' => true])
             ->willReturn([$redirect]);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -90,11 +95,12 @@ class SourceValidatorSpec extends ObjectBehavior
         RedirectRepositoryInterface $redirectRepository,
         ConstraintViolationBuilderInterface $violationBuilder
     ): void {
+        $source = '/some-route';
         $redirect->isEnabled()->willReturn(true);
         $redirect->getId()->willReturn(null);
-        $redirect->getSource()->willReturn('/some-route');
+        $redirect->getSource()->willReturn($source);
 
-        $redirectRepository->findBy(['source' => $redirect, 'enabled' => true])
+        $redirectRepository->findBy(['source' => $source, 'enabled' => true])
             ->willReturn([$redirect, $conflictingRedirects]);
 
         $conflictingRedirects->getId()->willReturn(1);
