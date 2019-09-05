@@ -6,7 +6,6 @@ namespace spec\Setono\SyliusRedirectPlugin\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Prophecy\Promise\ReturnPromise;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoop;
