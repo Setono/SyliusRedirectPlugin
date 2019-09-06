@@ -44,7 +44,7 @@ final class SourceValidator extends ConstraintValidator
         }
 
         /** @var RedirectInterface[] $conflictingRedirects */
-        $conflictingRedirects = $this->redirectRepository->findBy(['source' => $value, 'enabled' => true]);
+        $conflictingRedirects = $this->redirectRepository->findBy(['source' => $value->getSource(), 'enabled' => true]);
         $conflictingRedirects = array_filter($conflictingRedirects, function (RedirectInterface $conflictingRedirect) use ($value): bool {
             return $conflictingRedirect->getId() !== $value->getId();
         });
