@@ -18,6 +18,8 @@ setono_sylius_redirect:
                     redirects: 'Redirections'
 
     form:
+        product:
+            add_automatic_redirection: 'Créer automatiquement une redirection'
         redirect:
             source: 'Source'
             source_placeholder: '/fr_FR/source'

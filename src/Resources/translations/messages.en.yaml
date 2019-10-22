@@ -18,6 +18,8 @@ setono_sylius_redirect:
                     redirects: Redirects
 
     form:
+        product:
+            add_automatic_redirection: 'Add automatic redirection'
         redirect:
             source: Source
             source_placeholder: /en_US/redirect-from
