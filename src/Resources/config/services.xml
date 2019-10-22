@@ -39,6 +39,13 @@
             <tag name="kernel.event_listener" event="kernel.controller" />
         </service>
 
+        <service id="setono.sylius_redirect_plugin.admin.product.javascripts"
+                 class="Sylius\Bundle\UiBundle\Block\BlockEventListener">
+            <argument>@SetonoSyliusRedirectPlugin/Admin/Product/_javascripts.html.twig</argument>
+            <tag name="kernel.event_listener" event="sonata.block.event.sylius.admin.layout.javascripts"
+                 method="onBlockEvent"/>
+        </service>
+
         <!-- Constraints -->
         <service id="Setono\SyliusRedirectPlugin\Validator\Constraints\SourceValidator">
             <argument type="service" id="setono_sylius_redirect.repository.redirect" />
