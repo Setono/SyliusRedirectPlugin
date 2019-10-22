@@ -7,9 +7,11 @@ namespace Setono\SyliusRedirectPlugin\EventListener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Sylius\Component\Core\Model\ProductTranslationInterface;
+use Sylius\Component\Resource\Exception\UpdateHandlingException;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -20,12 +22,14 @@ final class ProductTranslationUpdateListener
     private $redirectionRepository;
     private $router;
     private $validator;
+    private $flashBag;
 
     public function __construct(RequestStack $requestStack,
                                 FactoryInterface $redirectionFactory,
                                 RepositoryInterface $redirectionRepository,
                                 RouterInterface $router,
-                                ValidatorInterface $validator
+                                ValidatorInterface $validator,
+                                FlashBagInterface $flashBag
     )
     {
         $this->request = $requestStack->getCurrentRequest();
@@ -33,6 +37,7 @@ final class ProductTranslationUpdateListener
         $this->redirectionRepository = $redirectionRepository;
         $this->router = $router;
         $this->validator = $validator;
+        $this->flashBag = $flashBag;
     }
 
     public function postUpdate(LifecycleEventArgs $event): void
@@ -83,8 +88,11 @@ final class ProductTranslationUpdateListener
         $redirection->setPermanent(true);
 
         $violations = $this->validator->validate($redirection, null, ['sylius']);
-        if (!empty($violations)) {
-            return;
+        if ($violations->count() > 0) {
+            foreach ($violations as $violation) {
+                $this->flashBag->add('error', $violation->getMessage());
+            }
+            throw new UpdateHandlingException();
         }
 
         $this->redirectionRepository->add($redirection);

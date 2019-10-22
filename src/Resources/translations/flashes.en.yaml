@@ -1,0 +1,5 @@
+setono_sylius_redirect:
+    form:
+        errors:
+            source_already_existing: 'The automatically created redirection has the same source ("{{ source }}") than an existing one. Redirection ID : {{ conflictingIds }}'
+            target_result_in_infinite_loop: 'The automatically created redirection results in an infinite loop.'
