@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\Validator\Constraints;
 
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
-use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
+use Setono\SyliusRedirectPlugin\Resolver\InfiniteLoopResolverInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -13,16 +13,13 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 final class InfiniteLoopValidator extends ConstraintValidator
 {
     /**
-     * @var RedirectRepositoryInterface
+     * @var InfiniteLoopResolverInterface
      */
-    private $redirectRepository;
+    private $infiniteLoopResolver;
 
-    /**
-     * @param RedirectRepositoryInterface $redirectRepository
-     */
-    public function __construct(RedirectRepositoryInterface $redirectRepository)
+    public function __construct(InfiniteLoopResolverInterface $infiniteLoopResolver)
     {
-        $this->redirectRepository = $redirectRepository;
+        $this->infiniteLoopResolver = $infiniteLoopResolver;
     }
 
     /**
@@ -43,16 +40,12 @@ final class InfiniteLoopValidator extends ConstraintValidator
             return;
         }
 
-        $nextRedirect = $this->redirectRepository->searchNextRedirect($value);
-        while ($nextRedirect instanceof RedirectInterface) {
-            if ($nextRedirect->getDestination() === $value->getSource()) {
-                $this->context->buildViolation($constraint->message)
-                    ->atPath('destination')
-                    ->addViolation();
+        if ($this->infiniteLoopResolver->generatesInfiniteLoop($value)) {
+            $this->context->buildViolation($constraint->message)
+                ->atPath('destination')
+                ->addViolation();
 
-                break;
-            }
-            $nextRedirect = $this->redirectRepository->searchNextRedirect($nextRedirect);
+            return;
         }
     }
 }

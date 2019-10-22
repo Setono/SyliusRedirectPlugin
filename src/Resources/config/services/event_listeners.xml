@@ -25,6 +25,7 @@
             <argument type="service" id="request_stack"/>
             <argument type="service" id="setono_sylius_redirect.factory.redirect"/>
             <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
+            <argument type="service" id="setono.sylius_redirect.resolver.infinite_loop_resolver"/>
             <argument type="service" id="router"/>
             <argument type="service" id="validator"/>
             <argument type="service" id="session.flash_bag"/>
