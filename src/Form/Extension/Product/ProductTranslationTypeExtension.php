@@ -29,6 +29,16 @@ final class ProductTranslationTypeExtension extends AbstractTypeExtension
                 return;
             }
 
+            // Rework the form to put the new field just after Slug one
+            $actualFields = $form->all();
+            foreach ($actualFields as $field) {
+                if ($field->getName() !== 'slug' && $field->getName() !== 'name') {
+                    $form->remove($field->getName());
+                }
+            }
+
+            $form->add('name');
+            $form->add('slug');
             $form->add('addAutomaticRedirection', CheckboxType::class, [
                 'mapped' => false,
                 'label' => 'setono_sylius_redirect.form.product.add_automatic_redirection',
@@ -37,6 +47,13 @@ final class ProductTranslationTypeExtension extends AbstractTypeExtension
                     'class' => 'js-add-automatic-redirection-checkbox',
                 ],
             ]);
+
+            // Reinsert previously deleted fields with their type and options
+            foreach ($actualFields as $field) {
+                if ($field->getName() !== 'slug' && $field->getName() !== 'name') {
+                    $form->add($field->getName(), \get_class($field->getConfig()->getType()->getInnerType()), $field->getConfig()->getOptions());
+                }
+            }
         });
     }
 
