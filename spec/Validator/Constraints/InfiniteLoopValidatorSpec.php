@@ -7,7 +7,7 @@ namespace spec\Setono\SyliusRedirectPlugin\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
-use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
+use Setono\SyliusRedirectPlugin\Resolver\InfiniteLoopResolverInterface;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoop;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -16,9 +16,9 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 final class InfiniteLoopValidatorSpec extends ObjectBehavior
 {
-    public function let(ExecutionContextInterface $context, RedirectRepositoryInterface $redirectRepository): void
+    public function let(ExecutionContextInterface $context, InfiniteLoopResolverInterface $infiniteLoopResolver): void
     {
-        $this->beConstructedWith($redirectRepository);
+        $this->beConstructedWith($infiniteLoopResolver);
         $this->initialize($context);
     }
 
@@ -43,7 +43,7 @@ final class InfiniteLoopValidatorSpec extends ObjectBehavior
 
     public function it_adds_violation_if_subject_will_create_infinite_loop(
         ExecutionContextInterface $context,
-        RedirectRepositoryInterface $redirectRepository,
+        InfiniteLoopResolverInterface $infiniteLoopResolver,
         RedirectInterface $subject,
         RedirectInterface $nextRedirect,
         ConstraintViolationBuilderInterface $violationBuilder
@@ -51,7 +51,7 @@ final class InfiniteLoopValidatorSpec extends ObjectBehavior
         $subject->isEnabled()->willReturn(true);
         $subject->getSource()->willReturn('/source');
 
-        $redirectRepository->searchNextRedirect($subject)->willReturn($nextRedirect);
+        $infiniteLoopResolver->generatesInfiniteLoop($subject)->willReturn(true);
         $nextRedirect->getDestination()->willReturn('/source');
 
         $context->buildViolation('setono_sylius_redirect.form.errors.target_result_in_infinite_loop')
