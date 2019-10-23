@@ -14,6 +14,7 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ProductTranslationUpdateListener
@@ -98,8 +99,12 @@ final class ProductTranslationUpdateListener
 
         $violations = $this->validator->validate($redirect, null, ['sylius']);
         if ($violations->count() > 0) {
+            /** @var ConstraintViolationInterface $violation */
             foreach ($violations as $violation) {
-                $this->flashBag->add('error', $violation->getMessage());
+                $this->flashBag->add('error', [
+                    'message' => $violation->getMessageTemplate(),
+                    'parameters' => $violation->getParameters()
+                ]);
             }
             throw new UpdateHandlingException();
         }
