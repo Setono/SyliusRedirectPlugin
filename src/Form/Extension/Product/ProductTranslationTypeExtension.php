@@ -37,8 +37,6 @@ final class ProductTranslationTypeExtension extends AbstractTypeExtension
                 }
             }
 
-            $form->add('name');
-            $form->add('slug');
             $form->add('addAutomaticRedirection', CheckboxType::class, [
                 'mapped' => false,
                 'label' => 'setono_sylius_redirect.form.product.add_automatic_redirection',
