@@ -84,6 +84,10 @@ final class ProductTranslationUpdateListener
             return;
         }
 
+        if (null === $this->request) {
+            return;
+        }
+
         $postProductParams = $this->request->request->get('sylius_product', []);
         if (empty($postProductParams)) {
             return;
