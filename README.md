@@ -101,7 +101,7 @@ Example: Having a slug like `/products/a`, renaming it to `/products/b` then ren
 
 ### Points of improvements 
 
-The same mechanism could be done for taxon slug, and obviously for any other resource that has a slug. Feel free to submit a PR.
+The same mechanism could be made for taxon slugs, and obviously for any other resource that has a slug. Feel free to submit a PR.
 
 ## Contributors
 - [Joachim Løvgaard](https://github.com/loevgaard)
