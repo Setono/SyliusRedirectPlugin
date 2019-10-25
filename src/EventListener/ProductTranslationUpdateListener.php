@@ -19,12 +19,33 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ProductTranslationUpdateListener
 {
+    /**
+     * @var \Symfony\Component\HttpFoundation\Request|null
+     */
     private $request;
+    /**
+     * @var FactoryInterface
+     */
     private $redirectionFactory;
+    /**
+     * @var RepositoryInterface
+     */
     private $redirectionRepository;
+    /**
+     * @var InfiniteLoopResolverInterface
+     */
     private $infiniteLoopResolver;
+    /**
+     * @var RouterInterface
+     */
     private $router;
+    /**
+     * @var ValidatorInterface
+     */
     private $validator;
+    /**
+     * @var FlashBagInterface
+     */
     private $flashBag;
 
     public function __construct(RequestStack $requestStack,
