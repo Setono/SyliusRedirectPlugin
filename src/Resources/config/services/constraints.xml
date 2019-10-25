@@ -3,8 +3,6 @@
 <container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <defaults public="false"/>
-
         <service id="Setono\SyliusRedirectPlugin\Validator\Constraints\SourceValidator">
             <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
             <tag name="validator.constraint_validator"/>
