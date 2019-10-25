@@ -95,7 +95,7 @@ A second security is to prevent same source redirection leading to inconstant re
 ### Automatic redirect
 
 There is a built-in feature that allows you to automatically create a redirection when changing a product slug.
-It also handles the case where it would create an infinite loop and remove the unecessary redirect.
+It also handles the case where it would create an infinite loop and remove the unnecessary redirect.
 
 Ie: having a slug like `/products/a`, renaming it into `/products/b` then renaming it to `/products/a` will result in a redirect from `b` to `a` and will automatically delete the one from `a` to `b`.
 
