@@ -32,3 +32,5 @@ jobs:
                 run: composer phpspec
             -   name: Run phpunit
                 run: composer phpunit
+            -   name: Setup database
+                run: (cd tests/Application && bin/console doctrine:database:create -vvv)
