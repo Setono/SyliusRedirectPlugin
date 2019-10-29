@@ -6,8 +6,9 @@ namespace Setono\SyliusRedirectPlugin\Model;
 
 use DateTimeInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
+use Sylius\Component\Resource\Model\ToggleableInterface;
 
-interface RedirectInterface extends ResourceInterface
+interface RedirectInterface extends ResourceInterface, ToggleableInterface
 {
     public function getId(): ?int;
 
@@ -38,14 +39,7 @@ interface RedirectInterface extends ResourceInterface
 
     public function isEnabled(): bool;
 
-    /**
-     * @param bool $enabled
-     */
     public function setEnabled(?bool $enabled): void;
-
-    public function enable(): void;
-
-    public function disable(): void;
 
     public function isOnly404(): bool;
 
