@@ -8,9 +8,7 @@ use Symfony\Component\Validator\Constraint;
 
 final class Source extends Constraint
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     public $message = 'setono_sylius_redirect.form.errors.source_already_existing';
 
     /**

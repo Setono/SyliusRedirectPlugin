@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Repository;
 
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\NonUniqueResultException;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
 class RedirectRepository extends EntityRepository implements RedirectRepositoryInterface
 {
     /**
-     * {@inheritdoc}
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findEnabledBySource(string $source, bool $only404 = false): ?RedirectInterface
     {
@@ -29,16 +30,13 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
             ->getOneOrNullResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeNotAccessed(int $threshold): void
     {
         if ($threshold <= 0) {
             return;
         }
 
-        $dateTimeThreshold = (new \DateTime())->sub(new \DateInterval('P' . $threshold . 'D'));
+        $dateTimeThreshold = (new DateTime())->sub(new DateInterval('P' . $threshold . 'D'));
 
         $this->createQueryBuilder('r')
             ->delete()
@@ -51,9 +49,7 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function searchNextRedirect(RedirectInterface $redirect, bool $only404 = false): ?RedirectInterface
     {
@@ -63,9 +59,7 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findLastRedirect(RedirectInterface $redirect, bool $only404 = false): RedirectInterface
     {

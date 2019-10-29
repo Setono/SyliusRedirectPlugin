@@ -12,23 +12,14 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 final class SourceValidator extends ConstraintValidator
 {
-    /**
-     * @var RedirectRepositoryInterface
-     */
+    /** @var RedirectRepositoryInterface */
     private $redirectRepository;
 
-    /**
-     * @param RedirectRepositoryInterface $redirectRepository
-     */
     public function __construct(RedirectRepositoryInterface $redirectRepository)
     {
         $this->redirectRepository = $redirectRepository;
     }
 
-    /**
-     * @param RedirectInterface|null $value
-     * @param Constraint|Source $constraint
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Source || null === $value) {
@@ -45,14 +36,14 @@ final class SourceValidator extends ConstraintValidator
 
         /** @var RedirectInterface[] $conflictingRedirects */
         $conflictingRedirects = $this->redirectRepository->findBy(['source' => $value->getSource(), 'enabled' => true]);
-        $conflictingRedirects = array_filter($conflictingRedirects, function (RedirectInterface $conflictingRedirect) use ($value): bool {
+        $conflictingRedirects = array_filter($conflictingRedirects, static function (RedirectInterface $conflictingRedirect) use ($value): bool {
             return $conflictingRedirect->getId() !== $value->getId();
         });
 
-        if (!empty($conflictingRedirects)) {
+        if (count($conflictingRedirects) > 0) {
             $conflictingIds = implode(
                 ', ',
-                array_map(function (RedirectInterface $item) {
+                array_map(static function (RedirectInterface $item) {
                     return $item->getId();
                 }, $conflictingRedirects)
             );

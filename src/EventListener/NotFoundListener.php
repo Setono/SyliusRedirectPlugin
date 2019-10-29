@@ -8,20 +8,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class NotFoundListener
 {
-    /**
-     * @var RedirectRepositoryInterface
-     */
+    /** @var RedirectRepositoryInterface */
     private $redirectRepository;
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManager */
     private $objectManager;
 
     public function __construct(RedirectRepositoryInterface $redirectRepository, ObjectManager $objectManager)
@@ -30,17 +26,14 @@ class NotFoundListener
         $this->objectManager = $objectManager;
     }
 
-    /**
-     * @param GetResponseForExceptionEvent $event
-     */
-    public function onKernelException(GetResponseForExceptionEvent $event): void
+    public function onKernelException(ExceptionEvent $event): void
     {
         if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
             return;
         }
         $exception = $event->getException();
 
-        if (!$exception instanceof HttpException || Response::HTTP_NOT_FOUND !== (int) $exception->getStatusCode()) {
+        if (!$exception instanceof HttpException || Response::HTTP_NOT_FOUND !== $exception->getStatusCode()) {
             return;
         }
 
@@ -55,6 +48,9 @@ class NotFoundListener
 
         $lastRedirect = $this->redirectRepository->findLastRedirect($redirect, true);
 
-        $event->setResponse(new RedirectResponse($lastRedirect->getDestination(), $lastRedirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND));
+        $event->setResponse(new RedirectResponse(
+            $lastRedirect->getDestination(),
+            $lastRedirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND
+        ));
     }
 }

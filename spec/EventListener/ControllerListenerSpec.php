@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Setono\SyliusRedirectPlugin\EventListener;
 
+use Closure;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -11,7 +12,7 @@ use Setono\SyliusRedirectPlugin\EventListener\ControllerListener;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 class ControllerListenerSpec extends ObjectBehavior
 {
@@ -28,7 +29,7 @@ class ControllerListenerSpec extends ObjectBehavior
     }
 
     function it_redirects_to_the_correct_controller(
-        FilterControllerEvent $filterControllerEvent,
+        ControllerEvent $filterControllerEvent,
         Request $request,
         RedirectRepositoryInterface $redirectRepository,
         ObjectManager $objectManager,
@@ -37,27 +38,26 @@ class ControllerListenerSpec extends ObjectBehavior
         $filterControllerEvent->getRequest()->willReturn($request);
         $request->getPathInfo()->willReturn('/home');
 
-        $redirectRepository->findEnabledBySource('/home', false)->willReturn($redirect);
+        $redirectRepository->findEnabledBySource('/home')->willReturn($redirect);
         $redirect->onAccess()->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $redirectRepository->findLastRedirect($redirect, false)->willReturn($redirect);
-        $filterControllerEvent->setController(Argument::type(\Closure::class))->shouldBeCalled();
+        $redirectRepository->findLastRedirect($redirect)->willReturn($redirect);
+        $filterControllerEvent->setController(Argument::type(Closure::class))->shouldBeCalled();
 
         $this->onKernelController($filterControllerEvent);
     }
 
     function it_does_not_redirect_if_there_is_no_enabed_redirect(
-        FilterControllerEvent $filterControllerEvent,
+        ControllerEvent $filterControllerEvent,
         Request $request,
         RedirectRepositoryInterface $redirectRepository,
-        ObjectManager $objectManager,
         RedirectInterface $redirect
     ): void {
         $filterControllerEvent->getRequest()->willReturn($request);
         $request->getPathInfo()->willReturn('/home');
 
-        $redirectRepository->findEnabledBySource('/home', false)->willReturn($redirect);
+        $redirectRepository->findEnabledBySource('/home')->willReturn($redirect);
         $redirect->onAccess()->shouldNotBeCalled();
     }
 }
