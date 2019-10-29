@@ -40,5 +40,5 @@ jobs:
                     (cd tests/Application && bin/console cache:warmup -vvv)
                 env:
                     APP_ENV: test
-            -   name: Behat
+            -   name: Run behat
                 run: vendor/bin/behat --strict -vvv --no-interaction || vendor/bin/behat --strict -vvv --no-interaction --rerun
