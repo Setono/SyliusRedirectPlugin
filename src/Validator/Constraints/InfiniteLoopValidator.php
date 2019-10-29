@@ -12,23 +12,14 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class InfiniteLoopValidator extends ConstraintValidator
 {
-    /**
-     * @var RedirectRepositoryInterface
-     */
+    /** @var RedirectRepositoryInterface */
     private $redirectRepository;
 
-    /**
-     * @param RedirectRepositoryInterface $redirectRepository
-     */
     public function __construct(RedirectRepositoryInterface $redirectRepository)
     {
         $this->redirectRepository = $redirectRepository;
     }
 
-    /**
-     * @param RedirectInterface|null $value
-     * @param Constraint|InfiniteLoop $constraint
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof InfiniteLoop || null === $value) {

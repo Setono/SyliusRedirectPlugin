@@ -5,8 +5,8 @@ dist: trusty
 sudo: false
 
 php:
-    - 7.2
-    - 7.3
+    - '7.2'
+    - '7.3'
 
 cache:
     yarn: true
@@ -66,12 +66,6 @@ before_script:
     - (cd tests/Application && bin/console server:run 127.0.0.1:8080 --quiet > /dev/null 2>&1 &)
 
 script:
-    - composer validate --strict
-    - composer normalize --dry-run
-    - composer check-style
-    - composer analyse
-    - composer test
-
     - vendor/bin/behat --strict -vvv --no-interaction || vendor/bin/behat --strict -vvv --no-interaction --rerun
 
 after_failure:

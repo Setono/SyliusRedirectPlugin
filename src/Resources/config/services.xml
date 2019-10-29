@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
         <parameter key="setono_sylius_redirect.form.type.redirect.validation_groups" type="collection">
             <parameter>sylius</parameter>
@@ -8,46 +9,47 @@
     </parameters>
 
     <services>
-        <defaults public="false" />
+        <defaults public="false"/>
 
-        <service id="setono.sylius_redirect.form.type.redirect" class="Setono\SyliusRedirectPlugin\Form\Type\RedirectType">
+        <service id="setono.sylius_redirect.form.type.redirect"
+                 class="Setono\SyliusRedirectPlugin\Form\Type\RedirectType">
             <argument>%setono_sylius_redirect.model.redirect.class%</argument>
             <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
-            <tag name="form.type" />
+            <tag name="form.type"/>
         </service>
 
         <service id="Setono\SyliusRedirectPlugin\Command\RemoveRedirectsCommand">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect" />
+            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
             <argument>%setono_sylius_redirect.remove_after%</argument>
-            <tag name="console.command" />
+            <tag name="console.command"/>
         </service>
 
         <!-- Event Listeners -->
         <service id="Setono\SyliusRedirectPlugin\Menu\AdminMenuListener">
-            <tag name="kernel.event_listener" event="sylius.menu.admin.main" method="addAdminMenuItems" />
+            <tag name="kernel.event_listener" event="sylius.menu.admin.main" method="addAdminMenuItems"/>
         </service>
 
         <service id="Setono\SyliusRedirectPlugin\EventListener\NotFoundListener">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect" />
-            <argument type="service" id="setono_sylius_redirect.manager.redirect" />
-            <tag name="kernel.event_listener" event="kernel.exception" />
+            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
+            <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
+            <tag name="kernel.event_listener" event="kernel.exception"/>
         </service>
 
         <service id="Setono\SyliusRedirectPlugin\EventListener\ControllerListener">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect" />
-            <argument type="service" id="setono_sylius_redirect.manager.redirect" />
-            <tag name="kernel.event_listener" event="kernel.controller" />
+            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
+            <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
+            <tag name="kernel.event_listener" event="kernel.controller"/>
         </service>
 
         <!-- Constraints -->
         <service id="Setono\SyliusRedirectPlugin\Validator\Constraints\SourceValidator">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect" />
-            <tag name="validator.constraint_validator" />
+            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
+            <tag name="validator.constraint_validator"/>
         </service>
 
         <service id="Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoopValidator">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect" />
-            <tag name="validator.constraint_validator" />
+            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
+            <tag name="validator.constraint_validator"/>
         </service>
     </services>
 </container>
