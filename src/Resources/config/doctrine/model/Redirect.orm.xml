@@ -10,13 +10,13 @@
         </id>
 
         <unique-constraints>
-            <unique-constraint columns="source" name="uniq_source"/>
+            <unique-constraint columns="source"/>
         </unique-constraints>
 
         <indexes>
-            <index columns="last_accessed" name="idx_last_accessed"/>
-            <index columns="enabled" name="idx_enabled"/>
-            <index columns="only_404" name="idx_only_404"/>
+            <index columns="last_accessed"/>
+            <index columns="enabled"/>
+            <index columns="only_404"/>
         </indexes>
 
         <field name="source" type="string"/>
@@ -24,7 +24,7 @@
         <field name="permanent" type="boolean"/>
         <field name="count" type="integer"/>
         <field name="lastAccessed" column="last_accessed" type="datetime" nullable="true"/>
-        <field name="enabled" type="boolean"/>
+        <field name="enabled" column="enabled" type="boolean"/>
         <field name="only404" column="only_404" type="boolean"/>
     </mapped-superclass>
 </doctrine-mapping>
