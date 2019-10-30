@@ -10,7 +10,7 @@ use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 final class ControllerListener implements EventSubscriberInterface
@@ -41,7 +41,7 @@ final class ControllerListener implements EventSubscriberInterface
         ];
     }
 
-    public function onKernelController(ControllerEvent $event): void
+    public function onKernelController(FilterControllerEvent $event): void
     {
         $request = $event->getRequest();
         $pathInfo = $request->getPathInfo();

@@ -11,8 +11,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
-        "sylius/sylius": "^1.2",
-        "symfony/http-kernel": "^4.3"
+        "sylius/sylius": "^1.2"
     },
     "conflict": {
         "friends-of-behat/symfony-extension": ">=2.0.5 <= 2.0.9"
