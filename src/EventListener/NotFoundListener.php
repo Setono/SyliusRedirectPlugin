@@ -6,13 +6,15 @@ namespace Setono\SyliusRedirectPlugin\EventListener;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 
-class NotFoundListener
+class NotFoundListener implements EventSubscriberInterface
 {
     /** @var RedirectRepositoryInterface */
     private $redirectRepository;
@@ -24,6 +26,13 @@ class NotFoundListener
     {
         $this->redirectRepository = $redirectRepository;
         $this->objectManager = $objectManager;
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            KernelEvents::EXCEPTION => 'onKernelException',
+        ];
     }
 
     public function onKernelException(ExceptionEvent $event): void

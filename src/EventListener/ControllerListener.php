@@ -7,11 +7,13 @@ namespace Setono\SyliusRedirectPlugin\EventListener;
 use Doctrine\Common\Persistence\ObjectManager;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
-final class ControllerListener
+final class ControllerListener implements EventSubscriberInterface
 {
     /** @var RedirectRepositoryInterface */
     private $redirectRepository;
@@ -23,6 +25,13 @@ final class ControllerListener
     {
         $this->redirectRepository = $redirectRepository;
         $this->objectManager = $objectManager;
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            KernelEvents::CONTROLLER => 'onKernelController',
+        ];
     }
 
     public function onKernelController(ControllerEvent $event): void
