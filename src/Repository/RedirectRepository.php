@@ -52,13 +52,15 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
         /** @var RedirectInterface[] $redirects */
         $redirects = $qb->getQuery()->getResult();
 
+        if (count($redirects) === 0) {
+            return null;
+        }
+
         $preferredRedirect = null;
 
         foreach ($redirects as $redirect) {
-            if (null === $preferredRedirect) {
+            if (null === $preferredRedirect && $redirect->getChannels()->count() === 0) {
                 $preferredRedirect = $redirect;
-
-                continue;
             }
 
             if ($redirect->hasChannel($channel)) {

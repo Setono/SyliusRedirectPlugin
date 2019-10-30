@@ -6,6 +6,7 @@ namespace Tests\Setono\SyliusRedirectPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
+use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
@@ -29,15 +30,16 @@ final class RedirectContext implements Context
 
     /**
      * @Given the store has a redirect from path :oldPath to :newPath
+     * @Given the store has a redirect from path :oldPath to :newPath on channel :channel
      */
-    public function storeHasARedirect($oldPath, $newPath): void
+    public function storeHasARedirect(string $oldPath, string $newPath, ChannelInterface $channel = null): void
     {
-        $redirect = $this->createRedirect($oldPath, $newPath);
+        $redirect = $this->createRedirect($oldPath, $newPath, $channel);
 
         $this->saveRedirect($redirect);
     }
 
-    private function createRedirect(string $oldPath, string $newPath): RedirectInterface
+    private function createRedirect(string $oldPath, string $newPath, ChannelInterface $channel = null): RedirectInterface
     {
         /** @var RedirectInterface $redirect */
         $redirect = $this->redirectFactory->createNew();
@@ -46,6 +48,9 @@ final class RedirectContext implements Context
         $redirect->setSource($oldPath);
         $redirect->setDestination($newPath);
         $redirect->setPermanent(true);
+        if(null !== $channel) {
+            $redirect->addChannel($channel);
+        }
 
         return $redirect;
     }

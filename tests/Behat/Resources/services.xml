@@ -20,11 +20,11 @@
         </service>
 
         <service id="setono.sylius_redirect.behat.context.ui.shop.redirect" class="Tests\Setono\SyliusRedirectPlugin\Behat\Context\Ui\Shop\RedirectContext">
-            <argument type="service" id="setono.sylius_redirect.behat.page.shop.old_path" />
+            <argument type="service" id="setono.sylius_redirect.behat.page.shop.page" />
         </service>
 
         <!-- Pages -->
-        <service id="setono.sylius_redirect.behat.page.shop.old_path" class="Tests\Setono\SyliusRedirectPlugin\Behat\Page\Shop\OldPathPage" parent="sylius.behat.page" public="false" />
+        <service id="setono.sylius_redirect.behat.page.shop.page" class="Tests\Setono\SyliusRedirectPlugin\Behat\Page\Shop\Page" parent="sylius.behat.page" public="false" />
         <service id="setono.sylius_redirect.behat.page.admin.redirect.create_redirect" class="Tests\Setono\SyliusRedirectPlugin\Behat\Page\Admin\Redirect\CreateRedirectPage" parent="sylius.behat.page.admin.crud.create" public="false">
             <argument type="string">setono_sylius_redirect_admin_redirect_create</argument>
         </service>

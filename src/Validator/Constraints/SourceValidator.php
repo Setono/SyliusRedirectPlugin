@@ -38,7 +38,7 @@ final class SourceValidator extends ConstraintValidator
         }
 
         $conflictingRedirect = $this->redirectRepository->findEnabledBySource($redirect->getSource(), false, true);
-        if (null === $conflictingRedirect) {
+        if (null === $conflictingRedirect || $redirect->getId() === $conflictingRedirect->getId()) {
             return;
         }
 

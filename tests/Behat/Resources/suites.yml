@@ -3,9 +3,11 @@ default:
         redirect:
             contexts:
                 - sylius.behat.context.hook.doctrine_orm
+                - sylius.behat.context.transform.channel
                 - sylius.behat.context.setup.admin_security
                 - sylius.behat.context.setup.channel
                 - sylius.behat.context.ui.admin.notification
+                - sylius.behat.context.ui.channel
 
                 - setono.sylius_redirect.behat.context.transform.redirect
                 - setono.sylius_redirect.behat.context.setup.redirect
