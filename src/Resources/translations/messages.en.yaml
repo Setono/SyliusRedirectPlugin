@@ -23,6 +23,7 @@ setono_sylius_redirect:
             source_placeholder: /en_US/redirect-from
             destination: Destination
             destination_placeholder: /en_US/redirect-to or https://redirect.to/
-            permanent: Permanent
+            permanent: Permanent (301 redirect instead of 302)
             enabled: Enabled
             only_404: Redirect only if source returns a 404
+            channels: Channels

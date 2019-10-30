@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Form\Type;
 
+use Sylius\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -37,6 +38,11 @@ final class RedirectType extends AbstractResourceType
             ->add('only404', CheckboxType::class, [
                 'label' => 'setono_sylius_redirect.form.redirect.only_404',
                 'required' => false,
+            ])
+            ->add('channels', ChannelChoiceType::class, [
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'setono_sylius_redirect.form.redirect.channels',
             ])
         ;
     }
