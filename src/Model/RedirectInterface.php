@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\Model;
 
 use DateTimeInterface;
+use Sylius\Component\Channel\Model\ChannelsAwareInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
 use Sylius\Component\Resource\Model\ToggleableInterface;
 
-interface RedirectInterface extends ResourceInterface, ToggleableInterface
+interface RedirectInterface extends ResourceInterface, ToggleableInterface, ChannelsAwareInterface
 {
     public function getId(): ?int;
 

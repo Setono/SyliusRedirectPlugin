@@ -9,10 +9,6 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <unique-constraints>
-            <unique-constraint columns="source"/>
-        </unique-constraints>
-
         <indexes>
             <index columns="last_accessed"/>
             <index columns="enabled"/>
@@ -26,5 +22,16 @@
         <field name="lastAccessed" column="last_accessed" type="datetime" nullable="true"/>
         <field name="enabled" column="enabled" type="boolean"/>
         <field name="only404" column="only_404" type="boolean"/>
+
+        <many-to-many field="channels" target-entity="Sylius\Component\Channel\Model\ChannelInterface">
+            <join-table name="setono_redirect_channels">
+                <join-columns>
+                    <join-column name="redirect_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="channel_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
     </mapped-superclass>
 </doctrine-mapping>

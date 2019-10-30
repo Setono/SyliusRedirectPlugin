@@ -32,12 +32,14 @@
         <service id="Setono\SyliusRedirectPlugin\EventListener\NotFoundListener">
             <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
             <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
+            <argument type="service" id="sylius.context.channel"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
         <service id="Setono\SyliusRedirectPlugin\EventListener\ControllerListener">
             <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
             <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
+            <argument type="service" id="sylius.context.channel"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
