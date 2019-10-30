@@ -12,9 +12,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class InfiniteLoopValidator extends ConstraintValidator
 {
-    /**
-     * @var InfiniteLoopResolverInterface
-     */
+    /** @var InfiniteLoopResolverInterface */
     private $infiniteLoopResolver;
 
     public function __construct(InfiniteLoopResolverInterface $infiniteLoopResolver)
@@ -22,10 +20,6 @@ final class InfiniteLoopValidator extends ConstraintValidator
         $this->infiniteLoopResolver = $infiniteLoopResolver;
     }
 
-    /**
-     * @param RedirectInterface|null $value
-     * @param Constraint|InfiniteLoop $constraint
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof InfiniteLoop || null === $value) {

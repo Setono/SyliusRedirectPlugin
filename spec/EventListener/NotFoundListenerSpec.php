@@ -13,7 +13,7 @@ use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
@@ -32,7 +32,7 @@ class NotFoundListenerSpec extends ObjectBehavior
     }
 
     function it_does_not_redirect_request_that_are_not_master_request(
-        GetResponseForExceptionEvent $event
+        ExceptionEvent $event
     ): void {
         $event->getRequestType()->willReturn(HttpKernelInterface::SUB_REQUEST);
 
@@ -44,7 +44,7 @@ class NotFoundListenerSpec extends ObjectBehavior
     }
 
     function it_does_not_redirect_successful_events(
-        GetResponseForExceptionEvent $event,
+        ExceptionEvent $event,
         HttpException $exception
     ): void {
         $event->getRequestType()->willReturn(HttpKernelInterface::MASTER_REQUEST);
@@ -58,7 +58,7 @@ class NotFoundListenerSpec extends ObjectBehavior
     }
 
     function it_does_not_redirect_if_there_is_no_redirect_defined(
-        GetResponseForExceptionEvent $event,
+        ExceptionEvent $event,
         HttpException $exception,
         RedirectRepositoryInterface $redirectRepository,
         Request $request
@@ -79,7 +79,7 @@ class NotFoundListenerSpec extends ObjectBehavior
     }
 
     function it_redirects_if_there_is_a_redirect(
-        GetResponseForExceptionEvent $event,
+        ExceptionEvent $event,
         HttpException $exception,
         RedirectRepositoryInterface $redirectRepository,
         Request $request,

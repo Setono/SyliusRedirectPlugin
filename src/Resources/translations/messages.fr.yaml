@@ -28,3 +28,4 @@ setono_sylius_redirect:
             permanent: 'Permanente'
             enabled: 'Activée'
             only_404: 'Rediriger seulement si la source retourne une 404'
+            channels: Canaux

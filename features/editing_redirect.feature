@@ -5,7 +5,8 @@ Feature: Editing a redirect
   I want to be able to edit a redirect
 
   Background:
-    Given the store has a redirect from path "/source" to "/destination"
+    Given the store operates on a single channel in "United States"
+    And the store has a redirect from path "/source" to "/destination"
     And I am logged in as an administrator
 
   @ui

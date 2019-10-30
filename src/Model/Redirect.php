@@ -4,157 +4,139 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Model;
 
+use DateTime;
+use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Sylius\Component\Channel\Model\ChannelInterface as BaseChannelInterface;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Resource\Model\ToggleableTrait;
 
 class Redirect implements RedirectInterface
 {
     use ToggleableTrait;
 
-    /**
-     * @var int
-     */
-    private $id;
+    /** @var int */
+    protected $id;
 
-    /**
-     * @var string
-     */
-    private $source;
+    /** @var string */
+    protected $source;
 
-    /**
-     * @var string
-     */
-    private $destination;
+    /** @var string */
+    protected $destination;
 
-    /**
-     * @var bool
-     */
-    private $permanent = true;
+    /** @var bool */
+    protected $permanent = true;
 
-    /**
-     * @var int
-     */
-    private $count = 0;
+    /** @var int */
+    protected $count = 0;
 
-    /**
-     * @var \DateTimeInterface|null
-     */
-    private $lastAccessed;
+    /** @var DateTimeInterface|null */
+    protected $lastAccessed;
 
-    /**
-     * @var bool
-     */
-    private $only404 = false;
+    /** @var bool */
+    protected $only404 = false;
 
-    /**
-     * {@inheritdoc}
-     */
+    /** @var Collection|ChannelInterface[] */
+    protected $channels;
+
+    public function __construct()
+    {
+        $this->channels = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSource(): ?string
     {
         return $this->source;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setSource(string $source): void
     {
         $this->source = $source;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDestination(): ?string
     {
         return $this->destination;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDestination(string $destination): void
     {
         $this->destination = $destination;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isPermanent(): bool
     {
         return $this->permanent;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPermanent(bool $permanent): void
     {
         $this->permanent = $permanent;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCount(): int
     {
         return $this->count;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCount(int $count): void
     {
         $this->count = $count;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLastAccessed(): ?\DateTimeInterface
+    public function getLastAccessed(): ?DateTimeInterface
     {
         return $this->lastAccessed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setLastAccessed(\DateTimeInterface $lastAccessed): void
+    public function setLastAccessed(DateTimeInterface $lastAccessed): void
     {
         $this->lastAccessed = $lastAccessed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onAccess(): void
     {
         ++$this->count;
-        $this->setLastAccessed(new \DateTime());
+        $this->setLastAccessed(new DateTime());
     }
 
-    /**
-     * @return bool
-     */
     public function isOnly404(): bool
     {
         return $this->only404;
     }
 
-    /**
-     * @param bool $only404
-     */
     public function setOnly404(bool $only404): void
     {
         $this->only404 = $only404;
+    }
+
+    public function getChannels(): Collection
+    {
+        return $this->channels;
+    }
+
+    public function addChannel(BaseChannelInterface $channel): void
+    {
+        if (!$this->hasChannel($channel)) {
+            $this->channels->add($channel);
+        }
+    }
+
+    public function removeChannel(BaseChannelInterface $channel): void
+    {
+        if ($this->hasChannel($channel)) {
+            $this->channels->removeElement($channel);
+        }
+    }
+
+    public function hasChannel(BaseChannelInterface $channel): bool
+    {
+        return $this->channels->contains($channel);
     }
 }

@@ -5,7 +5,8 @@ Feature: Adding a new redirect
   I want to add a new redirect to the shop
 
   Background:
-    Given I am logged in as an administrator
+    Given the store operates on a single channel in "United States"
+    And I am logged in as an administrator
 
   @ui
   Scenario: Adding a new redirect

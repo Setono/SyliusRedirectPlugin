@@ -8,15 +8,12 @@ use Sylius\Bundle\UiBundle\Menu\Event\MenuBuilderEvent;
 
 final class AdminMenuListener
 {
-    /**
-     * @param MenuBuilderEvent $event
-     */
     public function addAdminMenuItems(MenuBuilderEvent $event): void
     {
         $menu = $event->getMenu();
 
         $child = $menu->getChild('configuration');
-        if ($child !== null) {
+        if (null !== $child) {
             $child->addChild('redirects', [
                 'route' => 'setono_sylius_redirect_admin_redirect_index',
             ])
