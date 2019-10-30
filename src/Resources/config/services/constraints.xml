@@ -9,7 +9,7 @@
         </service>
 
         <service id="Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoopValidator">
-            <argument type="service" id="setono.sylius_redirect.resolver.infinite_loop_resolver"/>
+            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
             <tag name="validator.constraint_validator"/>
         </service>
     </services>

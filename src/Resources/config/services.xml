@@ -19,48 +19,5 @@
 
     <services>
         <defaults public="false"/>
-
-        <service id="setono.sylius_redirect.form.type.redirect"
-                 class="Setono\SyliusRedirectPlugin\Form\Type\RedirectType">
-            <argument>%setono_sylius_redirect.model.redirect.class%</argument>
-            <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
-            <tag name="form.type"/>
-        </service>
-
-        <service id="Setono\SyliusRedirectPlugin\Command\RemoveRedirectsCommand">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
-            <argument>%setono_sylius_redirect.remove_after%</argument>
-            <tag name="console.command"/>
-        </service>
-
-        <!-- Event Listeners -->
-        <service id="Setono\SyliusRedirectPlugin\Menu\AdminMenuListener">
-            <tag name="kernel.event_listener" event="sylius.menu.admin.main" method="addAdminMenuItems"/>
-        </service>
-
-        <service id="Setono\SyliusRedirectPlugin\EventListener\NotFoundListener">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
-            <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
-            <argument type="service" id="sylius.context.channel"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <service id="Setono\SyliusRedirectPlugin\EventListener\ControllerListener">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
-            <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
-            <argument type="service" id="sylius.context.channel"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-
-        <!-- Constraints -->
-        <service id="Setono\SyliusRedirectPlugin\Validator\Constraints\SourceValidator">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
-            <tag name="validator.constraint_validator"/>
-        </service>
-
-        <service id="Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoopValidator">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
-            <tag name="validator.constraint_validator"/>
-        </service>
     </services>
 </container>
