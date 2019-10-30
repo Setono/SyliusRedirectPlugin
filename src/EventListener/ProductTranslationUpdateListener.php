@@ -4,49 +4,39 @@ declare(strict_types = 1);
 
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Events;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Resolver\InfiniteLoopResolverInterface;
 use Sylius\Component\Core\Model\ProductTranslationInterface;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class ProductTranslationUpdateListener
+final class ProductTranslationUpdateListener implements EventSubscriberInterface
 {
-    /**
-     * @var \Symfony\Component\HttpFoundation\Request|null
-     */
+    /** @var \Symfony\Component\HttpFoundation\Request|null */
     private $request;
-    /**
-     * @var FactoryInterface
-     */
+    /** @var FactoryInterface */
     private $redirectionFactory;
-    /**
-     * @var RepositoryInterface
-     */
+    /** @var RepositoryInterface */
     private $redirectionRepository;
-    /**
-     * @var InfiniteLoopResolverInterface
-     */
+    /** @var InfiniteLoopResolverInterface */
     private $infiniteLoopResolver;
-    /**
-     * @var RouterInterface
-     */
+    /** @var RouterInterface */
     private $router;
-    /**
-     * @var ValidatorInterface
-     */
+    /** @var ValidatorInterface */
     private $validator;
-    /**
-     * @var FlashBagInterface
-     */
+    /** @var FlashBagInterface */
     private $flashBag;
+    /** @var array */
+    private $validationGroups;
 
     public function __construct(RequestStack $requestStack,
                                 FactoryInterface $redirectionFactory,
@@ -54,7 +44,8 @@ final class ProductTranslationUpdateListener
                                 InfiniteLoopResolverInterface $infiniteLoopResolver,
                                 RouterInterface $router,
                                 ValidatorInterface $validator,
-                                FlashBagInterface $flashBag
+                                FlashBagInterface $flashBag,
+                                array $validationGroups
     )
     {
         $this->request = $requestStack->getCurrentRequest();
@@ -64,17 +55,26 @@ final class ProductTranslationUpdateListener
         $this->router = $router;
         $this->validator = $validator;
         $this->flashBag = $flashBag;
+        $this->validationGroups = $validationGroups;
     }
 
-    public function postUpdate(LifecycleEventArgs $event): void
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            Events::preUpdate
+        ];
+    }
+
+    public function preUpdate(PreUpdateEventArgs $event): void
     {
         $productTranslation = $event->getObject();
+        dump($event);
+        die();
         if (!$productTranslation instanceof ProductTranslationInterface) {
             return;
         }
 
-        $uow = $event->getEntityManager()->getUnitOfWork();
-        $changeSet = $uow->getEntityChangeSet($productTranslation);
+        $changeSet = $event->getEntityChangeSet();
         $this->handleAutomaticRedirectionCreation($productTranslation, $changeSet);
     }
 
@@ -122,7 +122,7 @@ final class ProductTranslationUpdateListener
             $this->redirectionRepository->remove($conflictingRedirect);
         }
 
-        $violations = $this->validator->validate($redirect, null, ['sylius']);
+        $violations = $this->validator->validate($redirect, null, $this->validationGroups);
         if ($violations->count() > 0) {
             /** @var ConstraintViolationInterface $violation */
             foreach ($violations as $violation) {
