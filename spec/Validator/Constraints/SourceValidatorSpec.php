@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Setono\SyliusRedirectPlugin\Validator\Constraints;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
@@ -75,12 +76,10 @@ class SourceValidatorSpec extends ObjectBehavior
         $source = '/dumb-source';
         $redirect->isEnabled()->willReturn(true);
         $redirect->getSource()->willReturn($source);
-        $redirect->isEnabled()->shouldBeCalled();
-        $redirect->getSource()->shouldBeCalled();
-        $redirect->getId()->shouldBeCalled();
+        $redirect->getChannels()->willReturn(new ArrayCollection());
 
-        $redirectRepository->findBy(['source' => $source, 'enabled' => true])
-            ->willReturn([$redirect]);
+        $redirectRepository->findEnabledBySource($source, false, true)
+            ->willReturn(null);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
@@ -90,24 +89,25 @@ class SourceValidatorSpec extends ObjectBehavior
     function it_adds_a_violation_if_there_is_another_route_with_the_same_source(
         ExecutionContextInterface $context,
         RedirectInterface $redirect,
-        RedirectInterface $conflictingRedirects,
+        RedirectInterface $conflictingRedirect,
         RedirectRepositoryInterface $redirectRepository,
         ConstraintViolationBuilderInterface $violationBuilder
     ): void {
         $source = '/some-route';
         $redirect->isEnabled()->willReturn(true);
-        $redirect->getId()->willReturn(null);
         $redirect->getSource()->willReturn($source);
+        $redirect->getChannels()->willReturn(new ArrayCollection());
 
-        $redirectRepository->findBy(['source' => $source, 'enabled' => true])
-            ->willReturn([$redirect, $conflictingRedirects]);
+        $redirectRepository->findEnabledBySource($source, false, true)
+            ->willReturn($conflictingRedirect);
 
-        $conflictingRedirects->getId()->willReturn(1);
+        $conflictingRedirect->getId()->willReturn(1);
+        $conflictingRedirect->getChannels()->willReturn(new ArrayCollection());
 
         $context->buildViolation('setono_sylius_redirect.form.errors.source_already_existing')->willReturn($violationBuilder);
         $violationBuilder->atPath('source')->willReturn($violationBuilder);
         $violationBuilder->setParameter('{{ source }}', '/some-route')->willReturn($violationBuilder);
-        $violationBuilder->setParameter('{{ conflictingIds }}', '1')->willReturn($violationBuilder);
+        $violationBuilder->setParameter('{{ conflictingId }}', '1')->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($redirect, new Source());
