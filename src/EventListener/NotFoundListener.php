@@ -6,6 +6,7 @@ namespace Setono\SyliusRedirectPlugin\EventListener;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,10 +23,17 @@ class NotFoundListener implements EventSubscriberInterface
     /** @var ObjectManager */
     private $objectManager;
 
-    public function __construct(RedirectRepositoryInterface $redirectRepository, ObjectManager $objectManager)
+    /** @var ChannelContextInterface */
+    private $channelContext;
+
+    /**
+     * The $channelContext is default null because of BC. In v2.0 it will not be null by default
+     */
+    public function __construct(RedirectRepositoryInterface $redirectRepository, ObjectManager $objectManager, ChannelContextInterface $channelContext = null)
     {
         $this->redirectRepository = $redirectRepository;
         $this->objectManager = $objectManager;
+        $this->channelContext = $channelContext;
     }
 
     public static function getSubscribedEvents(): array
@@ -46,7 +54,12 @@ class NotFoundListener implements EventSubscriberInterface
             return;
         }
 
-        $redirect = $this->redirectRepository->findEnabledBySource($event->getRequest()->getPathInfo(), true);
+        // BC
+        if (null === $this->channelContext) {
+            $redirect = $this->redirectRepository->findEnabledBySource($event->getRequest()->getPathInfo(), true);
+        } else {
+            $redirect = $this->redirectRepository->findEnabledBySourceAndChannel($event->getRequest()->getPathInfo(), $this->channelContext->getChannel(), true);
+        }
 
         if (null === $redirect) {
             return;
@@ -55,7 +68,12 @@ class NotFoundListener implements EventSubscriberInterface
         $redirect->onAccess();
         $this->objectManager->flush();
 
-        $lastRedirect = $this->redirectRepository->findLastRedirect($redirect, true);
+        // BC
+        if (null === $this->channelContext) {
+            $lastRedirect = $this->redirectRepository->findLastRedirect($redirect, true);
+        } else {
+            $lastRedirect = $this->redirectRepository->findLastRedirectByChannel($redirect, $this->channelContext->getChannel(), true);
+        }
 
         $event->setResponse(new RedirectResponse(
             $lastRedirect->getDestination(),

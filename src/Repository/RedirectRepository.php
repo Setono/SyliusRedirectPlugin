@@ -61,8 +61,10 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
                 continue;
             }
 
-            if ($redirect->getChannels()->count() > $preferredRedirect->getChannels()->count()) {
+            if ($redirect->hasChannel($channel)) {
                 $preferredRedirect = $redirect;
+
+                break;
             }
         }
 
