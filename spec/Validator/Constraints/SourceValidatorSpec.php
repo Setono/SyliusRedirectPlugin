@@ -86,6 +86,25 @@ class SourceValidatorSpec extends ObjectBehavior
         $this->validate($redirect, new Source());
     }
 
+    function it_does_not_add_violation_if_only_other_same_redirect_is_itself(
+        ExecutionContextInterface $context,
+        RedirectInterface $redirect,
+        RedirectRepositoryInterface $redirectRepository
+    ): void {
+        $source = '/source';
+        $redirect->getId()->willReturn(1);
+        $redirect->isEnabled()->willReturn(true);
+        $redirect->getSource()->willReturn($source);
+        $redirect->getChannels()->willReturn(new ArrayCollection());
+
+        $redirectRepository->findEnabledBySource($source, false, true)
+            ->willReturn($redirect);
+
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+
+        $this->validate($redirect, new Source());
+    }
+
     function it_adds_a_violation_if_there_is_another_route_with_the_same_source(
         ExecutionContextInterface $context,
         RedirectInterface $redirect,
@@ -94,6 +113,7 @@ class SourceValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violationBuilder
     ): void {
         $source = '/some-route';
+        $redirect->getId()->willReturn(1);
         $redirect->isEnabled()->willReturn(true);
         $redirect->getSource()->willReturn($source);
         $redirect->getChannels()->willReturn(new ArrayCollection());
@@ -101,13 +121,13 @@ class SourceValidatorSpec extends ObjectBehavior
         $redirectRepository->findEnabledBySource($source, false, true)
             ->willReturn($conflictingRedirect);
 
-        $conflictingRedirect->getId()->willReturn(1);
+        $conflictingRedirect->getId()->willReturn(2);
         $conflictingRedirect->getChannels()->willReturn(new ArrayCollection());
 
         $context->buildViolation('setono_sylius_redirect.form.errors.source_already_existing')->willReturn($violationBuilder);
         $violationBuilder->atPath('source')->willReturn($violationBuilder);
         $violationBuilder->setParameter('{{ source }}', '/some-route')->willReturn($violationBuilder);
-        $violationBuilder->setParameter('{{ conflictingId }}', '1')->willReturn($violationBuilder);
+        $violationBuilder->setParameter('{{ conflictingId }}', '2')->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($redirect, new Source());
