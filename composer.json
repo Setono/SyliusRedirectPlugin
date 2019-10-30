@@ -36,7 +36,6 @@
         "phpstan/phpstan-strict-rules": "^0.11",
         "phpstan/phpstan-webmozart-assert": "^0.11",
         "phpunit/phpunit": "^8.0",
-        "roave/backward-compatibility-check": "^4.1",
         "roave/security-advisories": "dev-master",
         "sensiolabs/security-checker": "^5.0",
         "sylius-labs/coding-standard": "^3.0",
