@@ -33,7 +33,7 @@ final class RedirectionPathResolver implements RedirectionPathResolverInterface
         $redirect = null;
 
         do {
-            $redirect = $this->redirectRepository->findEnabledBySourceAndChannel($source, $channel, $only404);
+            $redirect = $this->redirectRepository->findOneEnabledBySource($source, $channel, $only404);
 
             if (null !== $redirect) {
                 $redirectionPath->addRedirect($redirect);

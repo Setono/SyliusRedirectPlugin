@@ -18,12 +18,12 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class SourceValidatorSpec extends ObjectBehavior
 {
-    function it_is_constraint_valdiator(): void
+    public function it_is_constraint_valdiator(): void
     {
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
-    function let(
+    public function let(
         RedirectRepositoryInterface $redirectRepository,
         ExecutionContextInterface $context
     ): void {
@@ -31,7 +31,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    function it_does_not_validat_other_constraints(
+    public function it_does_not_validate_other_constraints(
         ExecutionContextInterface $context,
         RedirectInterface $value
     ): void {
@@ -40,7 +40,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $this->validate($value, new InfiniteLoop());
     }
 
-    function it_does_not_validate_null_values(
+    public function it_does_not_validate_null_values(
         ExecutionContextInterface $context
     ): void {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -48,7 +48,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $this->validate(null, new Source());
     }
 
-    function it_throws_an_exception_if_the_value_is_no_redirect(
+    public function it_throws_an_exception_if_the_value_is_no_redirect(
         ExecutionContextInterface $context
     ): void {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -57,7 +57,7 @@ class SourceValidatorSpec extends ObjectBehavior
             ->during('validate', ['hello', new Source()]);
     }
 
-    function it_does_not_validate_disabled_redirects(
+    public function it_does_not_validate_disabled_redirects(
         ExecutionContextInterface $context,
         RedirectInterface $redirect
     ): void {
@@ -68,7 +68,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $this->validate($redirect, new Source());
     }
 
-    function it_does_not_add_violation_if_there_is_no_other_redirect(
+    public function it_does_not_add_violation_if_there_is_no_other_redirect(
         ExecutionContextInterface $context,
         RedirectInterface $redirect,
         RedirectRepositoryInterface $redirectRepository
@@ -78,7 +78,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $redirect->getSource()->willReturn($source);
         $redirect->getChannels()->willReturn(new ArrayCollection());
 
-        $redirectRepository->findEnabledBySource($source, false, true)
+        $redirectRepository->findOneEnabledBySource($source)
             ->willReturn(null);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -86,7 +86,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $this->validate($redirect, new Source());
     }
 
-    function it_does_not_add_violation_if_only_other_same_redirect_is_itself(
+    public function it_does_not_add_violation_if_only_other_same_redirect_is_itself(
         ExecutionContextInterface $context,
         RedirectInterface $redirect,
         RedirectRepositoryInterface $redirectRepository
@@ -97,7 +97,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $redirect->getSource()->willReturn($source);
         $redirect->getChannels()->willReturn(new ArrayCollection());
 
-        $redirectRepository->findEnabledBySource($source, false, true)
+        $redirectRepository->findOneEnabledBySource($source)
             ->willReturn($redirect);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -105,7 +105,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $this->validate($redirect, new Source());
     }
 
-    function it_adds_a_violation_if_there_is_another_route_with_the_same_source(
+    public function it_adds_a_violation_if_there_is_another_route_with_the_same_source(
         ExecutionContextInterface $context,
         RedirectInterface $redirect,
         RedirectInterface $conflictingRedirect,
@@ -118,7 +118,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $redirect->getSource()->willReturn($source);
         $redirect->getChannels()->willReturn(new ArrayCollection());
 
-        $redirectRepository->findEnabledBySource($source, false, true)
+        $redirectRepository->findOneEnabledBySource($source)
             ->willReturn($conflictingRedirect);
 
         $conflictingRedirect->getId()->willReturn(2);
