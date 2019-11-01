@@ -29,17 +29,17 @@
             <tag name="kernel.event_listener" event="sylius.menu.admin.main" method="addAdminMenuItems"/>
         </service>
 
-        <service id="Setono\SyliusRedirectPlugin\EventListener\NotFoundListener">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
+        <service id="Setono\SyliusRedirectPlugin\EventListener\NotFoundSubscriber">
             <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
             <argument type="service" id="sylius.context.channel"/>
+            <argument type="service" id="setono_sylius_redirect.resolver.redirection_path"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="Setono\SyliusRedirectPlugin\EventListener\ControllerListener">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
+        <service id="Setono\SyliusRedirectPlugin\EventListener\ControllerSubscriber">
             <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
             <argument type="service" id="sylius.context.channel"/>
+            <argument type="service" id="setono_sylius_redirect.resolver.redirection_path"/>
             <tag name="kernel.event_subscriber"/>
         </service>
 
@@ -50,8 +50,15 @@
         </service>
 
         <service id="Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoopValidator">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
+            <argument type="service" id="sylius.repository.channel"/>
+            <argument type="service" id="setono_sylius_redirect.resolver.redirection_path"/>
             <tag name="validator.constraint_validator"/>
+        </service>
+
+        <!-- Resolvers -->
+        <service id="setono_sylius_redirect.resolver.redirection_path"
+                 class="Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolver">
+            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
         </service>
     </services>
 </container>

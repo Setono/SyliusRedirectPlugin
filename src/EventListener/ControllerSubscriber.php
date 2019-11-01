@@ -5,33 +5,34 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
+use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Webmozart\Assert\Assert;
 
-final class ControllerListener implements EventSubscriberInterface
+final class ControllerSubscriber implements EventSubscriberInterface
 {
-    /** @var RedirectRepositoryInterface */
-    private $redirectRepository;
-
     /** @var ObjectManager */
     private $objectManager;
 
     /** @var ChannelContextInterface|null */
     private $channelContext;
 
-    /**
-     * The $channelContext is default null because of BC. In v2.0 it will not be null by default
-     */
-    public function __construct(RedirectRepositoryInterface $redirectRepository, ObjectManager $objectManager, ChannelContextInterface $channelContext = null)
-    {
-        $this->redirectRepository = $redirectRepository;
+    /** @var RedirectionPathResolverInterface */
+    private $redirectionPathResolver;
+
+    public function __construct(
+        ObjectManager $objectManager,
+        ChannelContextInterface $channelContext,
+        RedirectionPathResolverInterface $redirectionPathResolver
+    ) {
         $this->objectManager = $objectManager;
         $this->channelContext = $channelContext;
+        $this->redirectionPathResolver = $redirectionPathResolver;
     }
 
     public static function getSubscribedEvents(): array
@@ -43,29 +44,20 @@ final class ControllerListener implements EventSubscriberInterface
 
     public function onKernelController(FilterControllerEvent $event): void
     {
-        $request = $event->getRequest();
-        $pathInfo = $request->getPathInfo();
+        $redirectionPath = $this->redirectionPathResolver->resolveFromRequest(
+            $event->getRequest(), $this->channelContext->getChannel()
+        );
 
-        // BC
-        if (null === $this->channelContext) {
-            $redirect = $this->redirectRepository->findEnabledBySource($pathInfo);
-        } else {
-            $redirect = $this->redirectRepository->findEnabledBySourceAndChannel($pathInfo, $this->channelContext->getChannel());
-        }
-
-        if (null === $redirect) {
+        if ($redirectionPath->isEmpty()) {
             return;
         }
 
-        $redirect->onAccess();
+        $redirectionPath->markAsAccessed();
+
         $this->objectManager->flush();
 
-        // BC
-        if (null === $this->channelContext) {
-            $lastRedirect = $this->redirectRepository->findLastRedirect($redirect);
-        } else {
-            $lastRedirect = $this->redirectRepository->findLastRedirectByChannel($redirect, $this->channelContext->getChannel());
-        }
+        $lastRedirect = $redirectionPath->last();
+        Assert::notNull($lastRedirect);
 
         $event->setController(static function () use ($lastRedirect): RedirectResponse {
             return new RedirectResponse(
