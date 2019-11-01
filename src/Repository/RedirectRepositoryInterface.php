@@ -18,15 +18,4 @@ interface RedirectRepositoryInterface extends RepositoryInterface
     public function findEnabledBySourceAndChannel(string $source, ChannelInterface $channel, bool $only404 = false): ?RedirectInterface;
 
     public function findEnabledBySource(string $source, bool $only404 = false, bool $fetchJoinChannels = false): ?RedirectInterface;
-
-    public function searchNextRedirectByChannel(RedirectInterface $redirect, ChannelInterface $channel, bool $only404 = false): ?RedirectInterface;
-
-    public function searchNextRedirect(RedirectInterface $redirection, bool $only404 = false): ?RedirectInterface;
-
-    public function findLastRedirectByChannel(RedirectInterface $redirect, ChannelInterface $channel, bool $only404 = false): RedirectInterface;
-
-    /**
-     * @deprecated Use RedirectRepositoryInterface::findLastRedirectByChannel instead. Will be removed in v2.0
-     */
-    public function findLastRedirect(RedirectInterface $redirect, bool $only404 = false): RedirectInterface;
 }
