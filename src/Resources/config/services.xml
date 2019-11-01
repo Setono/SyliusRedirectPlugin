@@ -4,13 +4,11 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
         <parameter key="setono_sylius_redirect.form.type.redirect.validation_groups" type="collection">
-            <parameter>sylius</parameter>
+            <parameter>setono_sylius_redirect</parameter>
         </parameter>
     </parameters>
 
     <services>
-        <defaults public="false"/>
-
         <service id="setono.sylius_redirect.form.type.redirect"
                  class="Setono\SyliusRedirectPlugin\Form\Type\RedirectType">
             <argument>%setono_sylius_redirect.model.redirect.class%</argument>
@@ -44,14 +42,19 @@
         </service>
 
         <!-- Constraints -->
-        <service id="Setono\SyliusRedirectPlugin\Validator\Constraints\SourceValidator">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
-            <tag name="validator.constraint_validator"/>
-        </service>
-
         <service id="Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoopValidator">
             <argument type="service" id="sylius.repository.channel"/>
             <argument type="service" id="setono_sylius_redirect.resolver.redirection_path"/>
+            <tag name="validator.constraint_validator"/>
+        </service>
+
+        <service id="Setono\SyliusRedirectPlugin\Validator\Constraints\SourceRegexValidator">
+            <argument>%sylius.security.shop_regex%</argument>
+            <tag name="validator.constraint_validator"/>
+        </service>
+
+        <service id="Setono\SyliusRedirectPlugin\Validator\Constraints\SourceValidator">
+            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
             <tag name="validator.constraint_validator"/>
         </service>
 

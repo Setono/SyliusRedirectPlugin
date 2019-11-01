@@ -55,7 +55,7 @@ class Redirect implements RedirectInterface
         return $this->source;
     }
 
-    public function setSource(string $source): void
+    public function setSource(?string $source): void
     {
         $this->source = $source;
     }
@@ -65,7 +65,7 @@ class Redirect implements RedirectInterface
         return $this->destination;
     }
 
-    public function setDestination(string $destination): void
+    public function setDestination(?string $destination): void
     {
         $this->destination = $destination;
     }

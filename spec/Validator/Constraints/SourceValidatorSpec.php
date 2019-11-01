@@ -11,9 +11,9 @@ use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoop;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\Source;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class SourceValidatorSpec extends ObjectBehavior
@@ -37,7 +37,7 @@ class SourceValidatorSpec extends ObjectBehavior
     ): void {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
-        $this->validate($value, new InfiniteLoop());
+        $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [$value, new InfiniteLoop()]);
     }
 
     public function it_does_not_validate_null_values(
@@ -61,6 +61,7 @@ class SourceValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         RedirectInterface $redirect
     ): void {
+        $redirect->getSource()->willReturn('/source');
         $redirect->isEnabled()->willReturn(false);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -124,7 +125,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $conflictingRedirect->getId()->willReturn(2);
         $conflictingRedirect->getChannels()->willReturn(new ArrayCollection());
 
-        $context->buildViolation('setono_sylius_redirect.form.errors.source_already_existing')->willReturn($violationBuilder);
+        $context->buildViolation('There is already a redirection with source "{{ source }}". Redirection ID : {{ conflictingId }}')->willReturn($violationBuilder);
         $violationBuilder->atPath('source')->willReturn($violationBuilder);
         $violationBuilder->setParameter('{{ source }}', '/some-route')->willReturn($violationBuilder);
         $violationBuilder->setParameter('{{ conflictingId }}', '2')->willReturn($violationBuilder);

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<constraint-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns="http://symfony.com/schema/dic/constraint-mapping"
+                    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/services/constraint-mapping-1.0.xsd"
+>
+    <class name="Setono\SyliusRedirectPlugin\Model\Redirect">
+        <constraint name="Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoop">
+            <option name="message">setono_sylius_redirect.form.redirect.target_result_in_infinite_loop</option>
+            <option name="groups">setono_sylius_redirect</option>
+        </constraint>
+        <constraint name="Setono\SyliusRedirectPlugin\Validator\Constraints\Source">
+            <option name="message">setono_sylius_redirect.form.redirect.source_already_existing</option>
+            <option name="groups">setono_sylius_redirect</option>
+        </constraint>
+        <property name="source">
+            <constraint name="NotBlank">
+                <option name="message">setono_sylius_redirect.form.redirect.source.not_blank</option>
+                <option name="groups">setono_sylius_redirect</option>
+            </constraint>
+            <constraint name="NotIdenticalTo">
+                <option name="message">setono_sylius_redirect.form.redirect.source.not_identical_to</option>
+                <option name="propertyPath">destination</option>
+                <option name="groups">setono_sylius_redirect</option>
+            </constraint>
+            <constraint name="Regex">
+                <option name="message">setono_sylius_redirect.form.redirect.source.regex</option>
+                <option name="pattern">#^/#</option>
+                <option name="groups">setono_sylius_redirect</option>
+            </constraint>
+            <constraint name="Setono\SyliusRedirectPlugin\Validator\Constraints\SourceRegex">
+                <option name="message">setono_sylius_redirect.form.redirect.source.source_regex</option>
+                <option name="pattern"> </option>
+                <option name="groups">setono_sylius_redirect</option>
+            </constraint>
+        </property>
+        <property name="destination">
+            <constraint name="NotBlank">
+                <option name="message">setono_sylius_redirect.form.redirect.destination.not_blank</option>
+                <option name="groups">setono_sylius_redirect</option>
+            </constraint>
+            <constraint name="Regex">
+                <option name="message">setono_sylius_redirect.form.redirect.destination.regex</option>
+                <option name="pattern">#^/#</option>
+                <option name="groups">setono_sylius_redirect</option>
+            </constraint>
+        </property>
+    </class>
+</constraint-mapping>
