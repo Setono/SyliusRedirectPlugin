@@ -122,7 +122,7 @@ class NotFoundSubscriberSpec extends ObjectBehavior
 
         $objectManager->flush()->shouldBeCalled();
 
-        $event->setResponse(Argument::type(RedirectResponse::class))->shouldBeCalled();
+        $event->setResponse(new RedirectResponse('/404-de', 301))->shouldBeCalled();
 
         $this->onKernelException($event);
     }
