@@ -6,7 +6,6 @@ namespace Setono\SyliusRedirectPlugin\Repository;
 
 use DateInterval;
 use DateTime;
-use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
@@ -35,18 +34,26 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
         ;
     }
 
-    public function findEnabledBySourceAndChannel(string $source, ChannelInterface $channel, bool $only404 = false): ?RedirectInterface
+    public function findOneEnabledBySource(string $source, ChannelInterface $channel = null, bool $only404 = null): ?RedirectInterface
     {
         $qb = $this->createQueryBuilder('o')
-            ->select('o, c')
             ->andWhere('o.source = :source')
             ->andWhere('o.enabled = true')
             ->setParameter('source', $source)
-            ->leftJoin('o.channels', 'c')
         ;
 
-        if ($only404) {
-            $qb->andWhere('o.only404 = true');
+        if (null !== $channel) {
+            $qb
+                ->select('o, c')
+                ->leftJoin('o.channels', 'c')
+            ;
+        }
+
+        if (null !== $only404) {
+            $qb
+                ->andWhere('o.only404 = :only404')
+                ->setParameter('only404', $only404)
+            ;
         }
 
         /** @var RedirectInterface[] $redirects */
@@ -63,7 +70,7 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
                 $preferredRedirect = $redirect;
             }
 
-            if ($redirect->hasChannel($channel)) {
+            if (null !== $channel && $redirect->hasChannel($channel)) {
                 $preferredRedirect = $redirect;
 
                 break;
@@ -71,30 +78,5 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
         }
 
         return $preferredRedirect;
-    }
-
-    /**
-     * @throws NonUniqueResultException
-     */
-    public function findEnabledBySource(string $source, bool $only404 = false, bool $fetchJoinChannels = false): ?RedirectInterface
-    {
-        $qb = $this->createQueryBuilder('r')
-            ->andWhere('r.source = :source')
-            ->andWhere('r.enabled = true')
-            ->setMaxResults(1)
-            ->setParameter('source', $source);
-
-        if ($only404) {
-            $qb->andWhere('r.only404 = true');
-        }
-
-        if ($fetchJoinChannels) {
-            $qb->select('r, c')
-                ->leftJoin('r.channels', 'c')
-            ;
-        }
-
-        return $qb->getQuery()
-            ->getOneOrNullResult();
     }
 }
