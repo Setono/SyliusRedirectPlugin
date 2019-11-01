@@ -65,7 +65,7 @@ final class InfiniteLoopValidatorSpec extends ObjectBehavior
         $redirectionPathResolver->resolve('/source', $channel)->willThrow(InfiniteLoopException::class);
 
         $context
-            ->buildViolation('setono_sylius_redirect.form.errors.target_result_in_infinite_loop')
+            ->buildViolation('The path creates an infinite loop')
             ->willReturn($violationBuilder);
         $violationBuilder->atPath('destination')->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
@@ -77,6 +77,7 @@ final class InfiniteLoopValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         RedirectInterface $subject
     ): void {
+        $subject->getSource()->willReturn('/source');
         $subject->isEnabled()->willReturn(false);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();

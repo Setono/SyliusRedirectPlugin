@@ -29,25 +29,36 @@ final class InfiniteLoopValidator extends ConstraintValidator
         $this->redirectionPathResolver = $redirectionPathResolver;
     }
 
-    public function validate($value, Constraint $constraint): void
+    /**
+     * @param mixed $redirect
+     */
+    public function validate($redirect, Constraint $constraint): void
     {
-        if (!$constraint instanceof InfiniteLoop || null === $value) {
+        if (null === $redirect) {
             return;
         }
 
-        if (!$value instanceof RedirectInterface) {
-            throw new UnexpectedTypeException($value, RedirectInterface::class);
+        if (!$constraint instanceof InfiniteLoop) {
+            throw new UnexpectedTypeException($redirect, InfiniteLoop::class);
         }
 
-        if (!$value->isEnabled()) {
+        if (!$redirect instanceof RedirectInterface) {
+            throw new UnexpectedTypeException($redirect, RedirectInterface::class);
+        }
+
+        if ($redirect->getSource() === null) {
+            return;
+        }
+
+        if (!$redirect->isEnabled()) {
             return;
         }
 
         try {
             /** @var ChannelInterface $channel */
             foreach ($this->channelRepository->findAll() as $channel) {
-                $this->redirectionPathResolver->resolve($value->getSource(), $channel);
-                $this->redirectionPathResolver->resolve($value->getSource(), $channel, true);
+                $this->redirectionPathResolver->resolve($redirect->getSource(), $channel);
+                $this->redirectionPathResolver->resolve($redirect->getSource(), $channel, true);
             }
         } catch (InfiniteLoopException $e) {
             $this->context->buildViolation($constraint->message)

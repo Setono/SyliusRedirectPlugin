@@ -15,11 +15,11 @@ interface RedirectInterface extends ResourceInterface, ToggleableInterface, Chan
 
     public function getSource(): ?string;
 
-    public function setSource(string $source): void;
+    public function setSource(?string $source): void;
 
     public function getDestination(): ?string;
 
-    public function setDestination(string $destination): void;
+    public function setDestination(?string $destination): void;
 
     public function isPermanent(): bool;
 

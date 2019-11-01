@@ -9,11 +9,8 @@ use Symfony\Component\Validator\Constraint;
 final class Source extends Constraint
 {
     /** @var string */
-    public $message = 'setono_sylius_redirect.form.errors.source_already_existing';
+    public $message = 'There is already a redirection with source "{{ source }}". Redirection ID : {{ conflictingId }}';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets(): string
     {
         return Constraint::CLASS_CONSTRAINT;
