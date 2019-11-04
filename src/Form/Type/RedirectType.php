@@ -43,6 +43,7 @@ final class RedirectType extends AbstractResourceType
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'setono_sylius_redirect.form.redirect.channels',
+                'required' => false
             ])
         ;
     }

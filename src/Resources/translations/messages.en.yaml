@@ -1,29 +1,30 @@
 setono_sylius_redirect:
     ui:
-        redirects: Redirects
+        count: Count
+        destination: Destination
+        edit_redirect: Edit redirect
+        enabled: Enabled
+        last_accessed: Last accessed
         manage_redirects: Manage redirects
         new_redirect: New redirect
-        edit_redirect: Edit redirect
-        source: Source
-        destination: Destination
         permanent: Permanent
-        count: Count
-        last_accessed: Last accessed
-        enabled: Enabled
-
+        redirects: Redirects
+        source: Source
     menu:
         admin:
             main:
                 configuration:
                     redirects: Redirects
-
     form:
         redirect:
-            source: Source
-            source_placeholder: /en_US/redirect-from
+            channels: Channels
+            channels_help: If you don't enable any channels, the redirect will work on all channels
             destination: Destination
             destination_placeholder: /en_US/redirect-to or https://redirect.to/
-            permanent: Permanent (301 redirect instead of 302)
             enabled: Enabled
             only_404: Redirect only if source returns a 404
-            channels: Channels
+            only_404_help: If this is set, the redirect will only be applied if the path you entered in source returns a 404 (not found)
+            permanent: Permanent (301 redirect instead of 302)
+            permanent_help: The most used redirect is a permanent (301) redirect. This is also the one recommended for SEO purposes
+            source: Source
+            source_placeholder: /en_US/redirect-from

@@ -37,7 +37,7 @@ class Redirect implements RedirectInterface
     protected $lastAccessed;
 
     /** @var bool */
-    protected $only404 = false;
+    protected $only404 = true;
 
     /** @var Collection|ChannelInterface[] */
     protected $channels;
