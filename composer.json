@@ -13,9 +13,6 @@
         "php": "^7.2",
         "sylius/sylius": "^1.2"
     },
-    "conflict": {
-        "friends-of-behat/symfony-extension": ">=2.0.5 <= 2.0.9"
-    },
     "require-dev": {
         "behat/behat": "^3.4",
         "behat/mink": "^1.7@dev",
