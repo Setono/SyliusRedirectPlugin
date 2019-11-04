@@ -15,7 +15,7 @@ final class SourceRegexValidator extends RegexValidator
 
     public function __construct(string $pattern)
     {
-        $this->pattern = '#' . $pattern . '#';
+        $this->pattern = '#' . str_replace('#', '\#', $pattern) . '#';
     }
 
     /**
