@@ -1,0 +1,30 @@
+<div class="ui three column stackable grid">
+    <div class="column">
+        {{ form_errors(form) }}
+        <div class="ui segment">
+            {{ form_row(form.source) }}
+            {{ form_row(form.destination) }}
+        </div>
+    </div>
+    <div class="column">
+        <div class="ui segment">
+            {{ form_row(form.enabled) }}
+            {{ form_row(form.permanent) }}
+            <div class="ui info message">
+                {{ 'setono_sylius_redirect.form.redirect.permanent_help'|trans }}
+            </div>
+            {{ form_row(form.only404) }}
+            <div class="ui info message">
+                {{ 'setono_sylius_redirect.form.redirect.only_404_help'|trans }}
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="ui segment">
+            {{ form_row(form.channels) }}
+            <div class="ui info message">
+                {{ 'setono_sylius_redirect.form.redirect.channels_help'|trans }}
+            </div>
+        </div>
+    </div>
+</div>

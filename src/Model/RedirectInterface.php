@@ -7,19 +7,20 @@ namespace Setono\SyliusRedirectPlugin\Model;
 use DateTimeInterface;
 use Sylius\Component\Channel\Model\ChannelsAwareInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
+use Sylius\Component\Resource\Model\TimestampableInterface;
 use Sylius\Component\Resource\Model\ToggleableInterface;
 
-interface RedirectInterface extends ResourceInterface, ToggleableInterface, ChannelsAwareInterface
+interface RedirectInterface extends ResourceInterface, ToggleableInterface, ChannelsAwareInterface, TimestampableInterface
 {
     public function getId(): ?int;
 
     public function getSource(): ?string;
 
-    public function setSource(string $source): void;
+    public function setSource(?string $source): void;
 
     public function getDestination(): ?string;
 
-    public function setDestination(string $destination): void;
+    public function setDestination(?string $destination): void;
 
     public function isPermanent(): bool;
 

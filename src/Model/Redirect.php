@@ -10,10 +10,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Channel\Model\ChannelInterface as BaseChannelInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Resource\Model\TimestampableTrait;
 use Sylius\Component\Resource\Model\ToggleableTrait;
 
 class Redirect implements RedirectInterface
 {
+    use TimestampableTrait;
     use ToggleableTrait;
 
     /** @var int */
@@ -35,7 +37,7 @@ class Redirect implements RedirectInterface
     protected $lastAccessed;
 
     /** @var bool */
-    protected $only404 = false;
+    protected $only404 = true;
 
     /** @var Collection|ChannelInterface[] */
     protected $channels;
@@ -55,7 +57,7 @@ class Redirect implements RedirectInterface
         return $this->source;
     }
 
-    public function setSource(string $source): void
+    public function setSource(?string $source): void
     {
         $this->source = $source;
     }
@@ -65,7 +67,7 @@ class Redirect implements RedirectInterface
         return $this->destination;
     }
 
-    public function setDestination(string $destination): void
+    public function setDestination(?string $destination): void
     {
         $this->destination = $destination;
     }

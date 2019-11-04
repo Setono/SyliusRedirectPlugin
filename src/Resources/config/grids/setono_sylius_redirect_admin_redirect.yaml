@@ -28,6 +28,12 @@ sylius_grid:
                 lastAccessed:
                     type: datetime
                     label: setono_sylius_redirect.ui.last_accessed
+            filters:
+                search:
+                    type: string
+                    label: sylius.ui.search
+                    options:
+                        fields: [source, destination]
             actions:
                 main:
                     create:
@@ -35,5 +41,8 @@ sylius_grid:
                 item:
                     update:
                         type: update
+                    delete:
+                        type: delete
+                bulk:
                     delete:
                         type: delete

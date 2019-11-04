@@ -6,9 +6,9 @@ namespace Setono\SyliusRedirectPlugin\Validator\Constraints;
 
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class SourceValidator extends ConstraintValidator
 {
@@ -25,19 +25,27 @@ final class SourceValidator extends ConstraintValidator
      */
     public function validate($redirect, Constraint $constraint): void
     {
-        if (!$constraint instanceof Source || null === $redirect) {
+        if (null === $redirect) {
             return;
+        }
+
+        if (!$constraint instanceof Source) {
+            throw new UnexpectedTypeException($redirect, Source::class);
         }
 
         if (!$redirect instanceof RedirectInterface) {
             throw new UnexpectedTypeException($redirect, RedirectInterface::class);
         }
 
+        if ($redirect->getSource() === null) {
+            return;
+        }
+
         if (!$redirect->isEnabled()) {
             return;
         }
 
-        $conflictingRedirect = $this->redirectRepository->findEnabledBySource($redirect->getSource(), false, true);
+        $conflictingRedirect = $this->redirectRepository->findOneEnabledBySource($redirect->getSource());
         if (null === $conflictingRedirect || $redirect->getId() === $conflictingRedirect->getId()) {
             return;
         }

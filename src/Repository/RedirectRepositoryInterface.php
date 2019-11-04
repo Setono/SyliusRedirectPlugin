@@ -13,20 +13,8 @@ interface RedirectRepositoryInterface extends RepositoryInterface
     public function removeNotAccessed(int $threshold): void;
 
     /**
-     * If more than one redirect matches the source this method will return the redirect that also matches the channel
+     * If the $channel is set and the underlying query returns two results, the result with a matching channel will be returned
+     * If the $only404 is set, the underlying query will filter the redirects based on the value of this variable
      */
-    public function findEnabledBySourceAndChannel(string $source, ChannelInterface $channel, bool $only404 = false): ?RedirectInterface;
-
-    public function findEnabledBySource(string $source, bool $only404 = false, bool $fetchJoinChannels = false): ?RedirectInterface;
-
-    public function searchNextRedirectByChannel(RedirectInterface $redirect, ChannelInterface $channel, bool $only404 = false): ?RedirectInterface;
-
-    public function searchNextRedirect(RedirectInterface $redirection, bool $only404 = false): ?RedirectInterface;
-
-    public function findLastRedirectByChannel(RedirectInterface $redirect, ChannelInterface $channel, bool $only404 = false): RedirectInterface;
-
-    /**
-     * @deprecated Use RedirectRepositoryInterface::findLastRedirectByChannel instead. Will be removed in v2.0
-     */
-    public function findLastRedirect(RedirectInterface $redirect, bool $only404 = false): RedirectInterface;
+    public function findOneEnabledBySource(string $source, ChannelInterface $channel = null, bool $only404 = null): ?RedirectInterface;
 }

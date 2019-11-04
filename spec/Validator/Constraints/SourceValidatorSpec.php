@@ -11,19 +11,19 @@ use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoop;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\Source;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class SourceValidatorSpec extends ObjectBehavior
 {
-    function it_is_constraint_valdiator(): void
+    public function it_is_constraint_valdiator(): void
     {
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
-    function let(
+    public function let(
         RedirectRepositoryInterface $redirectRepository,
         ExecutionContextInterface $context
     ): void {
@@ -31,16 +31,16 @@ class SourceValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    function it_does_not_validat_other_constraints(
+    public function it_does_not_validate_other_constraints(
         ExecutionContextInterface $context,
         RedirectInterface $value
     ): void {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
-        $this->validate($value, new InfiniteLoop());
+        $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [$value, new InfiniteLoop()]);
     }
 
-    function it_does_not_validate_null_values(
+    public function it_does_not_validate_null_values(
         ExecutionContextInterface $context
     ): void {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -48,7 +48,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $this->validate(null, new Source());
     }
 
-    function it_throws_an_exception_if_the_value_is_no_redirect(
+    public function it_throws_an_exception_if_the_value_is_no_redirect(
         ExecutionContextInterface $context
     ): void {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -57,10 +57,11 @@ class SourceValidatorSpec extends ObjectBehavior
             ->during('validate', ['hello', new Source()]);
     }
 
-    function it_does_not_validate_disabled_redirects(
+    public function it_does_not_validate_disabled_redirects(
         ExecutionContextInterface $context,
         RedirectInterface $redirect
     ): void {
+        $redirect->getSource()->willReturn('/source');
         $redirect->isEnabled()->willReturn(false);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -68,7 +69,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $this->validate($redirect, new Source());
     }
 
-    function it_does_not_add_violation_if_there_is_no_other_redirect(
+    public function it_does_not_add_violation_if_there_is_no_other_redirect(
         ExecutionContextInterface $context,
         RedirectInterface $redirect,
         RedirectRepositoryInterface $redirectRepository
@@ -78,7 +79,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $redirect->getSource()->willReturn($source);
         $redirect->getChannels()->willReturn(new ArrayCollection());
 
-        $redirectRepository->findEnabledBySource($source, false, true)
+        $redirectRepository->findOneEnabledBySource($source)
             ->willReturn(null);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -86,7 +87,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $this->validate($redirect, new Source());
     }
 
-    function it_does_not_add_violation_if_only_other_same_redirect_is_itself(
+    public function it_does_not_add_violation_if_only_other_same_redirect_is_itself(
         ExecutionContextInterface $context,
         RedirectInterface $redirect,
         RedirectRepositoryInterface $redirectRepository
@@ -97,7 +98,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $redirect->getSource()->willReturn($source);
         $redirect->getChannels()->willReturn(new ArrayCollection());
 
-        $redirectRepository->findEnabledBySource($source, false, true)
+        $redirectRepository->findOneEnabledBySource($source)
             ->willReturn($redirect);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
@@ -105,7 +106,7 @@ class SourceValidatorSpec extends ObjectBehavior
         $this->validate($redirect, new Source());
     }
 
-    function it_adds_a_violation_if_there_is_another_route_with_the_same_source(
+    public function it_adds_a_violation_if_there_is_another_route_with_the_same_source(
         ExecutionContextInterface $context,
         RedirectInterface $redirect,
         RedirectInterface $conflictingRedirect,
@@ -118,13 +119,13 @@ class SourceValidatorSpec extends ObjectBehavior
         $redirect->getSource()->willReturn($source);
         $redirect->getChannels()->willReturn(new ArrayCollection());
 
-        $redirectRepository->findEnabledBySource($source, false, true)
+        $redirectRepository->findOneEnabledBySource($source)
             ->willReturn($conflictingRedirect);
 
         $conflictingRedirect->getId()->willReturn(2);
         $conflictingRedirect->getChannels()->willReturn(new ArrayCollection());
 
-        $context->buildViolation('setono_sylius_redirect.form.errors.source_already_existing')->willReturn($violationBuilder);
+        $context->buildViolation('There is already a redirection with source "{{ source }}". Redirection ID : {{ conflictingId }}')->willReturn($violationBuilder);
         $violationBuilder->atPath('source')->willReturn($violationBuilder);
         $violationBuilder->setParameter('{{ source }}', '/some-route')->willReturn($violationBuilder);
         $violationBuilder->setParameter('{{ conflictingId }}', '2')->willReturn($violationBuilder);

@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE)
-[![Build Status][ico-travis]][link-travis]
+[![Build Status][ico-github-actions]][link-github-actions]
 [![Quality Score][ico-code-quality]][link-code-quality]
 
 <a href="https://sylius.com/plugins/" target="_blank"><img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="100"></a>
@@ -10,7 +10,6 @@
 Gives you the ability to manage redirects in your Sylius shop.
 
 ## Installation
-
 
 ### Step 1: Download the plugin
 
@@ -64,7 +63,7 @@ imports:
 ```
 ### Step 4: Update database
 
-Use Dotrine migrations to create a migration file and update the database.
+Use Doctrine migrations to create a migration file and update the database.
 
 ```bash
 $ bin/console doctrine:migrations:diff
@@ -73,9 +72,9 @@ $ bin/console doctrine:migrations:migrate
 
 ## What it does
 
-This plugin allows you to create new redirections.
+This plugin allows you to create new redirects.
 
-Under the new menu entry `Redirection` in `Configuration`, you can manage redirections.
+Under the new menu entry `Redirects` unders `Configuration`, you can manage redirects.
 
 ### Redirection entry
 
@@ -107,12 +106,12 @@ The same mechanism could be made for taxon slugs, and obviously for any other re
 - [Joachim Løvgaard](https://github.com/loevgaard)
 - [Stephane Decock](https://github.com/Roshyo)
 
-[ico-version]: https://img.shields.io/packagist/v/setono/sylius-redirect-plugin.svg?style=flat-square
-[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/Setono/SyliusRedirectPlugin/master.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/Setono/SyliusRedirectPlugin.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/setono/sylius-redirect-plugin.svg
+[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
+[ico-github-actions]: https://github.com/Setono/SyliusRedirectPlugin/workflows/CI/badge.svg
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/Setono/SyliusRedirectPlugin.svg
 
 [link-packagist]: https://packagist.org/packages/setono/sylius-redirect-plugin
-[link-travis]: https://travis-ci.org/Setono/SyliusRedirectPlugin
+[link-github-actions]: https://github.com/Setono/SyliusRedirectPlugin/actions
 [link-code-quality]: https://scrutinizer-ci.com/g/Setono/SyliusRedirectPlugin
 
