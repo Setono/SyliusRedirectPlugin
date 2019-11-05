@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
@@ -21,18 +21,25 @@ final class ProductTranslationUpdateListener
 {
     /** @var \Symfony\Component\HttpFoundation\Request|null */
     private $request;
+
     /** @var RedirectFactoryInterface */
     private $redirectionFactory;
+
     /** @var RepositoryInterface */
     private $redirectionRepository;
+
     /** @var InfiniteLoopResolverInterface */
     private $infiniteLoopResolver;
+
     /** @var RouterInterface */
     private $router;
+
     /** @var ValidatorInterface */
     private $validator;
+
     /** @var FlashBagInterface */
     private $flashBag;
+
     /** @var array */
     private $validationGroups;
 
@@ -44,8 +51,7 @@ final class ProductTranslationUpdateListener
                                 ValidatorInterface $validator,
                                 FlashBagInterface $flashBag,
                                 array $validationGroups
-    )
-    {
+    ) {
         $this->request = $requestStack->getCurrentRequest();
         $this->redirectionFactory = $redirectionFactory;
         $this->redirectionRepository = $redirectionRepository;
@@ -113,9 +119,10 @@ final class ProductTranslationUpdateListener
             foreach ($violations as $violation) {
                 $this->flashBag->add('error', [
                     'message' => $violation->getMessageTemplate(),
-                    'parameters' => $violation->getParameters()
+                    'parameters' => $violation->getParameters(),
                 ]);
             }
+
             throw new UpdateHandlingException();
         }
 

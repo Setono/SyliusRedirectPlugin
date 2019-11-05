@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Factory;
 
@@ -21,8 +21,7 @@ final class RedirectFactory implements RedirectFactoryInterface
                                         string $destination,
                                         bool $permanent = false,
                                         bool $only404 = false
-    ): RedirectInterface
-    {
+    ): RedirectInterface {
         $redirect = $this->createNew();
 
         $redirect->setSource($source);
