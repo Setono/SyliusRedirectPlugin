@@ -25,8 +25,7 @@ final class InfiniteLoopResolverSpec extends ObjectBehavior
         RedirectRepositoryInterface $redirectRepository,
         RedirectInterface $subject,
         RedirectInterface $nextRedirect
-    ): void
-    {
+    ): void {
         $subject->isEnabled()->willReturn(true);
         $subject->getSource()->willReturn('/source');
 
