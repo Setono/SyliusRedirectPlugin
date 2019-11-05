@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Setono\SyliusRedirectPlugin\Form\Extension\Product;
 
+use Sylius\Component\Resource\Model\ResourceInterface;
 use Sylius\Component\Resource\Model\SlugAwareInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -19,7 +20,7 @@ abstract class TranslationTypeExtension extends AbstractTypeExtension
             $form = $event->getForm();
             $data = $event->getData();
 
-            if (!$data instanceof SlugAwareInterface || $data->getId() === null) {
+            if (!$data instanceof SlugAwareInterface || !$data instanceof ResourceInterface || $data->getId() === null) {
                 return;
             }
 

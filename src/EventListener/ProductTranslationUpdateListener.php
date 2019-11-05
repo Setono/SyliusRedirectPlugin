@@ -4,26 +4,24 @@ declare(strict_types = 1);
 
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
-use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Doctrine\ORM\Events;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Resolver\InfiniteLoopResolverInterface;
 use Sylius\Component\Core\Model\ProductTranslationInterface;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class ProductTranslationUpdateListener implements EventSubscriberInterface
+final class ProductTranslationUpdateListener
 {
     /** @var \Symfony\Component\HttpFoundation\Request|null */
     private $request;
-    /** @var FactoryInterface */
+    /** @var RedirectFactoryInterface */
     private $redirectionFactory;
     /** @var RepositoryInterface */
     private $redirectionRepository;
@@ -39,7 +37,7 @@ final class ProductTranslationUpdateListener implements EventSubscriberInterface
     private $validationGroups;
 
     public function __construct(RequestStack $requestStack,
-                                FactoryInterface $redirectionFactory,
+                                RedirectFactoryInterface $redirectionFactory,
                                 RepositoryInterface $redirectionRepository,
                                 InfiniteLoopResolverInterface $infiniteLoopResolver,
                                 RouterInterface $router,
@@ -58,29 +56,21 @@ final class ProductTranslationUpdateListener implements EventSubscriberInterface
         $this->validationGroups = $validationGroups;
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            Events::preUpdate
-        ];
-    }
-
-    public function preUpdate(PreUpdateEventArgs $event): void
+    public function postUpdate(LifecycleEventArgs $event): void
     {
         $productTranslation = $event->getObject();
-        dump($event);
-        die();
         if (!$productTranslation instanceof ProductTranslationInterface) {
             return;
         }
 
-        $changeSet = $event->getEntityChangeSet();
+        $uow = $event->getEntityManager()->getUnitOfWork();
+        $changeSet = $uow->getEntityChangeSet($productTranslation);
         $this->handleAutomaticRedirectionCreation($productTranslation, $changeSet);
     }
 
-    private function handleAutomaticRedirectionCreation(ProductTranslationInterface $productTranslation, $changeSet): void
+    private function handleAutomaticRedirectionCreation(ProductTranslationInterface $productTranslation, array $changeSet): void
     {
-        if (empty($changeSet['slug'])) {
+        if (!isset($changeSet['slug']) || 0 === count($changeSet['slug'])) {
             return;
         }
 
@@ -88,34 +78,29 @@ final class ProductTranslationUpdateListener implements EventSubscriberInterface
             return;
         }
 
+        /** @var array $postProductParams */
         $postProductParams = $this->request->request->get('sylius_product', []);
-        if (empty($postProductParams)) {
+        if (0 === count($postProductParams)) {
             return;
         }
         $localeCode = $productTranslation->getLocale();
 
-        if (empty($postProductParams['translations'][$localeCode])) {
+        if (0 === count($postProductParams['translations'][$localeCode])) {
             return;
         }
 
         $postProductTranslation = $postProductParams['translations'][$localeCode];
-        if (empty($postProductTranslation['addAutomaticRedirection'])) {
+        if (!isset($postProductTranslation['addAutomaticRedirection']) || 0 === count($postProductTranslation['addAutomaticRedirection'])) {
             return;
         }
 
         $oldSlug = $changeSet['slug'][0];
         $newSlug = $changeSet['slug'][1];
 
-        /** @var RedirectInterface $redirect */
-        $redirect = $this->redirectionFactory->createNew();
         $source = $this->router->generate('sylius_shop_product_show', ['slug' => $oldSlug]);
         $destination = $this->router->generate('sylius_shop_product_show', ['slug' => $newSlug]);
 
-        $redirect->setSource($source);
-        $redirect->setDestination($destination);
-        $redirect->enable();
-        $redirect->setOnly404(false);
-        $redirect->setPermanent(true);
+        $redirect = $this->redirectionFactory->createNewWithValues($source, $destination, true, false);
 
         $conflictingRedirect = $this->infiniteLoopResolver->getConflictingRedirect($redirect);
         if ($conflictingRedirect instanceof RedirectInterface) {
