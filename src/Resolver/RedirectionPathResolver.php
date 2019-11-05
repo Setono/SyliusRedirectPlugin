@@ -25,8 +25,10 @@ final class RedirectionPathResolver implements RedirectionPathResolverInterface
     /**
      * @throws StringsException
      */
-    public function resolve(string $source, ChannelInterface $channel, bool $only404 = false): RedirectionPath
-    {
+    public function resolve(string $source,
+                            ChannelInterface $channel,
+                            bool $only404 = false
+    ): RedirectionPath {
         $redirectionPath = new RedirectionPath();
 
         /** @var RedirectInterface|null $redirect */
