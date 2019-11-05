@@ -96,7 +96,7 @@ final class ProductTranslationUpdateListener
         }
 
         $postProductTranslation = $postProductParams['translations'][$localeCode];
-        if (!isset($postProductTranslation['addAutomaticRedirection']) || 0 === count($postProductTranslation['addAutomaticRedirection'])) {
+        if (!isset($postProductTranslation['addAutomaticRedirection']) || false === $postProductTranslation['addAutomaticRedirection']) {
             return;
         }
 

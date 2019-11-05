@@ -7,6 +7,7 @@
         <import resource="services/commands.xml"/>
         <import resource="services/constraints.xml"/>
         <import resource="services/event_listeners.xml"/>
+        <import resource="services/factories.xml"/>
         <import resource="services/form_extensions.xml"/>
         <import resource="services/form_types.xml"/>
         <import resource="services/resolvers.xml"/>
