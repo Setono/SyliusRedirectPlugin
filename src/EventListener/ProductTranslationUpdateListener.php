@@ -6,8 +6,8 @@ namespace Setono\SyliusRedirectPlugin\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface;
-use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
-use Setono\SyliusRedirectPlugin\Resolver\InfiniteLoopResolverInterface;
+use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
+use Sylius\Component\Core\Model\Product;
 use Sylius\Component\Core\Model\ProductTranslationInterface;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -28,8 +28,8 @@ final class ProductTranslationUpdateListener
     /** @var RepositoryInterface */
     private $redirectionRepository;
 
-    /** @var InfiniteLoopResolverInterface */
-    private $infiniteLoopResolver;
+    /** @var RedirectionPathResolverInterface */
+    private $redirectionPathResolver;
 
     /** @var RouterInterface */
     private $router;
@@ -46,7 +46,7 @@ final class ProductTranslationUpdateListener
     public function __construct(RequestStack $requestStack,
                                 RedirectFactoryInterface $redirectionFactory,
                                 RepositoryInterface $redirectionRepository,
-                                InfiniteLoopResolverInterface $infiniteLoopResolver,
+                                RedirectionPathResolverInterface $redirectionPathResolver,
                                 RouterInterface $router,
                                 ValidatorInterface $validator,
                                 FlashBagInterface $flashBag,
@@ -55,7 +55,7 @@ final class ProductTranslationUpdateListener
         $this->request = $requestStack->getCurrentRequest();
         $this->redirectionFactory = $redirectionFactory;
         $this->redirectionRepository = $redirectionRepository;
-        $this->infiniteLoopResolver = $infiniteLoopResolver;
+        $this->redirectionPathResolver = $redirectionPathResolver;
         $this->router = $router;
         $this->validator = $validator;
         $this->flashBag = $flashBag;
@@ -74,6 +74,12 @@ final class ProductTranslationUpdateListener
         $this->handleAutomaticRedirectionCreation($productTranslation, $changeSet);
     }
 
+    /**
+     * @param ProductTranslationInterface $productTranslation
+     * @param array                       $changeSet
+     *
+     * @throws UpdateHandlingException
+     */
     private function handleAutomaticRedirectionCreation(ProductTranslationInterface $productTranslation, array $changeSet): void
     {
         if (!isset($changeSet['slug']) || 0 === count($changeSet['slug'])) {
@@ -91,7 +97,7 @@ final class ProductTranslationUpdateListener
         }
         $localeCode = $productTranslation->getLocale();
 
-        if (0 === count($postProductParams['translations'][$localeCode])) {
+        if (!isset($postProductParams['translations']) || 0 === count($postProductParams['translations'][$localeCode])) {
             return;
         }
 
@@ -106,11 +112,27 @@ final class ProductTranslationUpdateListener
         $source = $this->router->generate('sylius_shop_product_show', ['slug' => $oldSlug]);
         $destination = $this->router->generate('sylius_shop_product_show', ['slug' => $newSlug]);
 
+        /** @var Product $product */
+        $product = $productTranslation->getTranslatable();
+        $channels = $product->getChannels();
         $redirect = $this->redirectionFactory->createNewWithValues($source, $destination, true, false);
 
-        $conflictingRedirect = $this->infiniteLoopResolver->getConflictingRedirect($redirect);
-        if ($conflictingRedirect instanceof RedirectInterface) {
-            $this->redirectionRepository->remove($conflictingRedirect);
+        foreach ($channels as $channel) {
+            $redirect->addChannel($channel);
+        }
+
+        if ($redirect->getChannels()->isEmpty()) {
+            $redirectionPath = $this->redirectionPathResolver->resolve($redirect->getDestination());
+            if (!$redirectionPath->isEmpty()) {
+                $this->redirectionRepository->remove($redirectionPath->first());
+            }
+        } else {
+            foreach ($redirect->getChannels() as $channel) {
+                $redirectionPath = $this->redirectionPathResolver->resolve($redirect->getDestination(), $channel);
+                if (!$redirectionPath->isEmpty()) {
+                    $this->redirectionRepository->remove($redirectionPath->first());
+                }
+            }
         }
 
         $violations = $this->validator->validate($redirect, null, $this->validationGroups);

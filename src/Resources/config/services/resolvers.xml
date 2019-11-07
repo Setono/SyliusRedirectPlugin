@@ -7,12 +7,5 @@
                  class="Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolver">
             <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
         </service>
-
-        <service id="setono.sylius_redirect.resolver.infinite_loop_resolver"
-                 class="Setono\SyliusRedirectPlugin\Resolver\InfiniteLoopResolver">
-            <argument type="service" id="setono_sylius_redirect.repository.redirect"/>
-        </service>
-        <service id="Setono\SyliusRedirectPlugin\Resolver\InfiniteLoopResolverInterface"
-                 alias="setono.sylius_redirect.resolver.infinite_loop_resolver"/>
     </services>
 </container>

@@ -26,7 +26,7 @@ final class RedirectionPathResolver implements RedirectionPathResolverInterface
      * @throws StringsException
      */
     public function resolve(string $source,
-                            ChannelInterface $channel,
+                            ?ChannelInterface $channel = null,
                             bool $only404 = false
     ): RedirectionPath {
         $redirectionPath = new RedirectionPath();
@@ -55,7 +55,7 @@ final class RedirectionPathResolver implements RedirectionPathResolverInterface
     /**
      * @throws StringsException
      */
-    public function resolveFromRequest(Request $request, ChannelInterface $channel, bool $only404 = false): RedirectionPath
+    public function resolveFromRequest(Request $request, ?ChannelInterface $channel = null, bool $only404 = false): RedirectionPath
     {
         return $this->resolve($request->getPathInfo(), $channel, $only404);
     }
