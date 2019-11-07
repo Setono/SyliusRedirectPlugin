@@ -13,7 +13,7 @@ interface RedirectFactoryInterface extends FactoryInterface
 
     public function createNewWithValues(string $source,
                                         string $destination,
-                                        bool $permanent = false,
+                                        bool $permanent = true,
                                         bool $only404 = false
     ): RedirectInterface;
 }
