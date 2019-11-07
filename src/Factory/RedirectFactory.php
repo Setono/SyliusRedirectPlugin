@@ -20,7 +20,7 @@ final class RedirectFactory implements RedirectFactoryInterface
     public function createNewWithValues(string $source,
                                         string $destination,
                                         bool $permanent = true,
-                                        bool $only404 = false
+                                        bool $only404 = true
     ): RedirectInterface {
         $redirect = $this->createNew();
 
