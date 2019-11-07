@@ -75,9 +75,6 @@ final class ProductTranslationUpdateListener
     }
 
     /**
-     * @param ProductTranslationInterface $productTranslation
-     * @param array                       $changeSet
-     *
      * @throws UpdateHandlingException
      */
     private function handleAutomaticRedirectionCreation(ProductTranslationInterface $productTranslation, array $changeSet): void
