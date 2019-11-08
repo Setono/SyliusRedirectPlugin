@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
+use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Component\Core\Model\Product;
 use Sylius\Component\Core\Model\ProductTranslationInterface;
-use Sylius\Component\Resource\Exception\UpdateHandlingException;
+use Sylius\Component\Product\Model\ProductInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -23,63 +24,74 @@ final class ProductTranslationUpdateListener
     private $request;
 
     /** @var RedirectFactoryInterface */
-    private $redirectionFactory;
+    private $redirectFactory;
 
     /** @var RepositoryInterface */
-    private $redirectionRepository;
+    private $redirectRepository;
 
     /** @var RedirectionPathResolverInterface */
     private $redirectionPathResolver;
 
-    /** @var RouterInterface */
-    private $router;
-
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var FlashBagInterface */
-    private $flashBag;
+    /** @var ManagerRegistry */
+    private $managerRegistry;
 
     /** @var array */
     private $validationGroups;
 
     public function __construct(RequestStack $requestStack,
-                                RedirectFactoryInterface $redirectionFactory,
-                                RepositoryInterface $redirectionRepository,
+                                RedirectFactoryInterface $redirectFactory,
+                                RepositoryInterface $redirectRepository,
                                 RedirectionPathResolverInterface $redirectionPathResolver,
-                                RouterInterface $router,
                                 ValidatorInterface $validator,
-                                FlashBagInterface $flashBag,
+                                ManagerRegistry $managerRegistry,
                                 array $validationGroups
     ) {
         $this->request = $requestStack->getCurrentRequest();
-        $this->redirectionFactory = $redirectionFactory;
-        $this->redirectionRepository = $redirectionRepository;
+        $this->redirectFactory = $redirectFactory;
+        $this->redirectRepository = $redirectRepository;
         $this->redirectionPathResolver = $redirectionPathResolver;
-        $this->router = $router;
         $this->validator = $validator;
-        $this->flashBag = $flashBag;
+        $this->managerRegistry = $managerRegistry;
         $this->validationGroups = $validationGroups;
     }
 
-    public function postUpdate(LifecycleEventArgs $event): void
+    public function preUpdateProduct(ResourceControllerEvent $event): void
     {
-        $productTranslation = $event->getObject();
-        if (!$productTranslation instanceof ProductTranslationInterface) {
+        $subject = $event->getSubject();
+        if (!$subject instanceof ProductInterface) {
             return;
         }
 
-        $uow = $event->getEntityManager()->getUnitOfWork();
-        $changeSet = $uow->getEntityChangeSet($productTranslation);
-        $this->handleAutomaticRedirectionCreation($productTranslation, $changeSet);
+        /** @var EntityManagerInterface $em */
+        $em = $this->managerRegistry->getManager();
+        $uow = $em->getUnitOfWork();
+        $productTranslations = $subject->getTranslations();
+        foreach ($productTranslations as $productTranslation) {
+            $previous = $uow->getOriginalEntityData($productTranslation);
+            $this->handleAutomaticRedirectCreation($productTranslation, $previous, $event);
+        }
     }
 
-    /**
-     * @throws UpdateHandlingException
-     */
-    private function handleAutomaticRedirectionCreation(ProductTranslationInterface $productTranslation, array $changeSet): void
+    public function preUpdateProductTranslation(GenericEvent $event): void
     {
-        if (!isset($changeSet['slug']) || 0 === count($changeSet['slug'])) {
+        /*$subject = $event->getSubject();
+        if (!$subject instanceof ProductTranslationInterface) {
+            return;
+        }
+        $uow = $this->objectManager->getUnitOfWork();
+        $changeSet = $uow->getEntityChangeSet($subject);
+        $this->handleAutomaticRedirectCreation($subject, $changeSet);*/
+    }
+
+    private function handleAutomaticRedirectCreation(ProductTranslationInterface $productTranslation,
+                                                     array $previous,
+                                                     ResourceControllerEvent $event
+    ): void
+    {
+        if (!isset($previous['slug'])) {
             return;
         }
 
@@ -99,35 +111,27 @@ final class ProductTranslationUpdateListener
         }
 
         $postProductTranslation = $postProductParams['translations'][$localeCode];
-        if (!isset($postProductTranslation['addAutomaticRedirection']) || false === $postProductTranslation['addAutomaticRedirection']) {
+        if (!isset($postProductTranslation['addAutomaticRedirect']) || false === $postProductTranslation['addAutomaticRedirect']) {
             return;
         }
 
-        $oldSlug = $changeSet['slug'][0];
-        $newSlug = $changeSet['slug'][1];
-
-        $source = $this->router->generate('sylius_shop_product_show', ['slug' => $oldSlug]);
-        $destination = $this->router->generate('sylius_shop_product_show', ['slug' => $newSlug]);
+        $oldSlug = $previous['slug'];
+        $newSlug = $productTranslation->getSlug();
 
         /** @var Product $product */
         $product = $productTranslation->getTranslatable();
-        $channels = $product->getChannels();
-        $redirect = $this->redirectionFactory->createNewWithValues($source, $destination, true, false);
-
-        foreach ($channels as $channel) {
-            $redirect->addChannel($channel);
-        }
+        $redirect = $this->redirectFactory->createNewForProduct($product, $oldSlug, $newSlug, true, false);
 
         if ($redirect->getChannels()->isEmpty()) {
             $redirectionPath = $this->redirectionPathResolver->resolve($redirect->getDestination());
             if (!$redirectionPath->isEmpty()) {
-                $this->redirectionRepository->remove($redirectionPath->first());
+                $this->redirectRepository->remove($redirectionPath->first());
             }
         } else {
             foreach ($redirect->getChannels() as $channel) {
                 $redirectionPath = $this->redirectionPathResolver->resolve($redirect->getDestination(), $channel);
                 if (!$redirectionPath->isEmpty()) {
-                    $this->redirectionRepository->remove($redirectionPath->first());
+                    $this->redirectRepository->remove($redirectionPath->first());
                 }
             }
         }
@@ -136,15 +140,14 @@ final class ProductTranslationUpdateListener
         if ($violations->count() > 0) {
             /** @var ConstraintViolationInterface $violation */
             foreach ($violations as $violation) {
-                $this->flashBag->add('error', [
-                    'message' => $violation->getMessageTemplate(),
-                    'parameters' => $violation->getParameters(),
-                ]);
-            }
+                $event->setMessage($violation->getMessageTemplate());
+                $event->setMessageParameters($violation->getParameters());
+                $event->stopPropagation();
 
-            throw new UpdateHandlingException();
+                return;
+            }
         }
 
-        $this->redirectionRepository->add($redirect);
+        $this->redirectRepository->add($redirect);
     }
 }

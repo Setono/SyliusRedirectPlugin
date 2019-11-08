@@ -8,6 +8,7 @@
                  class="Setono\SyliusRedirectPlugin\Factory\RedirectFactory"
                  decorates="setono_sylius_redirect.factory.redirect">
             <argument type="service" id="setono_sylius_redirect.custom_factory.redirect.inner" />
+            <argument type="service" id="router" />
         </service>
     </services>
 </container>

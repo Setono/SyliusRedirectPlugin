@@ -13,6 +13,6 @@
     {{ form_errors(slugField) }}
 </div>
 
-{% if slugField.parent is defined and slugField.parent.addAutomaticRedirection is defined %}
-    {{ form_row(slugField.parent.addAutomaticRedirection) }}
+{% if slugField.parent is defined and slugField.parent.addAutomaticRedirect is defined %}
+    {{ form_row(slugField.parent.addAutomaticRedirect) }}
 {% endif %}

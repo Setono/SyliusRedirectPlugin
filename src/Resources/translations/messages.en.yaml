@@ -17,7 +17,7 @@ setono_sylius_redirect:
                     redirects: Redirects
     form:
         product:
-            add_automatic_redirection: 'Add automatic redirection'
+            add_automatic_redirect: Add automatic redirect
         redirect:
             channels: Channels
             channels_help: If you don't enable any channels, the redirect will work on all channels
