@@ -124,10 +124,11 @@ final class ProductTranslationUpdateListener
         if ($violations->count() > 0) {
             /** @var ConstraintViolationInterface $violation */
             foreach ($violations as $violation) {
-                $event->setMessageType('error');
-                $event->setMessage($violation->getMessageTemplate());
-                $event->setMessageParameters($violation->getParameters());
-                $event->stopPropagation();
+                $event->stop(
+                    $violation->getMessageTemplate(),
+                    ResourceControllerEvent::TYPE_ERROR,
+                    $violation->getParameters()
+                );
 
                 return;
             }
