@@ -7,13 +7,11 @@ namespace Setono\SyliusRedirectPlugin\EventListener;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface;
-use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
+use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinderInterface;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Component\Core\Model\Product;
 use Sylius\Component\Core\Model\ProductTranslationInterface;
 use Sylius\Component\Product\Model\ProductInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -26,35 +24,32 @@ final class ProductTranslationUpdateListener
     /** @var RedirectFactoryInterface */
     private $redirectFactory;
 
-    /** @var RepositoryInterface */
-    private $redirectRepository;
-
-    /** @var RedirectionPathResolverInterface */
-    private $redirectionPathResolver;
-
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var ManagerRegistry */
-    private $managerRegistry;
+    /** @var RemovableRedirectFinderInterface */
+    private $removableRedirectFinder;
 
     /** @var array */
     private $validationGroups;
 
+    /** @var \Doctrine\ORM\EntityManagerInterface */
+    private $entityManager;
+
     public function __construct(RequestStack $requestStack,
                                 RedirectFactoryInterface $redirectFactory,
-                                RepositoryInterface $redirectRepository,
-                                RedirectionPathResolverInterface $redirectionPathResolver,
                                 ValidatorInterface $validator,
                                 ManagerRegistry $managerRegistry,
+                                RemovableRedirectFinderInterface $removableRedirectFinder,
                                 array $validationGroups
     ) {
         $this->request = $requestStack->getCurrentRequest();
         $this->redirectFactory = $redirectFactory;
-        $this->redirectRepository = $redirectRepository;
-        $this->redirectionPathResolver = $redirectionPathResolver;
         $this->validator = $validator;
-        $this->managerRegistry = $managerRegistry;
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $managerRegistry->getManager();
+        $this->entityManager = $entityManager;
+        $this->removableRedirectFinder = $removableRedirectFinder;
         $this->validationGroups = $validationGroups;
     }
 
@@ -65,32 +60,30 @@ final class ProductTranslationUpdateListener
             return;
         }
 
-        /** @var EntityManagerInterface $em */
-        $em = $this->managerRegistry->getManager();
-        $uow = $em->getUnitOfWork();
+        $uow = $this->entityManager->getUnitOfWork();
         $productTranslations = $subject->getTranslations();
+        /** @var ProductTranslationInterface $productTranslation */
         foreach ($productTranslations as $productTranslation) {
             $previous = $uow->getOriginalEntityData($productTranslation);
             $this->handleAutomaticRedirectCreation($productTranslation, $previous, $event);
         }
     }
 
-    public function preUpdateProductTranslation(GenericEvent $event): void
+    public function preUpdateProductTranslation(ResourceControllerEvent $event): void
     {
-        /*$subject = $event->getSubject();
+        $subject = $event->getSubject();
         if (!$subject instanceof ProductTranslationInterface) {
             return;
         }
-        $uow = $this->objectManager->getUnitOfWork();
+        $uow = $this->entityManager->getUnitOfWork();
         $changeSet = $uow->getEntityChangeSet($subject);
-        $this->handleAutomaticRedirectCreation($subject, $changeSet);*/
+        $this->handleAutomaticRedirectCreation($subject, $changeSet, $event);
     }
 
     private function handleAutomaticRedirectCreation(ProductTranslationInterface $productTranslation,
                                                      array $previous,
                                                      ResourceControllerEvent $event
-    ): void
-    {
+    ): void {
         if (!isset($previous['slug'])) {
             return;
         }
@@ -122,18 +115,9 @@ final class ProductTranslationUpdateListener
         $product = $productTranslation->getTranslatable();
         $redirect = $this->redirectFactory->createNewForProduct($product, $oldSlug, $newSlug, true, false);
 
-        if ($redirect->getChannels()->isEmpty()) {
-            $redirectionPath = $this->redirectionPathResolver->resolve($redirect->getDestination());
-            if (!$redirectionPath->isEmpty()) {
-                $this->redirectRepository->remove($redirectionPath->first());
-            }
-        } else {
-            foreach ($redirect->getChannels() as $channel) {
-                $redirectionPath = $this->redirectionPathResolver->resolve($redirect->getDestination(), $channel);
-                if (!$redirectionPath->isEmpty()) {
-                    $this->redirectRepository->remove($redirectionPath->first());
-                }
-            }
+        $removableRedirects = $this->removableRedirectFinder->findNextRedirect($redirect);
+        foreach ($removableRedirects as $removableRedirect) {
+            $this->entityManager->remove($removableRedirect);
         }
 
         $violations = $this->validator->validate($redirect, null, $this->validationGroups);
@@ -148,6 +132,6 @@ final class ProductTranslationUpdateListener
             }
         }
 
-        $this->redirectRepository->add($redirect);
+        $this->entityManager->persist($redirect);
     }
 }
