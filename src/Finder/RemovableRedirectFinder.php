@@ -24,24 +24,31 @@ final class RemovableRedirectFinder implements RemovableRedirectFinderInterface
         $this->redirectionPathResolver = $redirectionPathResolver;
     }
 
+    /**
+     * Returns the redirects that have for source the destination of the given redirect
+     *
+     * If the redirect has multiple channels it does the operation for each channel
+     *
+     * @return Collection|RedirectInterface[]
+     */
     public function findNextRedirect(RedirectInterface $redirect): Collection
     {
         $result = new ArrayCollection();
 
+        dump('a');
+
         if ($redirect->getChannels()->isEmpty()) {
+            dump('b');
             $redirectionPath = $this->redirectionPathResolver->resolve($redirect->getDestination());
-            if (!$redirectionPath->isEmpty()) {
-                if (!$result->contains($redirectionPath->first())) {
-                    $result->add($redirectionPath->first());
-                }
+            dump('c');
+            if (!$redirectionPath->isEmpty() && !$result->contains($redirectionPath->first())) {
+                $result->add($redirectionPath->first());
             }
         } else {
             foreach ($redirect->getChannels() as $channel) {
                 $redirectionPath = $this->redirectionPathResolver->resolve($redirect->getDestination(), $channel);
-                if (!$redirectionPath->isEmpty()) {
-                    if (!$result->contains($redirectionPath->first())) {
-                        $result->add($redirectionPath->first());
-                    }
+                if (!$redirectionPath->isEmpty() && !$result->contains($redirectionPath->first())) {
+                    $result->add($redirectionPath->first());
                 }
             }
         }
