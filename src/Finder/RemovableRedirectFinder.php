@@ -35,12 +35,8 @@ final class RemovableRedirectFinder implements RemovableRedirectFinderInterface
     {
         $result = new ArrayCollection();
 
-        dump('a');
-
         if ($redirect->getChannels()->isEmpty()) {
-            dump('b');
             $redirectionPath = $this->redirectionPathResolver->resolve($redirect->getDestination());
-            dump('c');
             if (!$redirectionPath->isEmpty() && !$result->contains($redirectionPath->first())) {
                 $result->add($redirectionPath->first());
             }
