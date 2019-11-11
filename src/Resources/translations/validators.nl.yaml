@@ -1,0 +1,14 @@
+setono_sylius_redirect:
+    form:
+        redirect:
+            destination:
+                not_blank: Bestemming mag niet leeg zijn
+                regex: Bestemming moet beginnen met een '/'
+            source:
+                not_blank: Bron mag niet leeg zijn
+                not_identical_to: Bron en Bestemming mogen niet aan elkaar gelijk zijn
+                regex: Bron moet beginnen met een '/'
+                source_regex: De bron is incorrect
+            source_already_existing: 'Is is al een omleiding met de bron "{{ source }}". Omleiding ID : {{ conflictingId }}'
+            source_must_not_equal_destination: De brom mag niet gelijk zijn aan de bestemming
+            target_result_in_infinite_loop: 'Dit resulteert in een oneindige lus'
