@@ -88,6 +88,8 @@ abstract class AbstractTranslationUpdateListener
         SlugAwareInterface $slugAware,
         ResourceControllerEvent $event
     ): void {
+        $previous = $this->getPrevious($slugAware);
+
         if (!isset($previous['slug'])) {
             return;
         }
@@ -95,8 +97,6 @@ abstract class AbstractTranslationUpdateListener
         if (!$this->isAutomaticRedirectCreationAsked($slugAware)) {
             return;
         }
-
-        $previous = $this->getPrevious($slugAware);
 
         $oldSlug = $previous['slug'];
         $newSlug = $slugAware->getSlug();
@@ -126,7 +126,7 @@ abstract class AbstractTranslationUpdateListener
 
     protected function getManager(): EntityManagerInterface
     {
-        if (!$this->manager instanceof ObjectManager) {
+        if (!$this->manager instanceof EntityManagerInterface) {
             /** @var EntityManagerInterface|null $manager */
             $manager = $this->managerRegistry->getManagerForClass($this->class);
             Assert::isInstanceOf($manager, EntityManagerInterface::class);
