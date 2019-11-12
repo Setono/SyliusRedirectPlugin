@@ -26,7 +26,7 @@ abstract class TranslationTypeExtension extends AbstractTypeExtension
 
             $form->add('addAutomaticRedirect', CheckboxType::class, [
                 'mapped' => false,
-                'label' => 'setono_sylius_redirect.form.product.add_automatic_redirect',
+                'label' => 'setono_sylius_redirect.form.add_automatic_redirect',
                 'required' => false,
                 'attr' => [
                     'class' => 'js-add-automatic-redirection-checkbox',
