@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface;
 use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinderInterface;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
@@ -24,12 +24,12 @@ final class ProductUpdateListener extends AbstractTranslationUpdateListener
     public function __construct(RedirectFactoryInterface $redirectFactory,
                                 RequestStack $requestStack,
                                 ValidatorInterface $validator,
-                                ManagerRegistry $managerRegistry,
+                                EntityManagerInterface $objectManager,
                                 RemovableRedirectFinderInterface $removableRedirectFinder,
                                 array $validationGroups,
                                 string $class
     ) {
-        parent::__construct($requestStack, $validator, $managerRegistry, $removableRedirectFinder, $validationGroups, $class);
+        parent::__construct($requestStack, $validator, $objectManager, $removableRedirectFinder, $validationGroups, $class);
 
         $this->redirectFactory = $redirectFactory;
     }
@@ -41,7 +41,7 @@ final class ProductUpdateListener extends AbstractTranslationUpdateListener
             return;
         }
 
-        $uow = $this->getManager()->getUnitOfWork();
+        $uow = $this->objectManager->getUnitOfWork();
         $productTranslations = $subject->getTranslations();
         /** @var ProductTranslationInterface $productTranslation */
         foreach ($productTranslations as $productTranslation) {

@@ -19,7 +19,7 @@
             <argument type="service" id="setono_sylius_redirect.factory.redirect"/>
             <argument type="service" id="request_stack"/>
             <argument type="service" id="validator"/>
-            <argument type="service" id="doctrine"/>
+            <argument type="service" id="sylius.manager.product"/>
             <argument type="service" id="setono_sylius_redirect.finder.removable_redirect"/>
             <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
             <argument>%sylius.model.product.class%</argument>
