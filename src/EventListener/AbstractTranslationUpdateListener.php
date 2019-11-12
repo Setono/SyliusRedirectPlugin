@@ -102,7 +102,7 @@ abstract class AbstractTranslationUpdateListener
         $newSlug = $slugAware->getSlug();
         $redirect = $this->createRedirect($slugAware, $oldSlug, $newSlug, true, false);
 
-        $removableRedirects = $this->removableRedirectFinder->findNextRedirect($redirect);
+        $removableRedirects = $this->removableRedirectFinder->findRedirectsTargetedBy($redirect);
         foreach ($removableRedirects as $removableRedirect) {
             $this->getManager()->remove($removableRedirect);
         }

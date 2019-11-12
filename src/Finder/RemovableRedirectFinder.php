@@ -24,7 +24,7 @@ final class RemovableRedirectFinder implements RemovableRedirectFinderInterface
         $this->redirectionPathResolver = $redirectionPathResolver;
     }
 
-    public function findNextRedirect(RedirectInterface $redirect): Collection
+    public function findRedirectsTargetedBy(RedirectInterface $redirect): Collection
     {
         $result = new ArrayCollection();
 
