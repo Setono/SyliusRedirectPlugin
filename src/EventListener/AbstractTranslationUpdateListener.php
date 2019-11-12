@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinderInterface;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
@@ -24,8 +25,8 @@ abstract class AbstractTranslationUpdateListener
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var EntityManagerInterface */
-    protected $objectManager;
+    /** @var ManagerRegistry */
+    protected $managerRegistry;
 
     /** @var RemovableRedirectFinderInterface */
     protected $removableRedirectFinder;
@@ -38,14 +39,14 @@ abstract class AbstractTranslationUpdateListener
 
     public function __construct(RequestStack $requestStack,
                                 ValidatorInterface $validator,
-                                EntityManagerInterface $objectManager,
+                                ManagerRegistry $managerRegistry,
                                 RemovableRedirectFinderInterface $removableRedirectFinder,
                                 array $validationGroups,
                                 string $class
     ) {
         $this->requestStack = $requestStack;
         $this->validator = $validator;
-        $this->objectManager = $objectManager;
+        $this->managerRegistry = $managerRegistry;
         $this->removableRedirectFinder = $removableRedirectFinder;
         $this->validationGroups = $validationGroups;
         $this->class = $class;
@@ -78,7 +79,7 @@ abstract class AbstractTranslationUpdateListener
 
         $removableRedirects = $this->removableRedirectFinder->findNextRedirect($redirect);
         foreach ($removableRedirects as $removableRedirect) {
-            $this->objectManager->remove($removableRedirect);
+            $this->getManager()->remove($removableRedirect);
         }
 
         $violations = $this->validator->validate($redirect, null, $this->validationGroups);
@@ -95,7 +96,16 @@ abstract class AbstractTranslationUpdateListener
             }
         }
 
-        $this->objectManager->persist($redirect);
+        $this->getManager()->persist($redirect);
+    }
+
+    protected function getManager(): EntityManagerInterface
+    {
+        /** @var EntityManagerInterface|null $manager */
+        $manager = $this->managerRegistry->getManagerForClass($this->class);
+        Assert::isInstanceOf($manager, EntityManagerInterface::class);
+
+        return $manager;
     }
 
     protected function getRequest(): Request
