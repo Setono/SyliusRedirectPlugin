@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface;
 use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinderInterface;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
@@ -31,39 +33,60 @@ abstract class AbstractTranslationUpdateListener
     /** @var RemovableRedirectFinderInterface */
     protected $removableRedirectFinder;
 
+    /** @var RedirectFactoryInterface */
+    protected $redirectFactory;
+
     /** @var array */
     protected $validationGroups;
 
     /** @var string */
     protected $class;
 
-    public function __construct(RequestStack $requestStack,
-                                ValidatorInterface $validator,
-                                ManagerRegistry $managerRegistry,
-                                RemovableRedirectFinderInterface $removableRedirectFinder,
-                                array $validationGroups,
-                                string $class
+    /** @var ObjectManager|null */
+    private $manager;
+
+    /** @var Request|null */
+    private $request;
+
+    public function __construct(
+        RequestStack $requestStack,
+        ValidatorInterface $validator,
+        ManagerRegistry $managerRegistry,
+        RemovableRedirectFinderInterface $removableRedirectFinder,
+        RedirectFactoryInterface $redirectFactory,
+        array $validationGroups,
+        string $class
     ) {
         $this->requestStack = $requestStack;
         $this->validator = $validator;
         $this->managerRegistry = $managerRegistry;
         $this->removableRedirectFinder = $removableRedirectFinder;
+        $this->redirectFactory = $redirectFactory;
         $this->validationGroups = $validationGroups;
         $this->class = $class;
     }
 
     abstract protected function getPostName(): string;
 
-    abstract protected function createRedirect(SlugAwareInterface $slugAware,
-                                     string $source,
-                                     string $destination,
-                                     bool $permanent = true,
-                                     bool $only404 = true
+    abstract protected function createRedirect(
+        SlugAwareInterface $slugAware,
+        string $source,
+        string $destination,
+        bool $permanent = true,
+        bool $only404 = true
     ): RedirectInterface;
 
-    protected function handleAutomaticRedirectCreation(SlugAwareInterface $slugAware,
-                                                       array $previous,
-                                                       ResourceControllerEvent $event
+    protected function getPrevious(SlugAwareInterface $slugAware): array
+    {
+        $uow = $this->getManager()->getUnitOfWork();
+        $previous = $uow->getOriginalEntityData($slugAware);
+
+        return $previous;
+    }
+
+    protected function handleAutomaticRedirectCreation(
+        SlugAwareInterface $slugAware,
+        ResourceControllerEvent $event
     ): void {
         if (!isset($previous['slug'])) {
             return;
@@ -72,6 +95,8 @@ abstract class AbstractTranslationUpdateListener
         if (!$this->isAutomaticRedirectCreationAsked($slugAware)) {
             return;
         }
+
+        $previous = $this->getPrevious($slugAware);
 
         $oldSlug = $previous['slug'];
         $newSlug = $slugAware->getSlug();
@@ -101,20 +126,28 @@ abstract class AbstractTranslationUpdateListener
 
     protected function getManager(): EntityManagerInterface
     {
-        /** @var EntityManagerInterface|null $manager */
-        $manager = $this->managerRegistry->getManagerForClass($this->class);
-        Assert::isInstanceOf($manager, EntityManagerInterface::class);
+        if (!$this->manager instanceof ObjectManager) {
+            /** @var EntityManagerInterface|null $manager */
+            $manager = $this->managerRegistry->getManagerForClass($this->class);
+            Assert::isInstanceOf($manager, EntityManagerInterface::class);
 
-        return $manager;
+            $this->manager = $manager;
+        }
+
+        return $this->manager;
     }
 
     protected function getRequest(): Request
     {
-        /** @var Request|null $request */
-        $request = $this->requestStack->getCurrentRequest();
-        Assert::isInstanceOf($request, Request::class);
+        if (!$this->request instanceof Request) {
+            /** @var Request|null $request */
+            $request = $this->requestStack->getCurrentRequest();
+            Assert::isInstanceOf($request, Request::class);
 
-        return $request;
+            $this->request = $request;
+        }
+
+        return $this->request;
     }
 
     /**
@@ -132,15 +165,15 @@ abstract class AbstractTranslationUpdateListener
             $localeCode = $slugAware->getLocale();
 
             if (!isset($postParams['translations']) || 0 === count($postParams['translations'][$localeCode])) {
-                return isset($postParams['addAutomaticRedirect']) && false !== $postParams['addAutomaticRedirect'];
+                return isset($postParams['addAutomaticRedirect']) && true === $postParams['addAutomaticRedirect'];
             }
 
             $translationPostParams = $postParams['translations'][$localeCode];
-            if (isset($translationPostParams['addAutomaticRedirect']) && false !== $translationPostParams['addAutomaticRedirect']) {
+            if (isset($translationPostParams['addAutomaticRedirect']) && true === $translationPostParams['addAutomaticRedirect']) {
                 return true;
             }
         }
 
-        return isset($postParams['addAutomaticRedirect']) && false !== $postParams['addAutomaticRedirect'];
+        return isset($postParams['addAutomaticRedirect']) && true === $postParams['addAutomaticRedirect'];
     }
 }

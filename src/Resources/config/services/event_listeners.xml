@@ -20,15 +20,15 @@
             <argument type="service" id="validator"/>
             <argument type="service" id="doctrine"/>
             <argument type="service" id="setono_sylius_redirect.finder.removable_redirect"/>
+            <argument type="service" id="setono_sylius_redirect.factory.redirect"/>
             <argument />
             <argument />
         </service>
 
         <service id="Setono\SyliusRedirectPlugin\EventListener\ProductUpdateListener"
                  parent="Setono\SyliusRedirectPlugin\EventListener\AbstractTranslationUpdateListener">
-            <argument type="service" id="setono_sylius_redirect.factory.redirect"/>
-            <argument index="4">%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
-            <argument index="5">%sylius.model.product.class%</argument>
+            <argument index="5">%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
+            <argument index="6">%sylius.model.product.class%</argument>
             <tag name="kernel.event_listener" event="sylius.product.pre_update" method="preUpdateProduct" />
         </service>
     </services>

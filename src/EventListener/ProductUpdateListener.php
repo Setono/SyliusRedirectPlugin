@@ -4,36 +4,15 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface;
-use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinderInterface;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Component\Core\Model\ProductTranslationInterface;
 use Sylius\Component\Product\Model\ProductInterface;
 use Sylius\Component\Resource\Model\SlugAwareInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
 final class ProductUpdateListener extends AbstractTranslationUpdateListener
 {
-    /** @var RedirectFactoryInterface */
-    private $redirectFactory;
-
-    public function __construct(RequestStack $requestStack,
-                                ValidatorInterface $validator,
-                                ManagerRegistry $managerRegistry,
-                                RemovableRedirectFinderInterface $removableRedirectFinder,
-                                array $validationGroups,
-                                string $class,
-                                RedirectFactoryInterface $redirectFactory
-    ) {
-        parent::__construct($requestStack, $validator, $managerRegistry, $removableRedirectFinder, $validationGroups, $class);
-
-        $this->redirectFactory = $redirectFactory;
-    }
-
     public function preUpdateProduct(ResourceControllerEvent $event): void
     {
         $subject = $event->getSubject();
@@ -41,12 +20,10 @@ final class ProductUpdateListener extends AbstractTranslationUpdateListener
             return;
         }
 
-        $uow = $this->getManager()->getUnitOfWork();
         $productTranslations = $subject->getTranslations();
         /** @var ProductTranslationInterface $productTranslation */
         foreach ($productTranslations as $productTranslation) {
-            $previous = $uow->getOriginalEntityData($productTranslation);
-            $this->handleAutomaticRedirectCreation($productTranslation, $previous, $event);
+            $this->handleAutomaticRedirectCreation($productTranslation, $event);
         }
     }
 
@@ -55,11 +32,12 @@ final class ProductUpdateListener extends AbstractTranslationUpdateListener
         return 'sylius_product';
     }
 
-    protected function createRedirect(SlugAwareInterface $slugAware,
-                            string $source,
-                            string $destination,
-                            bool $permanent = true,
-                            bool $only404 = true
+    protected function createRedirect(
+        SlugAwareInterface $slugAware,
+        string $source,
+        string $destination,
+        bool $permanent = true,
+        bool $only404 = true
     ): RedirectInterface {
         /** @var ProductTranslationInterface $slugAware */
         Assert::isInstanceOf($slugAware, ProductTranslationInterface::class);

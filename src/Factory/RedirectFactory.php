@@ -31,10 +31,11 @@ final class RedirectFactory implements RedirectFactoryInterface
         return $redirect;
     }
 
-    public function createNewWithValues(string $source,
-                                        string $destination,
-                                        bool $permanent = true,
-                                        bool $only404 = true
+    public function createNewWithValues(
+        string $source,
+        string $destination,
+        bool $permanent = true,
+        bool $only404 = true
     ): RedirectInterface {
         $redirect = $this->createNew();
 
@@ -47,11 +48,12 @@ final class RedirectFactory implements RedirectFactoryInterface
         return $redirect;
     }
 
-    public function createNewForProduct(ProductInterface $product,
-                                        string $source,
-                                        string $destination,
-                                        bool $permanent = true,
-                                        bool $only404 = true
+    public function createNewForProduct(
+        ProductInterface $product,
+        string $source,
+        string $destination,
+        bool $permanent = true,
+        bool $only404 = true
     ): RedirectInterface {
         $source = $this->router->generate('sylius_shop_product_show', ['slug' => $source]);
         $destination = $this->router->generate('sylius_shop_product_show', ['slug' => $destination]);

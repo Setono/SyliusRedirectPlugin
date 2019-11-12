@@ -12,16 +12,18 @@ interface RedirectFactoryInterface extends FactoryInterface
 {
     public function createNew(): RedirectInterface;
 
-    public function createNewWithValues(string $source,
-                                        string $destination,
-                                        bool $permanent = true,
-                                        bool $only404 = true
+    public function createNewWithValues(
+        string $source,
+        string $destination,
+        bool $permanent = true,
+        bool $only404 = true
     ): RedirectInterface;
 
-    public function createNewForProduct(ProductInterface $product,
-                                        string $source,
-                                        string $destination,
-                                        bool $permanent = true,
-                                        bool $only404 = true
+    public function createNewForProduct(
+        ProductInterface $product,
+        string $source,
+        string $destination,
+        bool $permanent = true,
+        bool $only404 = true
     ): RedirectInterface;
 }
