@@ -1,0 +1,30 @@
+setono_sylius_redirect:
+    ui:
+        count: Aantal
+        destination: Bestemming
+        edit_redirect: Omleiding aanpassen
+        enabled: Ingeschakeld
+        last_accessed: Laatste toegang
+        manage_redirects: Beheer omleidingen
+        new_redirect: Nieuwe omleiding
+        permanent: Permanent
+        redirects: omleidingen
+        source: Bron
+    menu:
+        admin:
+            main:
+                configuration:
+                    redirects: Omleidingen
+    form:
+        redirect:
+            channels: Kanalen
+            channels_help: Als u geen kanalen inschakelt, werkt de omleiding op alle kanalen
+            destination: Bestemming
+            destination_placeholder: /nl_NL/omleiding-naar or https://omleiding.naar/
+            enabled: Ingeschakeld
+            only_404: Alleen omleiden als bron een 404 retourneert
+            only_404_help: Als dit is ingeschakeld, wordt de omleiding alleen toegepast als het pad dat u in de bron hebt ingevoerd een 404 retourneert (niet gevonden)
+            permanent: Permanent (301 omleiding in verplaats van 302)
+            permanent_help: De meest gebruikte omleiding is een permanente (301) omleiding. Dit wordt ook aanbevolen voor SEO-doeleinden
+            source: Bron
+            source_placeholder: /nl_NL/omleiding-van
