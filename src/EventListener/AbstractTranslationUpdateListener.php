@@ -165,15 +165,15 @@ abstract class AbstractTranslationUpdateListener
             $localeCode = $slugAware->getLocale();
 
             if (!isset($postParams['translations']) || 0 === count($postParams['translations'][$localeCode])) {
-                return isset($postParams['addAutomaticRedirect']) && true === $postParams['addAutomaticRedirect'];
+                return isset($postParams['addAutomaticRedirect']) && true === (bool) $postParams['addAutomaticRedirect'];
             }
 
             $translationPostParams = $postParams['translations'][$localeCode];
-            if (isset($translationPostParams['addAutomaticRedirect']) && true === $translationPostParams['addAutomaticRedirect']) {
+            if (isset($translationPostParams['addAutomaticRedirect']) && true === (bool) $translationPostParams['addAutomaticRedirect']) {
                 return true;
             }
         }
 
-        return isset($postParams['addAutomaticRedirect']) && true === $postParams['addAutomaticRedirect'];
+        return isset($postParams['addAutomaticRedirect']) && true === (bool) $postParams['addAutomaticRedirect'];
     }
 }

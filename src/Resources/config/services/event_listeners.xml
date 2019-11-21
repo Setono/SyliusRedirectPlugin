@@ -29,6 +29,7 @@
                  parent="Setono\SyliusRedirectPlugin\EventListener\AbstractTranslationUpdateListener">
             <argument index="5">%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
             <argument index="6">%sylius.model.product.class%</argument>
+            <argument type="service" id="router" />
             <tag name="kernel.event_listener" event="sylius.product.pre_update" method="preUpdateProduct" />
         </service>
     </services>
