@@ -74,7 +74,7 @@ final class ProductUpdateListener extends AbstractTranslationUpdateListener
             $destinationUrl,
             $permanent,
             $only404,
-            $product->getChannels()->toArray()
+            $product->getChannels()
         );
 
         return $redirect;

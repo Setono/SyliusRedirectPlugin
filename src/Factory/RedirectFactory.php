@@ -30,7 +30,7 @@ final class RedirectFactory implements RedirectFactoryInterface
         string $destination,
         bool $permanent = true,
         bool $only404 = true,
-        array $channels = []
+        iterable $channels = []
     ): RedirectInterface {
         $redirect = $this->createNew();
 

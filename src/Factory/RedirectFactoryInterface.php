@@ -16,6 +16,6 @@ interface RedirectFactoryInterface extends FactoryInterface
         string $destination,
         bool $permanent = true,
         bool $only404 = true,
-        array $channels = []
+        iterable $channels = []
     ): RedirectInterface;
 }
