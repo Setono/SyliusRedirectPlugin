@@ -27,4 +27,13 @@ class AutomaticRedirectCreationDeciderSpec extends ObjectBehavior
         $item = new ProductTranslation();
         $this->isAutomaticRedirectCreationAsked($item)->shouldReturn(false);
     }
+
+    public function it_does_not_mix_objects_stored(): void
+    {
+        $item = new ProductTranslation();
+        $this->askAutomaticRedirectCreation($item);
+        $item2 = new ProductTranslation();
+        $this->isAutomaticRedirectCreationAsked($item)->shouldReturn(true);
+        $this->isAutomaticRedirectCreationAsked($item2)->shouldReturn(false);
+    }
 }
