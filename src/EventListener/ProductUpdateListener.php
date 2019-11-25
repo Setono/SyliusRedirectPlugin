@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Setono\SyliusRedirectPlugin\Decider\AutomaticRedirectCreationDeciderInterface;
 use Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface;
 use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinderInterface;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
@@ -12,7 +13,6 @@ use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Component\Core\Model\ProductTranslationInterface;
 use Sylius\Component\Product\Model\ProductInterface;
 use Sylius\Component\Resource\Model\SlugAwareInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
@@ -23,16 +23,16 @@ final class ProductUpdateListener extends AbstractTranslationUpdateListener
     private $router;
 
     public function __construct(
-        RequestStack $requestStack,
         ValidatorInterface $validator,
         ManagerRegistry $managerRegistry,
         RemovableRedirectFinderInterface $removableRedirectFinder,
         RedirectFactoryInterface $redirectFactory,
+        AutomaticRedirectCreationDeciderInterface $automaticRedirectCreationDecider,
         array $validationGroups,
         string $class,
         RouterInterface $router
     ) {
-        parent::__construct($requestStack, $validator, $managerRegistry, $removableRedirectFinder, $redirectFactory, $validationGroups, $class);
+        parent::__construct($validator, $managerRegistry, $removableRedirectFinder, $redirectFactory, $automaticRedirectCreationDecider, $validationGroups, $class);
 
         $this->router = $router;
     }

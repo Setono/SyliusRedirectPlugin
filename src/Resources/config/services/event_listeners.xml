@@ -16,11 +16,11 @@
         </service>
 
         <service id="Setono\SyliusRedirectPlugin\EventListener\AbstractTranslationUpdateListener" abstract="true">
-            <argument type="service" id="request_stack"/>
             <argument type="service" id="validator"/>
             <argument type="service" id="doctrine"/>
             <argument type="service" id="setono_sylius_redirect.finder.removable_redirect"/>
             <argument type="service" id="setono_sylius_redirect.factory.redirect"/>
+            <argument type="service" id="setono.sylius_redirect.decider.automatic_redirect_creation"/>
             <argument />
             <argument />
         </service>

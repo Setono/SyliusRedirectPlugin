@@ -6,6 +6,7 @@
         <import resource="services/block_event_listeners.xml"/>
         <import resource="services/commands.xml"/>
         <import resource="services/constraints.xml"/>
+        <import resource="services/deciders.xml"/>
         <import resource="services/event_listeners.xml"/>
         <import resource="services/factories.xml"/>
         <import resource="services/finders.xml"/>
