@@ -21,14 +21,12 @@
             <argument type="service" id="setono_sylius_redirect.finder.removable_redirect"/>
             <argument type="service" id="setono_sylius_redirect.factory.redirect"/>
             <argument type="service" id="setono.sylius_redirect.decider.automatic_redirect_creation"/>
-            <argument />
-            <argument />
         </service>
 
         <service id="Setono\SyliusRedirectPlugin\EventListener\ProductUpdateListener"
                  parent="Setono\SyliusRedirectPlugin\EventListener\AbstractTranslationUpdateListener">
-            <argument index="5">%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
-            <argument index="6">%sylius.model.product.class%</argument>
+            <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
+            <argument>%sylius.model.product.class%</argument>
             <argument type="service" id="router" />
             <tag name="kernel.event_listener" event="sylius.product.pre_update" method="preUpdateProduct" />
         </service>
