@@ -5,78 +5,45 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Setono\SyliusRedirectPlugin\Decider\AutomaticRedirectCreationDeciderInterface;
-use Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface;
-use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinderInterface;
-use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
+use Setono\SyliusRedirectPlugin\Exception\SlugUpdateHandlerValidationException;
+use Setono\SyliusRedirectPlugin\SlugUpdateHandler\SlugUpdateHandlerCommand;
+use Setono\SyliusRedirectPlugin\SlugUpdateHandler\SlugUpdateHandlerInterface;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Component\Resource\Model\SlugAwareInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
 abstract class AbstractUpdateListener
 {
-    /** @var ValidatorInterface */
-    protected $validator;
-
     /** @var ManagerRegistry */
     protected $managerRegistry;
-
-    /** @var RemovableRedirectFinderInterface */
-    protected $removableRedirectFinder;
-
-    /** @var RedirectFactoryInterface */
-    protected $redirectFactory;
 
     /** @var AutomaticRedirectCreationDeciderInterface */
     protected $automaticRedirectCreationDecider;
 
-    /** @var array */
-    protected $validationGroups;
+    /** @var SlugUpdateHandlerInterface */
+    private $slugUpdateHandler;
 
-    /** @var string */
-    protected $class;
-
-    /** @var ObjectManager|null */
-    private $manager;
+    /** @var EntityManagerInterface[] */
+    private $managers = [];
 
     public function __construct(
-        ValidatorInterface $validator,
         ManagerRegistry $managerRegistry,
-        RemovableRedirectFinderInterface $removableRedirectFinder,
-        RedirectFactoryInterface $redirectFactory,
         AutomaticRedirectCreationDeciderInterface $automaticRedirectCreationDecider,
-        array $validationGroups,
-        string $class
+        SlugUpdateHandlerInterface $slugUpdateHandler
     ) {
-        $this->validator = $validator;
         $this->managerRegistry = $managerRegistry;
-        $this->removableRedirectFinder = $removableRedirectFinder;
-        $this->redirectFactory = $redirectFactory;
         $this->automaticRedirectCreationDecider = $automaticRedirectCreationDecider;
-        $this->validationGroups = $validationGroups;
-        $this->class = $class;
+        $this->slugUpdateHandler = $slugUpdateHandler;
     }
 
-    abstract protected function getPostName(): string;
-
-    abstract protected function createRedirect(
-        SlugAwareInterface $slugAware,
-        string $source,
-        string $destination,
-        bool $permanent = true,
-        bool $only404 = true
-    ): RedirectInterface;
-
-    protected function getPrevious(SlugAwareInterface $slugAware): array
+    private function getPrevious(SlugAwareInterface $slugAware): array
     {
-        return $this->getManager()
+        return $this->getManager(get_class($slugAware))
             ->getUnitOfWork()
-            ->getOriginalEntityData($slugAware)
-        ;
+            ->getOriginalEntityData($slugAware);
     }
 
     protected function handleAutomaticRedirectCreation(
@@ -95,17 +62,12 @@ abstract class AbstractUpdateListener
 
         $oldSlug = $previous['slug'];
         $newSlug = $slugAware->getSlug();
-        $redirect = $this->createRedirect($slugAware, $oldSlug, $newSlug, true, false);
 
-        $removableRedirects = $this->removableRedirectFinder->findRedirectsTargetedBy($redirect);
-        foreach ($removableRedirects as $removableRedirect) {
-            $this->getManager()->remove($removableRedirect);
-        }
-
-        $violations = $this->validator->validate($redirect, null, $this->validationGroups);
-        if ($violations->count() > 0) {
+        try {
+            $this->slugUpdateHandler->handle(new SlugUpdateHandlerCommand($slugAware, $oldSlug, $newSlug));
+        } catch (SlugUpdateHandlerValidationException $e) {
             /** @var ConstraintViolationInterface $violation */
-            $violation = current(iterator_to_array($violations));
+            $violation = current(iterator_to_array($e->getConstraintViolationList()));
 
             $event->stop(
                 $violation->getMessageTemplate(),
@@ -113,20 +75,16 @@ abstract class AbstractUpdateListener
                 $violation->getParameters()
             );
         }
-
-        $this->getManager()->persist($redirect);
     }
 
-    protected function getManager(): EntityManagerInterface
+    protected function getManager(string $class): EntityManagerInterface
     {
-        if (!$this->manager instanceof EntityManagerInterface) {
-            /** @var EntityManagerInterface|null $manager */
-            $manager = $this->managerRegistry->getManagerForClass($this->class);
-            Assert::isInstanceOf($manager, EntityManagerInterface::class);
+        if (!isset($this->managers[$class])) {
+            $this->managers[$class] = $this->managerRegistry->getManagerForClass($class);
 
-            $this->manager = $manager;
+            Assert::isInstanceOf($this->managers[$class], EntityManagerInterface::class);
         }
 
-        return $this->manager;
+        return $this->managers[$class];
     }
 }
