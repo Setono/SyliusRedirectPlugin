@@ -112,7 +112,7 @@ The same mechanism could be made for taxon slugs, and obviously for any other re
 
 [ico-version]: https://img.shields.io/packagist/v/setono/sylius-redirect-plugin.svg
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
-[ico-github-actions]: https://github.com/Setono/SyliusRedirectPlugin/workflows/CI/badge.svg
+[ico-github-actions]: https://github.com/Setono/SyliusRedirectPlugin/workflows/build/badge.svg
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/Setono/SyliusRedirectPlugin.svg
 
 [link-packagist]: https://packagist.org/packages/setono/sylius-redirect-plugin
