@@ -6,14 +6,13 @@ namespace spec\Setono\SyliusRedirectPlugin\Finder;
 
 use PhpSpec\ObjectBehavior;
 use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinderInterface;
-use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 
 final class RemovableRedirectFinderSpec extends ObjectBehavior
 {
-    public function let(RedirectRepositoryInterface $redirectRepository, RedirectionPathResolverInterface $redirectionPathResolver): void
+    public function let(RedirectionPathResolverInterface $redirectionPathResolver): void
     {
-        $this->beConstructedWith($redirectRepository, $redirectionPathResolver);
+        $this->beConstructedWith($redirectionPathResolver);
     }
 
     public function it_implements_redirect_finder_interface(): void
