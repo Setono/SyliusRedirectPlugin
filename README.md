@@ -53,11 +53,11 @@ setono_sylius_redirect_admin:
 ```
 
 ```yaml
-# config/packages/_sylius.yaml
+# config/packages/setono_sylius_redirect.yaml
 imports:
     # ...
     
-    - { resource: "@SetonoSyliusRedirectPlugin/Resources/config/config.yaml" }
+    - { resource: "@SetonoSyliusRedirectPlugin/Resources/config/app/config.yaml" }
     
     # ...
 ```
