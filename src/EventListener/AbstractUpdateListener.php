@@ -40,7 +40,7 @@ abstract class AbstractUpdateListener
         $this->slugUpdateHandler = $slugUpdateHandler;
     }
 
-    private function getPrevious(SlugAwareInterface $slugAware): array
+    protected function getPrevious(SlugAwareInterface $slugAware): array
     {
         return $this->getManager(get_class($slugAware))
             ->getUnitOfWork()
