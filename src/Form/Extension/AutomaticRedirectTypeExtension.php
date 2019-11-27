@@ -74,10 +74,10 @@ abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
                 return;
             }
 
-            $currentSlug = $this->oldSlugs[$hash];
+            $oldSlug = $this->oldSlugs[$hash];
             $newSlug = $data->getSlug();
 
-            if (null === $currentSlug || null === $newSlug || $currentSlug === $newSlug) {
+            if (null === $oldSlug || null === $newSlug || $oldSlug === $newSlug) {
                 return;
             }
 
@@ -87,7 +87,7 @@ abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
             }
 
             try {
-                $this->slugUpdateHandler->handle(new SlugUpdateHandlerCommand($data, $currentSlug, $newSlug));
+                $this->slugUpdateHandler->handle(new SlugUpdateHandlerCommand($data, $oldSlug, $newSlug));
             } catch (SlugUpdateHandlerValidationException $e) {
                 /** @var ConstraintViolation $violation */
                 foreach ($e->getConstraintViolationList() as $violation) {
