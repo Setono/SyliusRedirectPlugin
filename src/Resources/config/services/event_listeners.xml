@@ -15,7 +15,7 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
-        <service id="Setono\SyliusRedirectPlugin\EventListener\AbstractTranslationUpdateListener" abstract="true">
+        <service id="Setono\SyliusRedirectPlugin\EventListener\AbstractUpdateListener" abstract="true">
             <argument type="service" id="validator"/>
             <argument type="service" id="doctrine"/>
             <argument type="service" id="setono_sylius_redirect.finder.removable_redirect"/>
@@ -27,8 +27,8 @@
                  parent="Setono\SyliusRedirectPlugin\EventListener\AbstractTranslationUpdateListener">
             <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
             <argument>%sylius.model.product.class%</argument>
-            <argument type="service" id="router" />
-            <tag name="kernel.event_listener" event="sylius.product.pre_update" method="preUpdateProduct" />
+            <argument type="service" id="router"/>
+            <tag name="kernel.event_listener" event="sylius.product.pre_update" method="preUpdateProduct"/>
         </service>
     </services>
 </container>

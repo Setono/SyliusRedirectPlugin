@@ -17,7 +17,7 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
-abstract class AbstractTranslationUpdateListener
+abstract class AbstractUpdateListener
 {
     /** @var ValidatorInterface */
     protected $validator;

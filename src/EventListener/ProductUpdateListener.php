@@ -10,14 +10,14 @@ use Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface;
 use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinderInterface;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductTranslationInterface;
-use Sylius\Component\Product\Model\ProductInterface;
 use Sylius\Component\Resource\Model\SlugAwareInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 
-final class ProductUpdateListener extends AbstractTranslationUpdateListener
+final class ProductUpdateListener extends AbstractUpdateListener
 {
     /** @var RouterInterface */
     private $router;
@@ -65,10 +65,13 @@ final class ProductUpdateListener extends AbstractTranslationUpdateListener
     ): RedirectInterface {
         /** @var ProductTranslationInterface $slugAware */
         Assert::isInstanceOf($slugAware, ProductTranslationInterface::class);
-        /** @var \Sylius\Component\Core\Model\ProductInterface $product */
+
+        /** @var ProductInterface $product */
         $product = $slugAware->getTranslatable();
+
         $sourceUrl = $this->router->generate('sylius_shop_product_show', ['slug' => $source]);
         $destinationUrl = $this->router->generate('sylius_shop_product_show', ['slug' => $destination]);
+
         $redirect = $this->redirectFactory->createNewWithValues(
             $sourceUrl,
             $destinationUrl,
