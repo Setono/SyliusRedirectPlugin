@@ -7,6 +7,7 @@ namespace Setono\SyliusRedirectPlugin\EventListener;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Setono\SyliusRedirectPlugin\Decider\AutomaticRedirectCreationDeciderInterface;
+use Setono\SyliusRedirectPlugin\Exception\SlugUpdateHandlerException;
 use Setono\SyliusRedirectPlugin\Exception\SlugUpdateHandlerValidationException;
 use Setono\SyliusRedirectPlugin\SlugUpdateHandler\SlugUpdateHandlerCommand;
 use Setono\SyliusRedirectPlugin\SlugUpdateHandler\SlugUpdateHandlerInterface;
@@ -74,6 +75,8 @@ abstract class AbstractUpdateListener
                 ResourceControllerEvent::TYPE_ERROR,
                 $violation->getParameters()
             );
+        } catch (SlugUpdateHandlerException $e) {
+            $event->stop($e->getMessage());
         }
     }
 
