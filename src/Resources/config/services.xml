@@ -6,11 +6,11 @@
         <import resource="services/block_event_listener.xml"/>
         <import resource="services/command.xml"/>
         <import resource="services/constraint.xml"/>
-        <import resource="services/decider.xml"/>
         <import resource="services/event_listener.xml"/>
         <import resource="services/factory.xml"/>
         <import resource="services/finder.xml"/>
         <import resource="services/form.xml"/>
         <import resource="services/resolver.xml"/>
+        <import resource="services/slug_update_handler.xml"/>
     </imports>
 </container>
