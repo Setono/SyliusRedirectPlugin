@@ -3,23 +3,14 @@
 <container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <imports>
-        <import resource="services/block_event_listeners.xml"/>
-        <import resource="services/commands.xml"/>
-        <import resource="services/constraints.xml"/>
-        <import resource="services/deciders.xml"/>
-        <import resource="services/event_listeners.xml"/>
-        <import resource="services/factories.xml"/>
-        <import resource="services/finders.xml"/>
-        <import resource="services/form_extensions.xml"/>
-        <import resource="services/form_types.xml"/>
-        <import resource="services/resolvers.xml"/>
+        <import resource="services/block_event_listener.xml"/>
+        <import resource="services/command.xml"/>
+        <import resource="services/constraint.xml"/>
+        <import resource="services/decider.xml"/>
+        <import resource="services/event_listener.xml"/>
+        <import resource="services/factory.xml"/>
+        <import resource="services/finder.xml"/>
+        <import resource="services/form.xml"/>
+        <import resource="services/resolver.xml"/>
     </imports>
-    <parameters>
-        <parameter key="setono_sylius_redirect.form.type.redirect.validation_groups" type="collection">
-            <parameter>setono_sylius_redirect</parameter>
-        </parameter>
-    </parameters>
-
-    <services>
-    </services>
 </container>

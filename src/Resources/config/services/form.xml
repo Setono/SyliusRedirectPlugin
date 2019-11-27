@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="setono_sylius_redirect.form.type.redirect.validation_groups" type="collection">
+            <parameter>setono_sylius_redirect</parameter>
+        </parameter>
+    </parameters>
+    <services>
+        <service id="setono_sylius_redirect.form.type.redirect"
+                 class="Setono\SyliusRedirectPlugin\Form\Type\RedirectType">
+            <argument>%setono_sylius_redirect.model.redirect.class%</argument>
+            <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
+            <tag name="form.type"/>
+        </service>
+
+        <service id="setono_sylius_redirect.form.extension.product_translation"
+                 class="Setono\SyliusRedirectPlugin\Form\Extension\ProductTranslationTypeExtension">
+            <argument type="service" id="setono_sylius_redirect.decider.automatic_redirect_creation"/>
+
+            <tag name="form.type_extension"/>
+        </service>
+    </services>
+</container>
