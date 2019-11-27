@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Setono\SyliusRedirectPlugin\Form\Extension\Product;
+namespace Setono\SyliusRedirectPlugin\Form\Extension;
 
 use Sylius\Bundle\ProductBundle\Form\Type\ProductTranslationType;
 

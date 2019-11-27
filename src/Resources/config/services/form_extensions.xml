@@ -4,8 +4,9 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="setono.sylius_redirect.form.type.extension.product_translation"
-                 class="Setono\SyliusRedirectPlugin\Form\Extension\Product\ProductTranslationTypeExtension">
-            <argument type="service" id="setono.sylius_redirect.decider.automatic_redirect_creation" />
+                 class="Setono\SyliusRedirectPlugin\Form\Extension\ProductTranslationTypeExtension">
+            <argument type="service" id="setono.sylius_redirect.decider.automatic_redirect_creation"/>
+
             <tag name="form.type_extension"/>
         </service>
     </services>

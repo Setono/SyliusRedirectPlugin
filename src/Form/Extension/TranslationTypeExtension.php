@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Setono\SyliusRedirectPlugin\Form\Extension\Product;
+namespace Setono\SyliusRedirectPlugin\Form\Extension;
 
 use Setono\SyliusRedirectPlugin\Decider\AutomaticRedirectCreationDeciderInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
