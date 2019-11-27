@@ -10,6 +10,7 @@ use Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface;
 use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinderInterface;
 use Sylius\Component\Channel\Model\ChannelAwareInterface;
 use Sylius\Component\Channel\Model\ChannelsAwareInterface;
+use Sylius\Component\Resource\Model\TranslationInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -57,8 +58,18 @@ abstract class SlugUpdateHandler implements SlugUpdateHandlerInterface
 
         $obj = $slugUpdateHandlerCommand->getObject();
 
-        $oldUrl = $this->generateUrl($slugUpdateHandlerCommand->getOldSlug());
-        $newUrl = $this->generateUrl($slugUpdateHandlerCommand->getNewSlug());
+        // todo right now this handler only supports objects of this type since they have a locale
+        if (!$obj instanceof TranslationInterface) {
+            return;
+        }
+
+        $locale = $obj->getLocale();
+        if (null === $locale) {
+            return;
+        }
+
+        $oldUrl = $this->generateUrl($slugUpdateHandlerCommand->getOldSlug(), $locale);
+        $newUrl = $this->generateUrl($slugUpdateHandlerCommand->getNewSlug(), $locale);
 
         $channels = [];
 
@@ -87,6 +98,5 @@ abstract class SlugUpdateHandler implements SlugUpdateHandlerInterface
         $this->redirectManager->persist($redirect);
     }
 
-    // todo missing a locale
-    abstract protected function generateUrl(string $slug): string;
+    abstract protected function generateUrl(string $slug, string $locale): string;
 }
