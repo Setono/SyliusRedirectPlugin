@@ -22,7 +22,7 @@ jobs:
                     php-version: ${{ matrix.php-versions }}
                     extension-csv: intl
             -   name: Install Composer dependencies
-                run: composer update --no-progress --no-suggest --prefer-dist --no-interaction ${{ matrix.composer-args }}
+                run: composer update --no-progress --no-suggest --prefer-dist --no-interaction
             -   name: Validate composer
                 run: composer validate --strict
             -   name: Check composer normalized
