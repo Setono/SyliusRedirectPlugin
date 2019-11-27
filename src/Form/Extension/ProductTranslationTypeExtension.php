@@ -6,7 +6,7 @@ namespace Setono\SyliusRedirectPlugin\Form\Extension;
 
 use Sylius\Bundle\ProductBundle\Form\Type\ProductTranslationType;
 
-final class ProductTranslationTypeExtension extends TranslationTypeExtension
+final class ProductTranslationTypeExtension extends AutomaticRedirectTypeExtension
 {
     public function getExtendedType(): string
     {
