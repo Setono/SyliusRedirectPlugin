@@ -70,6 +70,10 @@ $ bin/console doctrine:migrations:diff
 $ bin/console doctrine:migrations:migrate
 ```
 
+### Step 5: Copy template
+
+You can copy the templates under `tests/Application/templates/bundles/SyliusAdminBundle` into your own application to enable the possibility to add an automatic redirection when updating product 
+
 ## What it does
 
 This plugin allows you to create new redirects.
@@ -91,9 +95,16 @@ There is a built-in security when creating/modifying redirection that prevent cr
 
 A second security is to prevent same source redirection leading to inconstant redirect.
 
+### Automatic redirect
+
+There is a built-in feature that allows you to automatically create a redirection when changing a product slug.
+It also handles the case where it would create an infinite loop and remove the unnecessary redirect.
+
+Example: Having a slug like `/products/a`, renaming it to `/products/b` then renaming it to `/products/a` will result in a redirect from `b` to `a` and will automatically delete the one from `a` to `b`.
+
 ### Points of improvements 
 
-At the moment, there is no automatic redirects created at any point. Though you can easily do so by creating an event listener where needed. And even create a PR in this repo. 
+The same mechanism could be made for taxon slugs, and obviously for any other resource that has a slug. Feel free to submit a PR.
 
 ## Contributors
 - [Joachim Løvgaard](https://github.com/loevgaard)

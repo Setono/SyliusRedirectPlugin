@@ -45,20 +45,21 @@ final class SourceValidator extends ConstraintValidator
             return;
         }
 
-        $conflictingRedirect = $this->redirectRepository->findOneEnabledBySource($redirect->getSource());
-        if (null === $conflictingRedirect || $redirect->getId() === $conflictingRedirect->getId()) {
-            return;
-        }
+        if ($redirect->getChannels()->isEmpty()) {
+            $conflictingRedirect = $this->redirectRepository->findOneEnabledBySource($redirect->getSource());
+            if (null === $conflictingRedirect || $redirect->getId() === $conflictingRedirect->getId()) {
+                return;
+            }
 
-        // If both redirects have 0 channels, they are conflicting
-        if ($conflictingRedirect->getChannels()->count() === 0 && $redirect->getChannels()->count() === 0) {
             $this->buildViolation($constraint, $redirect->getSource(), $conflictingRedirect->getId());
         } else {
-            // else we have to see if they have intersecting channels
             foreach ($redirect->getChannels() as $channel) {
-                if ($conflictingRedirect->hasChannel($channel)) {
-                    $this->buildViolation($constraint, $redirect->getSource(), $conflictingRedirect->getId());
+                $conflictingRedirect = $this->redirectRepository->findOneEnabledBySource($redirect->getSource(), $channel);
+                if (null === $conflictingRedirect || $redirect->getId() === $conflictingRedirect->getId()) {
+                    return;
                 }
+
+                $this->buildViolation($constraint, $redirect->getSource(), $conflictingRedirect->getId());
             }
         }
     }
