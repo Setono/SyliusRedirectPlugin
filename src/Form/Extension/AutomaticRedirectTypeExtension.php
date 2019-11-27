@@ -15,6 +15,9 @@ use Symfony\Component\Form\FormEvents;
 
 abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
 {
+    /** @var string */
+    protected const FIELD_NAME = 'addAutomaticRedirect';
+
     /** @var AutomaticRedirectCreationDeciderInterface */
     private $automaticRedirectCreationDecider;
 
@@ -33,7 +36,7 @@ abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
                 return;
             }
 
-            $form->add('addAutomaticRedirect', CheckboxType::class, [
+            $form->add(self::FIELD_NAME, CheckboxType::class, [
                 'mapped' => false,
                 'label' => 'setono_sylius_redirect.form.add_automatic_redirect',
                 'required' => false,
@@ -47,10 +50,11 @@ abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
             $form = $event->getForm();
             $data = $event->getData();
 
-            if (!$data instanceof SlugAwareInterface || !$data instanceof ResourceInterface || $data->getId() === null) {
+            if (!$form->has(self::FIELD_NAME)) {
                 return;
             }
-            if ($form->get('addAutomaticRedirect')->getData() === true) {
+
+            if ($form->get(self::FIELD_NAME)->getData() === true) {
                 $this->automaticRedirectCreationDecider->askAutomaticRedirectCreation($data);
             }
         });
