@@ -73,10 +73,10 @@ abstract class AbstractUpdateListener
 
     protected function getPrevious(SlugAwareInterface $slugAware): array
     {
-        $uow = $this->getManager()->getUnitOfWork();
-        $previous = $uow->getOriginalEntityData($slugAware);
-
-        return $previous;
+        return $this->getManager()
+            ->getUnitOfWork()
+            ->getOriginalEntityData($slugAware)
+        ;
     }
 
     protected function handleAutomaticRedirectCreation(
@@ -105,15 +105,13 @@ abstract class AbstractUpdateListener
         $violations = $this->validator->validate($redirect, null, $this->validationGroups);
         if ($violations->count() > 0) {
             /** @var ConstraintViolationInterface $violation */
-            foreach ($violations as $violation) {
-                $event->stop(
-                    $violation->getMessageTemplate(),
-                    ResourceControllerEvent::TYPE_ERROR,
-                    $violation->getParameters()
-                );
+            $violation = current(iterator_to_array($violations));
 
-                return;
-            }
+            $event->stop(
+                $violation->getMessageTemplate(),
+                ResourceControllerEvent::TYPE_ERROR,
+                $violation->getParameters()
+            );
         }
 
         $this->getManager()->persist($redirect);

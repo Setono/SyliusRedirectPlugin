@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Decider;
 
+use function spl_object_hash;
+
 final class AutomaticRedirectCreationDecider implements AutomaticRedirectCreationDeciderInterface
 {
     /** @var array */
@@ -29,6 +31,6 @@ final class AutomaticRedirectCreationDecider implements AutomaticRedirectCreatio
 
     private function getObjectIndex(object $object): string
     {
-        return \spl_object_hash($object);
+        return spl_object_hash($object);
     }
 }

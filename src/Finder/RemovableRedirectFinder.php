@@ -7,20 +7,15 @@ namespace Setono\SyliusRedirectPlugin\Finder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
-use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 
 final class RemovableRedirectFinder implements RemovableRedirectFinderInterface
 {
-    /** @var RedirectRepositoryInterface */
-    private $redirectRepository;
-
     /** @var RedirectionPathResolverInterface */
     private $redirectionPathResolver;
 
-    public function __construct(RedirectRepositoryInterface $redirectRepository, RedirectionPathResolverInterface $redirectionPathResolver)
+    public function __construct(RedirectionPathResolverInterface $redirectionPathResolver)
     {
-        $this->redirectRepository = $redirectRepository;
         $this->redirectionPathResolver = $redirectionPathResolver;
     }
 
