@@ -17,22 +17,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class SlugUpdateHandler implements SlugUpdateHandlerInterface
 {
     /** @var RedirectFactoryInterface */
-    private $redirectFactory;
+    protected $redirectFactory;
 
     /** @var EntityManagerInterface */
-    private $redirectManager;
+    protected $redirectManager;
 
     /** @var UrlGeneratorInterface */
     protected $urlGenerator;
 
     /** @var RemovableRedirectFinderInterface */
-    private $removableRedirectFinder;
+    protected $removableRedirectFinder;
 
     /** @var ValidatorInterface */
-    private $validator;
+    protected $validator;
 
     /** @var array */
-    private $validationGroups;
+    protected $validationGroups;
 
     public function __construct(
         RedirectFactoryInterface $redirectFactory,
