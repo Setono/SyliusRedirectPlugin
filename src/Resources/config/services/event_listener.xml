@@ -16,23 +16,5 @@
             <argument type="service" id="setono_sylius_redirect.resolver.redirection_path"/>
             <tag name="kernel.event_subscriber"/>
         </service>
-
-        <service id="setono_sylius_redirect.event_listener.abstract_update"
-                 class="Setono\SyliusRedirectPlugin\EventListener\AbstractUpdateListener" abstract="true">
-            <argument type="service" id="validator"/>
-            <argument type="service" id="doctrine"/>
-            <argument type="service" id="setono_sylius_redirect.finder.removable_redirect"/>
-            <argument type="service" id="setono_sylius_redirect.factory.redirect"/>
-            <argument type="service" id="setono_sylius_redirect.decider.automatic_redirect_creation"/>
-        </service>
-
-        <service id="setono_sylius_redirect.event_listener.product_update"
-                 class="Setono\SyliusRedirectPlugin\EventListener\ProductUpdateListener"
-                 parent="setono_sylius_redirect.event_listener.abstract_update">
-            <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
-            <argument>%sylius.model.product.class%</argument>
-            <argument type="service" id="router"/>
-            <tag name="kernel.event_listener" event="sylius.product.pre_update" method="preUpdateProduct"/>
-        </service>
     </services>
 </container>

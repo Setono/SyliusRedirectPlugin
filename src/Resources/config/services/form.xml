@@ -17,7 +17,7 @@
 
         <service id="setono_sylius_redirect.form.extension.product_translation"
                  class="Setono\SyliusRedirectPlugin\Form\Extension\ProductTranslationTypeExtension">
-            <argument type="service" id="setono_sylius_redirect.decider.automatic_redirect_creation"/>
+            <argument type="service" id="setono_sylius_redirect.slug_update_handler.product_translation"/>
 
             <tag name="form.type_extension"/>
         </service>

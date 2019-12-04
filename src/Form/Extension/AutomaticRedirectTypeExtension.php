@@ -4,31 +4,42 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Form\Extension;
 
-use Setono\SyliusRedirectPlugin\Decider\AutomaticRedirectCreationDeciderInterface;
+use Setono\SyliusRedirectPlugin\Exception\SlugUpdateHandlerValidationException;
+use Setono\SyliusRedirectPlugin\SlugUpdateHandler\SlugUpdateHandlerCommand;
+use Setono\SyliusRedirectPlugin\SlugUpdateHandler\SlugUpdateHandlerInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
 use Sylius\Component\Resource\Model\SlugAwareInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Validator\ViolationMapper\ViolationMapper;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\ConstraintViolation;
 
 abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
 {
     /** @var string */
     protected const FIELD_NAME = 'addAutomaticRedirect';
 
-    /** @var AutomaticRedirectCreationDeciderInterface */
-    private $automaticRedirectCreationDecider;
+    /** @var SlugUpdateHandlerInterface */
+    private $slugUpdateHandler;
 
-    public function __construct(AutomaticRedirectCreationDeciderInterface $automaticRedirectCreationDecider)
+    /** @var ViolationMapper */
+    private $violationMapper;
+
+    /** @var array */
+    private $oldSlugs = [];
+
+    public function __construct(SlugUpdateHandlerInterface $slugUpdateHandler)
     {
-        $this->automaticRedirectCreationDecider = $automaticRedirectCreationDecider;
+        $this->slugUpdateHandler = $slugUpdateHandler;
+        $this->violationMapper = new ViolationMapper();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event): void {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $event->getData();
 
@@ -44,19 +55,50 @@ abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
                     'class' => 'js-add-automatic-redirection-checkbox',
                 ],
             ]);
+
+            $this->oldSlugs[self::getObjectHash($data)] = $data->getSlug();
         });
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
+
+            /** @var SlugAwareInterface $data */
             $data = $event->getData();
 
             if (!$form->has(self::FIELD_NAME)) {
                 return;
             }
 
-            if ($form->get(self::FIELD_NAME)->getData() === true) {
-                $this->automaticRedirectCreationDecider->askAutomaticRedirectCreation($data);
+            $hash = self::getObjectHash($data);
+            if (!isset($this->oldSlugs[$hash])) {
+                return;
+            }
+
+            $oldSlug = $this->oldSlugs[$hash];
+            $newSlug = $data->getSlug();
+
+            if (null === $oldSlug || null === $newSlug || $oldSlug === $newSlug) {
+                return;
+            }
+
+            // the automatic redirect creation is not requested by the user
+            if ($form->get(self::FIELD_NAME)->getData() === false) {
+                return;
+            }
+
+            try {
+                $this->slugUpdateHandler->handle(new SlugUpdateHandlerCommand($data, $oldSlug, $newSlug));
+            } catch (SlugUpdateHandlerValidationException $e) {
+                /** @var ConstraintViolation $violation */
+                foreach ($e->getConstraintViolationList() as $violation) {
+                    $this->violationMapper->mapViolation($violation, $form);
+                }
             }
         });
+    }
+
+    private static function getObjectHash(object $obj): string
+    {
+        return spl_object_hash($obj);
     }
 }
