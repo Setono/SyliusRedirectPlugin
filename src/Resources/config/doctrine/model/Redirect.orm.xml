@@ -5,7 +5,7 @@
                   xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                                       http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <mapped-superclass name="Setono\SyliusRedirectPlugin\Model\Redirect" table="setono_redirect">
+    <mapped-superclass name="Setono\SyliusRedirectPlugin\Model\Redirect" table="setono_sylius_redirect__redirect">
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO"/>
         </id>
@@ -31,7 +31,7 @@
         </field>
 
         <many-to-many field="channels" target-entity="Sylius\Component\Channel\Model\ChannelInterface">
-            <join-table name="setono_redirect_channels">
+            <join-table name="setono_sylius_redirect__redirect_channels">
                 <join-columns>
                     <join-column name="redirect_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
                 </join-columns>
