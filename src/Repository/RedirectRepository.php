@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\Repository;
 
 use DateInterval;
-use DateTime;
 use Exception;
+use Safe\DateTime;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Channel\Model\ChannelInterface;
