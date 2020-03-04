@@ -10,7 +10,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.2",
+        "php": "^7.3",
         "sylius/sylius": "^1.2"
     },
     "require-dev": {
@@ -26,22 +26,22 @@
         "friends-of-behat/variadic-extension": "^1.1",
         "korbeil/phpstan-generic-rules": "^0.2",
         "lakion/mink-debug-extension": "^1.2.3",
-        "phpspec/phpspec": "^5.0 || ^6.0",
+        "phpspec/phpspec": "^6.1",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-doctrine": "^0.12",
         "phpstan/phpstan-strict-rules": "^0.12",
         "phpstan/phpstan-webmozart-assert": "^0.12",
-        "phpunit/phpunit": "^8.0",
+        "phpunit/phpunit": "^8.5",
         "roave/security-advisories": "dev-master",
-        "sensiolabs/security-checker": "^5.0",
-        "sylius-labs/coding-standard": "^3.0",
-        "symfony/browser-kit": "^3.4 || ^4.3 || ^5.0",
-        "symfony/debug-bundle": "^3.4 || ^4.3 || ^5.0",
-        "symfony/dotenv": "^4.3 || ^5.0",
-        "symfony/intl": "^3.4 || ^4.3 || ^5.0",
-        "symfony/web-profiler-bundle": "^3.4 || ^4.3 || ^5.0",
-        "symfony/web-server-bundle": "^3.4 || ^4.3 || ^5.0",
-        "thecodingmachine/phpstan-safe-rule": "^1.0@beta"
+        "sensiolabs/security-checker": "^6.0",
+        "sylius-labs/coding-standard": "^3.1",
+        "symfony/browser-kit": "^^4.4 || ^5.0",
+        "symfony/debug-bundle": "^4.4 || ^5.0",
+        "symfony/dotenv": "^4.4 || ^5.0",
+        "symfony/intl": "^4.4 || ^5.0",
+        "symfony/web-profiler-bundle": "^4.4 || ^5.0",
+        "symfony/web-server-bundle": "^4.4 || ^5.0",
+        "thecodingmachine/phpstan-safe-rule": "^1.0"
     },
     "config": {
         "sort-packages": true
