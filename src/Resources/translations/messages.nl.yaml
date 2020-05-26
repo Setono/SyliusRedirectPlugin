@@ -8,7 +8,7 @@ setono_sylius_redirect:
         manage_redirects: Beheer omleidingen
         new_redirect: Nieuwe omleiding
         permanent: Permanent
-        redirects: omleidingen
+        redirects: Omleidingen
         source: Bron
     menu:
         admin:
