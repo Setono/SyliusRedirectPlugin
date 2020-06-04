@@ -11,7 +11,8 @@
     "license": "MIT",
     "require": {
         "php": "^7.3",
-        "sylius/sylius": "^1.2"
+        "sylius/sylius": "^1.2",
+        "thecodingmachine/safe": "^1.0"
     },
     "require-dev": {
         "behat/behat": "^3.4",
@@ -48,7 +49,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0-dev"
+            "dev-master": "2.1-dev"
         }
     },
     "autoload": {
