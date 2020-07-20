@@ -9,6 +9,14 @@
             <tag name="kernel.event_listener" event="sylius.menu.admin.main" method="addAdminMenuItems"/>
         </service>
 
+        <service id="setono_sylius_redirect.event_listener.controller"
+                 class="Setono\SyliusRedirectPlugin\EventListener\ControllerSubscriber">
+            <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
+            <argument type="service" id="sylius.context.channel"/>
+            <argument type="service" id="setono_sylius_redirect.resolver.redirection_path"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>        
+        
         <service id="setono_sylius_redirect.event_listener.not_found"
                  class="Setono\SyliusRedirectPlugin\EventListener\NotFoundSubscriber">
             <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
