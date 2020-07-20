@@ -19,7 +19,7 @@
                  class="Setono\SyliusRedirectPlugin\Form\Extension\ProductTranslationTypeExtension">
             <argument type="service" id="setono_sylius_redirect.slug_update_handler.product_translation"/>
 
-            <tag name="form.type_extension"/>
+            <tag name="form.type_extension" extended-type="Sylius\Bundle\ProductBundle\Form\Type\ProductTranslationType"/>
         </service>
     </services>
 </container>
