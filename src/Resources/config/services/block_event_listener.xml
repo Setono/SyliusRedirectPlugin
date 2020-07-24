@@ -3,9 +3,23 @@
 <container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <service id="setono_sylius_redirect.admin.javascripts"
+                 class="Sylius\Bundle\UiBundle\Block\BlockEventListener">
+            <argument>@SetonoSyliusRedirectPlugin/Admin/_javascripts.html.twig</argument>
+            <tag name="kernel.event_listener" event="sonata.block.event.sylius.admin.layout.javascripts"
+                 method="onBlockEvent"/>
+        </service>
+
         <service id="setono_sylius_redirect.admin.product.javascripts"
                  class="Sylius\Bundle\UiBundle\Block\BlockEventListener">
             <argument>@SetonoSyliusRedirectPlugin/Admin/Product/_javascripts.html.twig</argument>
+            <tag name="kernel.event_listener" event="sonata.block.event.sylius.admin.layout.javascripts"
+                 method="onBlockEvent"/>
+        </service>
+
+        <service id="setono_sylius_redirect.admin.taxon.javascripts"
+                 class="Sylius\Bundle\UiBundle\Block\BlockEventListener">
+            <argument>@SetonoSyliusRedirectPlugin/Admin/Taxon/_javascripts.html.twig</argument>
             <tag name="kernel.event_listener" event="sonata.block.event.sylius.admin.layout.javascripts"
                  method="onBlockEvent"/>
         </service>

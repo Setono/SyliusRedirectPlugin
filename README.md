@@ -109,11 +109,12 @@ Example: Having a slug like `/products/a`, renaming it to `/products/b` then ren
 
 ### Points of improvements 
 
-The same mechanism could be made for taxon slugs, and obviously for any other resource that has a slug. Feel free to submit a PR.
+The same mechanism could be made other resources that has a slug. Feel free to submit a PR.
 
 ## Contributors
 - [Joachim Løvgaard](https://github.com/loevgaard)
 - [Stephane Decock](https://github.com/Roshyo)
+- [Stefan Doorn](https://github.com/stefandoorn)
 
 [ico-version]: https://img.shields.io/packagist/v/setono/sylius-redirect-plugin.svg
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg

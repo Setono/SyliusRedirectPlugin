@@ -12,5 +12,15 @@
             <argument type="service" id="validator"/>
             <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
         </service>
+
+        <service id="setono_sylius_redirect.slug_update_handler.taxon_translation"
+                 class="Setono\SyliusRedirectPlugin\SlugUpdateHandler\TaxonTranslationSlugUpdateHandler">
+            <argument type="service" id="setono_sylius_redirect.factory.redirect"/>
+            <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
+            <argument type="service" id="router"/>
+            <argument type="service" id="setono_sylius_redirect.finder.removable_redirect"/>
+            <argument type="service" id="validator"/>
+            <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
+        </service>
     </services>
 </container>
