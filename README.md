@@ -107,10 +107,6 @@ It also handles the case where it would create an infinite loop and remove the u
 
 Example: Having a slug like `/products/a`, renaming it to `/products/b` then renaming it to `/products/a` will result in a redirect from `b` to `a` and will automatically delete the one from `a` to `b`.
 
-### Points of improvements 
-
-The same mechanism could be made other resources that has a slug. Feel free to submit a PR.
-
 ## Contributors
 - [Joachim Løvgaard](https://github.com/loevgaard)
 - [Stephane Decock](https://github.com/Roshyo)
