@@ -21,10 +21,10 @@ class Redirect implements RedirectInterface
     /** @var int */
     protected $id;
 
-    /** @var string */
+    /** @var string|null */
     protected $source;
 
-    /** @var string */
+    /** @var string|null */
     protected $destination;
 
     /** @var bool */

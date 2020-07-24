@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
+use Webmozart\Assert\Assert;
 
 final class RemovableRedirectFinder implements RemovableRedirectFinderInterface
 {
@@ -23,14 +24,16 @@ final class RemovableRedirectFinder implements RemovableRedirectFinderInterface
     {
         $result = new ArrayCollection();
 
+        $destination = $redirect->getDestination();
+        Assert::notNull($destination);
         if ($redirect->getChannels()->isEmpty()) {
-            $redirectionPath = $this->redirectionPathResolver->resolve($redirect->getDestination());
+            $redirectionPath = $this->redirectionPathResolver->resolve($destination);
             if (!$redirectionPath->isEmpty() && !$result->contains($redirectionPath->first())) {
                 $result->add($redirectionPath->first());
             }
         } else {
             foreach ($redirect->getChannels() as $channel) {
-                $redirectionPath = $this->redirectionPathResolver->resolve($redirect->getDestination(), $channel);
+                $redirectionPath = $this->redirectionPathResolver->resolve($destination, $channel);
                 if (!$redirectionPath->isEmpty() && !$result->contains($redirectionPath->first())) {
                     $result->add($redirectionPath->first());
                 }

@@ -19,7 +19,7 @@ final class ControllerSubscriber implements EventSubscriberInterface
     /** @var ObjectManager */
     private $objectManager;
 
-    /** @var ChannelContextInterface|null */
+    /** @var ChannelContextInterface */
     private $channelContext;
 
     /** @var RedirectionPathResolverInterface */

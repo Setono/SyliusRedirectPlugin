@@ -45,7 +45,7 @@ final class RedirectionPathResolver implements RedirectionPathResolverInterface
 
             if ($redirectionPath->hasCycle()) {
                 throw new InfiniteLoopException(
-                    $redirectionPath->first() !== null ? $redirectionPath->first()->getSource() : $source
+                    $redirectionPath->first() !== null ? $redirectionPath->first()->getSource() ?? $source : $source
                 );
             }
         } while (null !== $redirect && !$redirect->isOnly404()); // See this issue for explanation of this: https://github.com/Setono/SyliusRedirectPlugin/issues/27
