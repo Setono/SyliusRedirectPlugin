@@ -21,5 +21,12 @@
 
             <tag name="form.type_extension"/>
         </service>
+
+        <service id="setono_sylius_redirect.form.extension.taxon_translation"
+                 class="Setono\SyliusRedirectPlugin\Form\Extension\TaxonTranslationTypeExtension">
+            <argument type="service" id="setono_sylius_redirect.slug_update_handler.taxon_translation"/>
+
+            <tag name="form.type_extension" extended-type="Sylius\Bundle\TaxonomyBundle\Form\Type\TaxonTranslationType"/>
+        </service>
     </services>
 </container>
