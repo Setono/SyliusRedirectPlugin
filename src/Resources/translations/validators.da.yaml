@@ -1,0 +1,14 @@
+setono_sylius_redirect:
+    form:
+        redirect:
+            destination:
+                not_blank: The destination cannot be blank
+                regex: The destination must begin with '/'
+            source:
+                not_blank: The source cannot be blank
+                not_identical_to: Source and destination cannot be identical
+                regex: The source must begin with '/'
+                source_regex: The source is not valid
+            source_already_existing: 'There is already a redirection with source "{{ source }}". Redirection ID : {{ conflictingId }}'
+            source_must_not_equal_destination: Source must not equal destination
+            target_result_in_infinite_loop: 'This results in an infinite loop.'
