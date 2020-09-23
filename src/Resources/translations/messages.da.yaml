@@ -1,31 +1,31 @@
 setono_sylius_redirect:
     ui:
-        count: Count
+        count: Tælle
         destination: Destination
-        edit_redirect: Edit redirect
-        enabled: Enabled
-        last_accessed: Last accessed
-        manage_redirects: Manage redirects
-        new_redirect: New redirect
+        edit_redirect: Rediger omdirigering
+        enabled: Aktiveret 
+        last_accessed: Senest åbnet
+        manage_redirects: Administrer omdirigering 
+        new_redirect: Ny omdirigering
         permanent: Permanent
-        redirects: Redirects
-        source: Source
+        redirects: Omdirigeringer
+        source: Kilde
     menu:
         admin:
             main:
                 configuration:
-                    redirects: Redirects
+                    redirects: Omdirigeringer
     form:
-        add_automatic_redirect: Add automatic redirect
+        add_automatic_redirect: Tilføj automatisk omdirigering 
         redirect:
-            channels: Channels
-            channels_help: If you don't enable any channels, the redirect will work on all channels
+            channels: Kanaler
+            channels_help: Hvis du ikke aktiverer nogen kanaler, fungerer omdirigering på alle kanaler
             destination: Destination
             destination_placeholder: /en_US/redirect-to or https://redirect.to/
-            enabled: Enabled
-            only_404: Redirect only if source returns a 404
-            only_404_help: If this is set, the redirect will only be applied if the path you entered in source returns a 404 (not found)
-            permanent: Permanent (301 redirect instead of 302)
-            permanent_help: The most used redirect is a permanent (301) redirect. This is also the one recommended for SEO purposes
-            source: Source
+            enabled: Aktiveret
+            only_404: Omdiriger kun hvis kilden returnerer en 404
+            only_404_help: Hvis dette er indstillet, anvendes omdirigering kun, hvis den passage du indtastede i kilden, returnerer en 404 (ikke fundet)
+            permanent: Permanent (301 omdirigering i stedet for 302)
+            permanent_help: Den mest brugte omdirigering er en permanent (301) omdirigering. Dette er også den der anbefales til SEO-formål
+            source: Kilde
             source_placeholder: /en_US/redirect-from
