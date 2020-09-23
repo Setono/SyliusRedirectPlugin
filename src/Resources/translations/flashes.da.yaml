@@ -1,4 +1,4 @@
 setono_sylius_redirect:
     form:
         redirect:
-            source_already_existing: 'There is already a redirection with source "{{ source }}". Redirection ID : {{ conflictingId }}'
+            source_already_existing: 'Der er allerede en omdirigering med kilden "{{ source }}". Omdirigering ID : {{ conflictingId }}'
