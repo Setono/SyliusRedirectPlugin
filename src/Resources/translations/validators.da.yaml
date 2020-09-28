@@ -1,0 +1,14 @@
+setono_sylius_redirect:
+    form:
+        redirect:
+            destination:
+                not_blank: Destinationen skal udfyldes
+                regex: Destinationen skal starte med '/'
+            source:
+                not_blank: Kilden skal udfyldes
+                not_identical_to: Kilde og destination må ikke være identiske
+                regex: Kilden skal starte med '/'
+                source_regex: Kilden er ikke gyldig
+            source_already_existing: 'Der er allerede en omdirigering med kilden "{{ source }}". Omdirigering ID : {{ conflictingId }}'
+            source_must_not_equal_destination: Kilde må ikke være lig med destination
+            target_result_in_infinite_loop: 'Dette resulterer i et uendeligt loop.'

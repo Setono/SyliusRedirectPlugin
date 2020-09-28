@@ -1,0 +1,31 @@
+setono_sylius_redirect:
+    ui:
+        count: Tælle
+        destination: Destination
+        edit_redirect: Rediger omdirigering
+        enabled: Aktiveret 
+        last_accessed: Senest åbnet
+        manage_redirects: Administrer omdirigering 
+        new_redirect: Ny omdirigering
+        permanent: Permanent
+        redirects: Omdirigeringer
+        source: Kilde
+    menu:
+        admin:
+            main:
+                configuration:
+                    redirects: Omdirigeringer
+    form:
+        add_automatic_redirect: Tilføj automatisk omdirigering 
+        redirect:
+            channels: Kanaler
+            channels_help: Hvis du ikke aktiverer nogen kanaler, fungerer omdirigering på alle kanaler
+            destination: Destination
+            destination_placeholder: /en_US/redirect-to or https://redirect.to/
+            enabled: Aktiveret
+            only_404: Omdiriger kun hvis kilden returnerer en 404
+            only_404_help: Hvis dette er indstillet, anvendes omdirigering kun, hvis den passage du indtastede i kilden, returnerer en 404 (ikke fundet)
+            permanent: Permanent (301 omdirigering i stedet for 302)
+            permanent_help: Den mest brugte omdirigering er en permanent (301) omdirigering. Dette er også den der anbefales til SEO-formål
+            source: Kilde
+            source_placeholder: /en_US/redirect-from
