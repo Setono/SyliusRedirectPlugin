@@ -28,7 +28,7 @@ abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
     /** @var ViolationMapper */
     private $violationMapper;
 
-    /** @var array */
+    /** @var array<string, string> */
     private $oldSlugs = [];
 
     public function __construct(SlugUpdateHandlerInterface $slugUpdateHandler)
@@ -56,7 +56,7 @@ abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
                 ],
             ]);
 
-            $this->oldSlugs[self::getObjectHash($data)] = $data->getSlug();
+            $this->oldSlugs[self::getObjectHash($data)] = (string) $data->getSlug();
         });
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
@@ -78,7 +78,7 @@ abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
             $oldSlug = $this->oldSlugs[$hash];
             $newSlug = $data->getSlug();
 
-            if (null === $oldSlug || null === $newSlug || $oldSlug === $newSlug) {
+            if (null === $newSlug || $oldSlug === $newSlug) {
                 return;
             }
 

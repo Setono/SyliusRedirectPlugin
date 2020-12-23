@@ -9,7 +9,6 @@ use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Webmozart\Assert\Assert;
 
 final class SourceValidator extends ConstraintValidator
 {
@@ -52,9 +51,7 @@ final class SourceValidator extends ConstraintValidator
                 return;
             }
 
-            $conflictingRedirectId = $conflictingRedirect->getId();
-            Assert::notNull($conflictingRedirectId);
-            $this->buildViolation($constraint, $redirect->getSource(), $conflictingRedirectId);
+            $this->buildViolation($constraint, $redirect->getSource(), (int) $conflictingRedirect->getId());
         } else {
             foreach ($redirect->getChannels() as $channel) {
                 $conflictingRedirect = $this->redirectRepository->findOneEnabledBySource($redirect->getSource(), $channel);
@@ -62,9 +59,7 @@ final class SourceValidator extends ConstraintValidator
                     return;
                 }
 
-                $conflictingRedirectId = $conflictingRedirect->getId();
-                Assert::notNull($conflictingRedirectId);
-                $this->buildViolation($constraint, $redirect->getSource(), $conflictingRedirectId);
+                $this->buildViolation($constraint, $redirect->getSource(), (int) $conflictingRedirect->getId());
             }
         }
     }
