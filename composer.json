@@ -13,8 +13,10 @@
         "php": "^7.3",
         "sylius/resource-bundle": "^1.6",
         "symfony/config": "^4.4 || ^5.0",
+        "symfony/http-foundation": "^4.4 || ^5.0",
         "symfony/http-kernel": "^4.4 || ^5.0",
-        "thecodingmachine/safe": "^1.0"
+        "thecodingmachine/safe": "^1.0",
+        "webmozart/assert": "^1.9"
     },
     "require-dev": {
         "behat/behat": "^3.4",
