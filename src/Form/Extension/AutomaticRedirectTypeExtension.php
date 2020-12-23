@@ -74,7 +74,6 @@ abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
                 return;
             }
 
-            /** @var string|null $oldSlug */
             $oldSlug = $this->oldSlugs[$hash];
             $newSlug = $data->getSlug();
 
