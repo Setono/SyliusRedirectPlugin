@@ -15,6 +15,15 @@
     "string",
     "true",
     "void",
-    "Sylius\\Bundle\\CoreBundle\\Application\\SyliusPluginTrait"
+    "Sylius\\Bundle\\CoreBundle\\Application\\SyliusPluginTrait",
+    "Sylius\\Bundle\\ChannelBundle\\Form\\Type\\ChannelChoiceType",
+    "Sylius\\Bundle\\ProductBundle\\Form\\Type\\ProductTranslationType",
+    "Sylius\\Bundle\\TaxonomyBundle\\Form\\Type\\TaxonTranslationType",
+    "Sylius\\Bundle\\UiBundle\\Menu\\Event\\MenuBuilderEvent",
+    "Sylius\\Component\\Channel\\Context\\ChannelContextInterface",
+    "Sylius\\Component\\Channel\\Model\\ChannelAwareInterface",
+    "Sylius\\Component\\Channel\\Model\\ChannelInterface",
+    "Sylius\\Component\\Channel\\Model\\ChannelsAwareInterface",
+    "Sylius\\Component\\Channel\\Repository\\ChannelRepositoryInterface"
   ]
 }
