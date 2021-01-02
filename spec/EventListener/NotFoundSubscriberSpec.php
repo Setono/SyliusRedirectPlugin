@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class NotFoundSubscriberSpec extends ObjectBehavior
 {
@@ -51,9 +50,9 @@ class NotFoundSubscriberSpec extends ObjectBehavior
     public function it_does_not_redirect_request_that_are_not_master_request(
         ExceptionEvent $event
     ): void {
-        $event->getRequestType()->willReturn(HttpKernelInterface::SUB_REQUEST);
+        $event->isMasterRequest()->willReturn(false);
 
-        $event->getException()->shouldNotBeCalled();
+        $event->getThrowable()->shouldNotBeCalled();
 
         $event->setResponse(Argument::any())->shouldNotBeCalled();
 
@@ -64,9 +63,9 @@ class NotFoundSubscriberSpec extends ObjectBehavior
         ExceptionEvent $event,
         HttpException $exception
     ): void {
-        $event->getRequestType()->willReturn(HttpKernelInterface::MASTER_REQUEST);
+        $event->isMasterRequest()->willReturn(true);
 
-        $event->getException()->willReturn($exception);
+        $event->getThrowable()->willReturn($exception);
         $exception->getStatusCode()->willReturn(500);
 
         $event->setResponse(Argument::any())->shouldNotBeCalled();
@@ -79,9 +78,9 @@ class NotFoundSubscriberSpec extends ObjectBehavior
         HttpException $exception,
         Request $request
     ): void {
-        $event->getRequestType()->willReturn(HttpKernelInterface::MASTER_REQUEST);
+        $event->isMasterRequest()->willReturn(true);
 
-        $event->getException()->willReturn($exception);
+        $event->getThrowable()->willReturn($exception);
         $exception->getStatusCode()->willReturn(Response::HTTP_NOT_FOUND);
 
         $event->getRequest()->willReturn($request);
@@ -100,9 +99,9 @@ class NotFoundSubscriberSpec extends ObjectBehavior
         RedirectInterface $redirect,
         RedirectionPathResolverInterface $redirectionPathResolver
     ): void {
-        $event->getRequestType()->willReturn(HttpKernelInterface::MASTER_REQUEST);
+        $event->isMasterRequest()->willReturn(true);
 
-        $event->getException()->willReturn($exception);
+        $event->getThrowable()->willReturn($exception);
         $exception->getStatusCode()->willReturn(Response::HTTP_NOT_FOUND);
 
         $event->getRequest()->willReturn($request);
