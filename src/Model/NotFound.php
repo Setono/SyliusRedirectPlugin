@@ -22,6 +22,9 @@ class NotFound implements NotFoundInterface
     /** @var int */
     protected $count = 0;
 
+    /** @var bool */
+    protected $ignored = false;
+
     /** @var DateTimeInterface */
     protected $lastRequestAt;
 
@@ -48,6 +51,16 @@ class NotFound implements NotFoundInterface
     public function setCount(int $count): void
     {
         $this->count = $count;
+    }
+
+    public function isIgnored(): bool
+    {
+        return $this->ignored;
+    }
+
+    public function setIgnored(bool $ignored): void
+    {
+        $this->ignored = $ignored;
     }
 
     public function getLastRequestAt(): ?DateTimeInterface

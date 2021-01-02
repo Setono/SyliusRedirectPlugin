@@ -12,6 +12,7 @@
 
         <field name="url" type="string"/>
         <field name="count" type="integer"/>
+        <field name="ignored" type="boolean"/>
         <field name="lastRequestAt" type="datetime"/>
         <field name="createdAt" column="created_at" type="datetime">
             <gedmo:timestampable on="create"/>
