@@ -7,6 +7,7 @@ namespace Setono\SyliusRedirectPlugin\EventListener;
 use Doctrine\Common\Persistence\ObjectManager;
 use Setono\SyliusRedirectPlugin\Model\NotFoundInterface;
 use Setono\SyliusRedirectPlugin\Model\RedirectionPath;
+use Setono\SyliusRedirectPlugin\Repository\NotFoundRepositoryInterface;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
@@ -33,16 +34,21 @@ final class NotFoundSubscriber implements EventSubscriberInterface
     /** @var FactoryInterface */
     private $notFoundFactory;
 
+    /** @var NotFoundRepositoryInterface */
+    private $notFoundRepository;
+
     public function __construct(
         ObjectManager $objectManager,
         ChannelContextInterface $channelContext,
         RedirectionPathResolverInterface $redirectionPathResolver,
-        FactoryInterface $notFoundFactory
+        FactoryInterface $notFoundFactory,
+        NotFoundRepositoryInterface $notFoundRepository
     ) {
         $this->objectManager = $objectManager;
         $this->channelContext = $channelContext;
         $this->redirectionPathResolver = $redirectionPathResolver;
         $this->notFoundFactory = $notFoundFactory;
+        $this->notFoundRepository = $notFoundRepository;
     }
 
     public static function getSubscribedEvents(): array
@@ -78,11 +84,15 @@ final class NotFoundSubscriber implements EventSubscriberInterface
 
     private function log(Request $request): void
     {
-        /** @var NotFoundInterface $notFound */
-        $notFound = $this->notFoundFactory->createNew();
-        $notFound->onRequest($request);
+        $notFound = $this->notFoundRepository->findOneByUrl($request->getUri());
+        if (null === $notFound) {
+            /** @var NotFoundInterface $notFound */
+            $notFound = $this->notFoundFactory->createNew();
 
-        $this->objectManager->persist($notFound);
+            $this->objectManager->persist($notFound);
+        }
+
+        $notFound->onRequest($request);
     }
 
     private function redirect(ExceptionEvent $event, RedirectionPath $redirectionPath): void

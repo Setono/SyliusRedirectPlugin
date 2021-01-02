@@ -7,6 +7,7 @@ namespace Setono\SyliusRedirectPlugin\DependencyInjection;
 use Setono\SyliusRedirectPlugin\Form\Type\RedirectType;
 use Setono\SyliusRedirectPlugin\Model\NotFound;
 use Setono\SyliusRedirectPlugin\Model\Redirect;
+use Setono\SyliusRedirectPlugin\Repository\NotFoundRepository;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepository;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Sylius\Bundle\ResourceBundle\Form\Type\DefaultResourceType;
@@ -74,7 +75,7 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue(NotFound::class)->cannotBeEmpty()->end()
                                         ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(NotFoundRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->end()
                                         ->scalarNode('form')->defaultValue(DefaultResourceType::class)->cannotBeEmpty()->end()
                                     ->end()
