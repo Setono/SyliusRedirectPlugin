@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Setono\SyliusRedirectPlugin\Model\NotFoundInterface;
+use Setono\SyliusRedirectPlugin\Model\RedirectionPath;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Webmozart\Assert\Assert;
 
-class NotFoundSubscriber implements EventSubscriberInterface
+final class NotFoundSubscriber implements EventSubscriberInterface
 {
     /** @var ObjectManager */
     private $objectManager;
@@ -26,14 +30,19 @@ class NotFoundSubscriber implements EventSubscriberInterface
     /** @var RedirectionPathResolverInterface */
     private $redirectionPathResolver;
 
+    /** @var FactoryInterface */
+    private $notFoundFactory;
+
     public function __construct(
         ObjectManager $objectManager,
         ChannelContextInterface $channelContext,
-        RedirectionPathResolverInterface $redirectionPathResolver
+        RedirectionPathResolverInterface $redirectionPathResolver,
+        FactoryInterface $notFoundFactory
     ) {
         $this->objectManager = $objectManager;
         $this->channelContext = $channelContext;
         $this->redirectionPathResolver = $redirectionPathResolver;
+        $this->notFoundFactory = $notFoundFactory;
     }
 
     public static function getSubscribedEvents(): array
@@ -59,11 +68,26 @@ class NotFoundSubscriber implements EventSubscriberInterface
         );
 
         if ($redirectionPath->isEmpty()) {
-            return;
+            $this->log($event->getRequest());
+        } else {
+            $this->redirect($event, $redirectionPath);
         }
 
-        $redirectionPath->markAsAccessed();
         $this->objectManager->flush();
+    }
+
+    private function log(Request $request): void
+    {
+        /** @var NotFoundInterface $notFound */
+        $notFound = $this->notFoundFactory->createNew();
+        $notFound->onRequest($request);
+
+        $this->objectManager->persist($notFound);
+    }
+
+    private function redirect(ExceptionEvent $event, RedirectionPath $redirectionPath): void
+    {
+        $redirectionPath->markAsAccessed();
 
         $lastRedirect = $redirectionPath->last();
         Assert::notNull($lastRedirect);
