@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 
 /**
  * This subscriber listens to 404s in the application. It has two outcomes, either it:
- * - redirects the user to a specified in the redirect table, or
+ * - redirects the user to a destination specified in the redirect table, or
  * - logs the 404, so the user can act upon it
  */
 final class NotFoundSubscriber implements EventSubscriberInterface
