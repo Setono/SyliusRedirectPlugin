@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Resolver;
 
-use Safe\Exceptions\StringsException;
 use Setono\SyliusRedirectPlugin\Exception\InfiniteLoopException;
-use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Model\RedirectionPath;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Sylius\Component\Channel\Model\ChannelInterface;
@@ -29,9 +27,6 @@ final class RedirectionPathResolver implements RedirectionPathResolverInterface
     ): RedirectionPath {
         $redirectionPath = new RedirectionPath();
 
-        /** @var RedirectInterface|null $redirect */
-        $redirect = null;
-
         do {
             $redirect = $this->redirectRepository->findOneEnabledBySource($source, $channel, $only404);
 
@@ -50,9 +45,6 @@ final class RedirectionPathResolver implements RedirectionPathResolverInterface
         return $redirectionPath;
     }
 
-    /**
-     * @throws StringsException
-     */
     public function resolveFromRequest(
         Request $request,
         ChannelInterface $channel = null,
