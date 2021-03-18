@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Setono\SyliusRedirectPlugin\EventListener;
 
 use Closure;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Setono\SyliusRedirectPlugin\EventListener\ControllerSubscriber;
