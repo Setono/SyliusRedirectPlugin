@@ -30,7 +30,7 @@
     "require-dev": {
         "phpspec/phpspec": "^6.1",
         "phpunit/phpunit": "^8.5",
-        "roave/security-advisories": "dev-master",
+        "roave/security-advisories": "dev-latest",
         "setono/code-quality-pack": "^1.5.2",
         "setono/sylius-behat-pack": "^0.1",
         "sylius/sylius": "~1.7.0",
