@@ -28,7 +28,7 @@
         "webmozart/assert": "^1.9"
     },
     "require-dev": {
-        "phpspec/phpspec": "^6.1",
+        "phpspec/phpspec": "^7.1",
         "phpunit/phpunit": "^8.5",
         "roave/security-advisories": "dev-latest",
         "setono/code-quality-pack": "^1.5.2",
