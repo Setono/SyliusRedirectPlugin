@@ -39,11 +39,6 @@
                 <option name="message">setono_sylius_redirect.form.redirect.destination.not_blank</option>
                 <option name="groups">setono_sylius_redirect</option>
             </constraint>
-            <constraint name="Regex">
-                <option name="message">setono_sylius_redirect.form.redirect.destination.regex</option>
-                <option name="pattern">#^/#</option>
-                <option name="groups">setono_sylius_redirect</option>
-            </constraint>
         </property>
     </class>
 </constraint-mapping>
