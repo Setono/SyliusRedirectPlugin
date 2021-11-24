@@ -3,7 +3,6 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE)
 [![Build Status][ico-github-actions]][link-github-actions]
-[![Quality Score][ico-code-quality]][link-code-quality]
 
 <a href="https://sylius.com/plugins/" target="_blank"><img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="100"></a>
 
@@ -115,9 +114,7 @@ Example: Having a slug like `/products/a`, renaming it to `/products/b` then ren
 [ico-version]: https://img.shields.io/packagist/v/setono/sylius-redirect-plugin.svg
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [ico-github-actions]: https://github.com/Setono/SyliusRedirectPlugin/workflows/build/badge.svg
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/Setono/SyliusRedirectPlugin.svg
 
 [link-packagist]: https://packagist.org/packages/setono/sylius-redirect-plugin
 [link-github-actions]: https://github.com/Setono/SyliusRedirectPlugin/actions
-[link-code-quality]: https://scrutinizer-ci.com/g/Setono/SyliusRedirectPlugin
 
