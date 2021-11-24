@@ -15,7 +15,7 @@ class IndexRedirectPage extends IndexPage
     {
         $rows = $this->getTableAccessor()->getRowsWithFields($this->getElement('table'), [
             'source' => $source,
-            'destination' => $destination
+            'destination' => $destination,
         ]);
 
         return count($rows) === 1;

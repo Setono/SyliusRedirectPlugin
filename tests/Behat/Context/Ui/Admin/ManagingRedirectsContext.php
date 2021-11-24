@@ -13,19 +13,13 @@ use Webmozart\Assert\Assert;
 
 final class ManagingRedirectsContext implements Context
 {
-    /**
-     * @var IndexRedirectPage
-     */
+    /** @var IndexRedirectPage */
     private $indexRedirectPage;
 
-    /**
-     * @var CreateRedirectPage
-     */
+    /** @var CreateRedirectPage */
     private $createRedirectPage;
 
-    /**
-     * @var UpdateRedirectPage
-     */
+    /** @var UpdateRedirectPage */
     private $updateRedirectPage;
 
     public function __construct(IndexRedirectPage $indexRedirectPage, CreateRedirectPage $createRedirectPage, UpdateRedirectPage $updateRedirectPage)

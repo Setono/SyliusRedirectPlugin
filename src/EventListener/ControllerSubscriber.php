@@ -45,7 +45,8 @@ final class ControllerSubscriber implements EventSubscriberInterface
     public function onKernelController(ControllerEvent $event): void
     {
         $redirectionPath = $this->redirectionPathResolver->resolveFromRequest(
-            $event->getRequest(), $this->channelContext->getChannel()
+            $event->getRequest(),
+            $this->channelContext->getChannel()
         );
 
         if ($redirectionPath->isEmpty()) {

@@ -10,9 +10,7 @@ use Webmozart\Assert\Assert;
 
 final class RedirectContext implements Context
 {
-    /**
-     * @var RepositoryInterface
-     */
+    /** @var RepositoryInterface */
     private $redirectRepository;
 
     public function __construct(RepositoryInterface $redirectRepository)

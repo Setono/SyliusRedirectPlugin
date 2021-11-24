@@ -21,7 +21,7 @@ class Page extends BasePage
 
     public function isOnPath(string $path): void
     {
-        $currentPath = parse_url($this->getSession()->getCurrentUrl(), PHP_URL_PATH);
+        $currentPath = parse_url($this->getSession()->getCurrentUrl(), \PHP_URL_PATH);
 
         Assert::same($currentPath, $path);
     }

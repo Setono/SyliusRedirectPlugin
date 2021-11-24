@@ -9,9 +9,7 @@ use Tests\Setono\SyliusRedirectPlugin\Behat\Page\Shop\Page;
 
 final class RedirectContext implements Context
 {
-    /**
-     * @var Page
-     */
+    /** @var Page */
     private $oldPathPage;
 
     public function __construct(Page $oldPathPage)

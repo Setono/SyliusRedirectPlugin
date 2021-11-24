@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.13.1@5cf660f63b548ccd4a56f62d916ee4d6028e01a3">
+  <file src="src/DependencyInjection/Configuration.php">
+    <MixedMethodCall occurrences="32">
+      <code>addDefaultsIfNotSet</code>
+      <code>cannotBeEmpty</code>
+      <code>cannotBeEmpty</code>
+      <code>cannotBeEmpty</code>
+      <code>cannotBeEmpty</code>
+      <code>children</code>
+      <code>defaultValue</code>
+      <code>defaultValue</code>
+      <code>defaultValue</code>
+      <code>defaultValue</code>
+      <code>defaultValue</code>
+      <code>defaultValue</code>
+      <code>end</code>
+      <code>end</code>
+      <code>end</code>
+      <code>end</code>
+      <code>end</code>
+      <code>end</code>
+      <code>end</code>
+      <code>end</code>
+      <code>end</code>
+      <code>end</code>
+      <code>end</code>
+      <code>end</code>
+      <code>end</code>
+      <code>end</code>
+      <code>info</code>
+      <code>scalarNode</code>
+      <code>scalarNode</code>
+      <code>scalarNode</code>
+      <code>scalarNode</code>
+      <code>scalarNode</code>
+    </MixedMethodCall>
+    <PossiblyNullReference occurrences="2">
+      <code>arrayNode</code>
+      <code>integerNode</code>
+    </PossiblyNullReference>
+    <PossiblyUndefinedMethod occurrences="2">
+      <code>arrayNode</code>
+      <code>integerNode</code>
+    </PossiblyUndefinedMethod>
+  </file>
+  <file src="src/DependencyInjection/SetonoSyliusRedirectExtension.php">
+    <MixedArgument occurrences="2">
+      <code>$config['driver']</code>
+      <code>$config['resources']</code>
+    </MixedArgument>
+    <PossiblyNullArgument occurrences="1">
+      <code>$this-&gt;getConfiguration([], $container)</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Factory/RedirectFactory.php">
+    <MixedArgument occurrences="1">
+      <code>$channel</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="1">
+      <code>$channel</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Finder/RemovableRedirectFinder.php">
+    <InvalidArgument occurrences="4">
+      <code>$redirectionPath-&gt;first()</code>
+      <code>$redirectionPath-&gt;first()</code>
+      <code>$redirectionPath-&gt;first()</code>
+      <code>$redirectionPath-&gt;first()</code>
+    </InvalidArgument>
+  </file>
+  <file src="src/Finder/RemovableRedirectFinderInterface.php">
+    <MismatchingDocblockReturnType occurrences="1">
+      <code>Collection|RedirectInterface[]</code>
+    </MismatchingDocblockReturnType>
+  </file>
+  <file src="src/Model/Redirect.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$this-&gt;channels</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>Collection</code>
+    </InvalidReturnType>
+    <PossiblyInvalidMethodCall occurrences="3">
+      <code>add</code>
+      <code>contains</code>
+      <code>removeElement</code>
+    </PossiblyInvalidMethodCall>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>$id</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Model/RedirectionPath.php">
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;seen</code>
+    </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/Repository/RedirectRepository.php">
+    <QueryBuilderSetParameter occurrences="1">
+      <code>$dateTimeThreshold</code>
+    </QueryBuilderSetParameter>
+  </file>
+  <file src="src/Resolver/RedirectionPathResolver.php">
+    <PossiblyNullReference occurrences="1">
+      <code>getSource</code>
+    </PossiblyNullReference>
+    <TypeDoesNotContainType occurrences="1">
+      <code>$redirectionPath-&gt;hasCycle()</code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="src/SlugUpdateHandler/SlugUpdateHandler.php">
+    <MixedArgument occurrences="1">
+      <code>$removableRedirect</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;validationGroups</code>
+    </MixedArgumentTypeCoercion>
+    <MixedAssignment occurrences="1">
+      <code>$removableRedirect</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Validator/Constraints/InfiniteLoopValidator.php">
+    <ParamNameMismatch occurrences="1">
+      <code>$redirect</code>
+    </ParamNameMismatch>
+    <PossiblyNullArgument occurrences="2">
+      <code>$redirect-&gt;getSource()</code>
+      <code>$redirect-&gt;getSource()</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Validator/Constraints/SourceRegex.php">
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>SourceRegex</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Validator/Constraints/SourceValidator.php">
+    <ParamNameMismatch occurrences="1">
+      <code>$redirect</code>
+    </ParamNameMismatch>
+    <PossiblyNullArgument occurrences="4">
+      <code>$redirect-&gt;getSource()</code>
+      <code>$redirect-&gt;getSource()</code>
+      <code>$redirect-&gt;getSource()</code>
+      <code>$redirect-&gt;getSource()</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="tests/Behat/Context/Transform/RedirectContext.php">
+    <MissingParamType occurrences="1">
+      <code>$redirect</code>
+    </MissingParamType>
+    <MissingReturnType occurrences="1">
+      <code>getRedirectBySource</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="1">
+      <code>$redirect</code>
+    </MixedArgument>
+  </file>
+  <file src="tests/Behat/Context/Ui/Admin/ManagingRedirectsContext.php">
+    <MissingParamType occurrences="6">
+      <code>$destination</code>
+      <code>$destination</code>
+      <code>$source</code>
+      <code>$source</code>
+      <code>$source</code>
+      <code>$source</code>
+    </MissingParamType>
+    <MixedArgument occurrences="5">
+      <code>$destination</code>
+      <code>$destination</code>
+      <code>$source</code>
+      <code>$source</code>
+      <code>$source</code>
+    </MixedArgument>
+  </file>
+  <file src="tests/Behat/Context/Ui/Shop/RedirectContext.php">
+    <MissingReturnType occurrences="1">
+      <code>iTryToAccess</code>
+    </MissingReturnType>
+  </file>
+  <file src="tests/Behat/Page/Admin/Redirect/IndexRedirectPage.php">
+    <MissingParamType occurrences="2">
+      <code>$destination</code>
+      <code>$source</code>
+    </MissingParamType>
+  </file>
+  <file src="tests/Behat/Page/Admin/Redirect/UpdateRedirectPage.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$this-&gt;getElement('source')-&gt;getValue()</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>string</code>
+    </InvalidReturnType>
+  </file>
+  <file src="tests/Behat/Page/Shop/Page.php">
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>$url</code>
+    </PropertyNotSetInConstructor>
+    <RedundantConditionGivenDocblockType occurrences="1">
+      <code>notNull</code>
+    </RedundantConditionGivenDocblockType>
+  </file>
+</files>

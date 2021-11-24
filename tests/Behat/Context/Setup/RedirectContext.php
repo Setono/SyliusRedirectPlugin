@@ -12,14 +12,10 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class RedirectContext implements Context
 {
-    /**
-     * @var RepositoryInterface
-     */
+    /** @var RepositoryInterface */
     private $redirectRepository;
 
-    /**
-     * @var FactoryInterface
-     */
+    /** @var FactoryInterface */
     private $redirectFactory;
 
     public function __construct(RepositoryInterface $brandRepository, FactoryInterface $brandFactory)
@@ -48,7 +44,7 @@ final class RedirectContext implements Context
         $redirect->setSource($oldPath);
         $redirect->setDestination($newPath);
         $redirect->setPermanent(true);
-        if(null !== $channel) {
+        if (null !== $channel) {
             $redirect->addChannel($channel);
         }
 

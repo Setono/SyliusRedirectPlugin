@@ -1,7 +1,0 @@
-includes:
-	- phpstan-baseline.neon
-
-parameters:
-    reportUnmatchedIgnoredErrors: true
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false

@@ -10,7 +10,6 @@ use Sylius\Behat\Page\Admin\Crud\CreatePage as BaseCreatePage;
 class CreateRedirectPage extends BaseCreatePage
 {
     /**
-     * @param string $source
      * @throws ElementNotFoundException
      */
     public function specifySource(string $source): void
@@ -19,7 +18,6 @@ class CreateRedirectPage extends BaseCreatePage
     }
 
     /**
-     * @param string $destination
      * @throws ElementNotFoundException
      */
     public function specifyDestination(string $destination): void
@@ -28,7 +26,7 @@ class CreateRedirectPage extends BaseCreatePage
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function getDefinedElements(): array
     {

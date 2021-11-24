@@ -10,7 +10,6 @@ use Sylius\Behat\Page\Admin\Crud\UpdatePage;
 class UpdateRedirectPage extends UpdatePage
 {
     /**
-     * @param string $source
      * @throws ElementNotFoundException
      */
     public function specifySource(string $source): void
@@ -19,7 +18,6 @@ class UpdateRedirectPage extends UpdatePage
     }
 
     /**
-     * @param string $destination
      * @throws ElementNotFoundException
      */
     public function specifyDestination(string $destination): void
@@ -28,7 +26,6 @@ class UpdateRedirectPage extends UpdatePage
     }
 
     /**
-     * @return string
      * @throws ElementNotFoundException
      */
     public function getSource(): string
@@ -37,7 +34,7 @@ class UpdateRedirectPage extends UpdatePage
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function getDefinedElements(): array
     {

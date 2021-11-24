@@ -13,7 +13,7 @@ final class SetonoSyliusRedirectPlugin extends AbstractResourceBundle
     use SyliusPluginTrait;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getSupportedDrivers(): array
     {
@@ -23,7 +23,7 @@ final class SetonoSyliusRedirectPlugin extends AbstractResourceBundle
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function getModelNamespace(): string
     {
