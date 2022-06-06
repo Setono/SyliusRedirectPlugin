@@ -1,0 +1,14 @@
+setono_sylius_redirect:
+    form:
+        redirect:
+            destination:
+                not_blank: 'La destinazione non può essere vuota'
+                regex: 'La destinazione deve iniziare con "/"'
+            source:
+                not_blank: 'La provenienza non può essere vuota'
+                not_identical_to: 'Provenienza e destinazione non possono coincidere'
+                regex: 'La provenienza deve iniziare con "/"'
+                source_regex: 'La provenienza non è valida'
+            source_already_existing: 'Esiste già un altro redirect con provenienza "{{ source }}". ID redirect : {{ conflictingId }}'
+            source_must_not_equal_destination: 'Provenienza e destinazione non possono essere uguali'
+            target_result_in_infinite_loop: 'Questo risulterebbe in un ciclo infinito.'
