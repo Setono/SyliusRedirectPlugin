@@ -1,0 +1,4 @@
+setono_sylius_redirect:
+    form:
+        redirect:
+            source_already_existing: 'Esiste già un altro redirect con provenienza "{{ source }}". ID redirect : {{ conflictingId }}'

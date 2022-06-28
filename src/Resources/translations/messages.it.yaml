@@ -1,0 +1,31 @@
+setono_sylius_redirect:
+    ui:
+        count: 'Totale'
+        destination: 'Destinazione'
+        edit_redirect: 'Modifica redirect'
+        enabled: 'Abilitato'
+        last_accessed: 'Ultimo accesso'
+        manage_redirects: 'Gestisci redirects'
+        new_redirect: 'Nuovo redirect'
+        permanent: 'Permanente'
+        redirects: 'Redirects'
+        source: 'Provenienza'
+    menu:
+        admin:
+            main:
+                configuration:
+                    redirects: 'Redirects'
+    form:
+        add_automatic_redirect: 'Aggiungi redirect automaticamente'
+        redirect:
+            channels: 'Canali'
+            channels_help: 'Se non abiliti alcun canale, il redirect funzionerà per tutti i canali'
+            destination: 'Destinazione'
+            destination_placeholder: '/en_US/redirect-to oppure https://redirect.to/'
+            enabled: 'Abilitato'
+            only_404: 'Redirect solo se la provenienza restituisce un 404'
+            only_404_help: 'Se abilitato, il redirect verrà applicato solo se il percorso inserito in provenienza restituisce un 404 (non trovato)'
+            permanent: 'Permanente (Codice 301 invece di 302)'
+            permanent_help: 'Il redirect più utilizzato è quello permanente (301). Questo è anche quello raccomandato per scopi SEO.'
+            source: 'Provenienza'
+            source_placeholder: '/en_US/redirect-from'
