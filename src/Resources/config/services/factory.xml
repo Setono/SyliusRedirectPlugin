@@ -9,5 +9,6 @@
                  decorates="setono_sylius_redirect.factory.redirect">
             <argument type="service" id="setono_sylius_redirect.custom_factory.redirect.inner" />
         </service>
+        <service id="Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface" alias="setono_sylius_redirect.custom_factory.redirect" />
     </services>
 </container>
