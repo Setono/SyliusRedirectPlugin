@@ -2,6 +2,7 @@ setono_sylius_redirect_admin_redirect:
     resource: |
         alias: setono_sylius_redirect.redirect
         section: admin
+        permission: true
         templates: "@SyliusAdmin\\Crud"
         redirect: update
         grid: setono_sylius_redirect_admin_redirect
