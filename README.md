@@ -48,7 +48,7 @@ It is **IMPORTANT** to add the plugin before the grid bundle else you will get a
 
 setono_sylius_redirect_admin:
     resource: "@SetonoSyliusRedirectPlugin/Resources/config/admin_routing.yaml"
-    prefix: /admin
+    prefix: '/%sylius_admin.path_name%'
 ```
 
 ```yaml
