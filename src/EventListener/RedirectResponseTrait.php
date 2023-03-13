@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
+use League\Uri\Uri;
+use League\Uri\UriModifier;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,17 +14,14 @@ trait RedirectResponseTrait
 {
     public static function getRedirectResponse(RedirectInterface $lastRedirect, ?string $queryString = null): RedirectResponse
     {
-        $destination = $lastRedirect->getDestination();
+        $uri = Uri::createFromString($lastRedirect->getDestination());
+
         if ($lastRedirect->isKeepQueryString() && null !== $queryString) {
-            $prefix = '?';
-            if (false !== strpos($lastRedirect->getDestination(), '?')) {
-                $prefix = '&';
-            }
-            $destination .= $prefix . $queryString;
+            $uri = UriModifier::appendQuery($uri, $queryString);
         }
 
         return new RedirectResponse(
-            $destination,
+            $uri->toString(),
             $lastRedirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND
         );
     }
