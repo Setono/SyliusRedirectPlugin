@@ -8,14 +8,14 @@ use Doctrine\Persistence\ObjectManager;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Webmozart\Assert\Assert;
 
 final class ControllerSubscriber implements EventSubscriberInterface
 {
+    use RedirectResponseTrait;
+
     /** @var ObjectManager */
     private $objectManager;
 
@@ -44,8 +44,9 @@ final class ControllerSubscriber implements EventSubscriberInterface
 
     public function onKernelController(ControllerEvent $event): void
     {
+        $request = $event->getRequest();
         $redirectionPath = $this->redirectionPathResolver->resolveFromRequest(
-            $event->getRequest(),
+            $request,
             $this->channelContext->getChannel()
         );
 
@@ -60,11 +61,6 @@ final class ControllerSubscriber implements EventSubscriberInterface
         $lastRedirect = $redirectionPath->last();
         Assert::notNull($lastRedirect);
 
-        $event->setController(static function () use ($lastRedirect): RedirectResponse {
-            return new RedirectResponse(
-                $lastRedirect->getDestination(),
-                $lastRedirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND
-            );
-        });
+        $event->setController(static fn() => self::getRedirectResponse($lastRedirect, $request->getQueryString()));
     }
 }

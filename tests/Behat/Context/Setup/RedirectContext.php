@@ -44,6 +44,7 @@ final class RedirectContext implements Context
         $redirect->setSource($oldPath);
         $redirect->setDestination($newPath);
         $redirect->setPermanent(true);
+        $redirect->setKeepQueryString(true);
         if (null !== $channel) {
             $redirect->addChannel($channel);
         }

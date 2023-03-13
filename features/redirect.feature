@@ -25,3 +25,9 @@ Feature: Redirect
     And the store has a redirect from path "/old-path" to "/new-path" on channel "United States"
     When I try to access "/old-path"
     Then I should still be on "/old-path"
+
+  Scenario: Redirect from old path to new path and keep query string
+    Given I change my current channel to "United States"
+    And the store has a redirect from path "/old-path" to "/new-path"
+    When I try to access "/old-path?q=ts"
+    Then I should be redirected "/new-path?q=ts"

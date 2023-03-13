@@ -17,6 +17,8 @@ use Webmozart\Assert\Assert;
 
 class NotFoundSubscriber implements EventSubscriberInterface
 {
+    use RedirectResponseTrait;
+
     /** @var ObjectManager */
     private $objectManager;
 
@@ -54,8 +56,9 @@ class NotFoundSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $request = $event->getRequest();
         $redirectionPath = $this->redirectionPathResolver->resolveFromRequest(
-            $event->getRequest(),
+            $request,
             $this->channelContext->getChannel(),
             true
         );
@@ -70,9 +73,6 @@ class NotFoundSubscriber implements EventSubscriberInterface
         $lastRedirect = $redirectionPath->last();
         Assert::notNull($lastRedirect);
 
-        $event->setResponse(new RedirectResponse(
-            $lastRedirect->getDestination(),
-            $lastRedirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND
-        ));
+        $event->setResponse(self::getRedirectResponse($lastRedirect, $request->getQueryString()));
     }
 }

@@ -29,3 +29,5 @@ setono_sylius_redirect:
             permanent_help: The most used redirect is a permanent (301) redirect. This is also the one recommended for SEO purposes
             source: Source
             source_placeholder: /en_US/redirect-from
+            keep_query_string: Keep query string
+            keep_query_string_help: If this is set, the redirect will keep qyery string
