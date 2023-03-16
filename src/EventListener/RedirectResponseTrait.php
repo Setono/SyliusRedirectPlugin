@@ -10,13 +10,16 @@ use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ */
 trait RedirectResponseTrait
 {
-    public static function getRedirectResponse(RedirectInterface $lastRedirect, ?string $queryString = null): RedirectResponse
+    public static function getRedirectResponse(RedirectInterface $lastRedirect, string $queryString = null): RedirectResponse
     {
         $uri = Uri::createFromString($lastRedirect->getDestination());
 
-        if ($lastRedirect->isKeepQueryString() && null !== $queryString) {
+        if ($lastRedirect->keepQueryString() && null !== $queryString) {
             $uri = UriModifier::appendQuery($uri, $queryString);
         }
 

@@ -47,7 +47,7 @@ interface RedirectInterface extends ResourceInterface, ToggleableInterface, Chan
 
     public function setOnly404(bool $only404): void;
 
-    public function isKeepQueryString(): bool;
+    public function keepQueryString(): bool;
 
     public function setKeepQueryString(bool $keepQueryString): void;
 }

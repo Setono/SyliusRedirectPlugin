@@ -146,7 +146,7 @@ class Redirect implements RedirectInterface
         return $this->channels->contains($channel);
     }
 
-    public function isKeepQueryString(): bool
+    public function keepQueryString(): bool
     {
         return $this->keepQueryString;
     }
