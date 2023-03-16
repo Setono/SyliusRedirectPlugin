@@ -30,4 +30,4 @@ setono_sylius_redirect:
             source: Source
             source_placeholder: /en_US/redirect-from
             keep_query_string: Keep query string
-            keep_query_string_help: If this is set, the redirect will keep qyery string
+            keep_query_string_help: 'If this is set, the redirect will keep the query string, e.g /en_US/redirect-from?q=ts will redirect you to the destination keeping all query params: /en_US/redirect-to?q=ts'
