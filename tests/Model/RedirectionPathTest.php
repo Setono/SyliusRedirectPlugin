@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Tests\Setono\SyliusRedirectPlugin\Model;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusRedirectPlugin\Model\Redirect;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Model\RedirectionPath;
 
 final class RedirectionPathTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */
