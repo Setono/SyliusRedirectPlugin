@@ -27,7 +27,7 @@ jobs:
 
         steps:
             -   name: "Checkout"
-                uses: "actions/checkout@v2"
+                uses: "actions/checkout@v3"
 
             -   name: "Setup PHP, with composer and extensions"
                 uses: "shivammathur/setup-php@v2"
@@ -37,7 +37,7 @@ jobs:
                     coverage: "none"
 
             -   name: "Install composer dependencies"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
 
@@ -71,7 +71,7 @@ jobs:
 
         steps:
             -   name: "Checkout"
-                uses: "actions/checkout@v2"
+                uses: "actions/checkout@v3"
 
             -   name: "Setup PHP, with composer and extensions"
                 uses: "shivammathur/setup-php@v2"
@@ -82,7 +82,7 @@ jobs:
                     tools: "composer-require-checker, composer-unused"
 
             -   name: "Install composer dependencies"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
 
@@ -107,7 +107,7 @@ jobs:
 
         steps:
             -   name: "Checkout"
-                uses: "actions/checkout@v2"
+                uses: "actions/checkout@v3"
 
             -   name: "Setup PHP, with composer and extensions"
                 uses: "shivammathur/setup-php@v2"
@@ -117,7 +117,7 @@ jobs:
                     coverage: "none"
 
             -   name: "Install composer dependencies"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
 
@@ -140,7 +140,7 @@ jobs:
 
         steps:
             -   name: "Checkout"
-                uses: "actions/checkout@v2"
+                uses: "actions/checkout@v3"
 
             -   name: "Setup PHP, with composer and extensions"
                 uses: "shivammathur/setup-php@v2"
@@ -150,7 +150,7 @@ jobs:
                     coverage: "none"
 
             -   name: "Install composer dependencies"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
 
@@ -178,7 +178,7 @@ jobs:
                 run: "sudo /etc/init.d/mysql start"
 
             -   name: "Checkout"
-                uses: "actions/checkout@v2"
+                uses: "actions/checkout@v3"
 
             -   name: "Setup PHP, with composer and extensions"
                 uses: "shivammathur/setup-php@v2"
@@ -187,8 +187,13 @@ jobs:
                     extensions: "${{ env.PHP_EXTENSIONS }}"
                     coverage: "none"
 
+            -   name: "Setup node"
+                uses: "actions/setup-node@v3"
+                with:
+                    node-version: "16"
+            
             -   name: "Install composer dependencies"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
 
@@ -196,16 +201,44 @@ jobs:
                 run: "(cd tests/Application && bin/console lint:container)"
 
             -   name: "Create database"
-                run: "(cd tests/Application && bin/console doctrine:database:create -vvv)"
+                run: "(cd tests/Application && bin/console doctrine:database:create)"
 
             -   name: "Create database schema"
-                run: "(cd tests/Application && bin/console doctrine:schema:create -vvv)"
+                run: "(cd tests/Application && bin/console doctrine:schema:create)"
 
             -   name: "Validate Doctrine mapping"
-                run: "(cd tests/Application && bin/console doctrine:schema:validate -vvv)"
+                run: "(cd tests/Application && bin/console doctrine:schema:validate)"
                 
+            -   name: "Get Yarn cache directory"
+                id: "yarn-cache"
+                run: "echo \"::set-output name=dir::$(yarn cache dir)\""
+
+            -   name: "Cache Yarn"
+                uses: "actions/cache@v2"
+                with:
+                    path: "${{ steps.yarn-cache.outputs.dir }}"
+                    key: "yarn-${{ hashFiles('**/package.json **/yarn.lock') }}"
+                    restore-keys: "yarn-"
+
+            -   name: "Install JS dependencies"
+                run: "(cd tests/Application && yarn install)"
+
+            -   name: "Install assets"
+                run: "(cd tests/Application && bin/console assets:install public)"
+
+            -   name: "Build assets"
+                run: "(cd tests/Application && yarn build)"
+            
             -   name: "Run behat"
                 run: "vendor/bin/behat --strict -vvv --no-interaction || vendor/bin/behat --strict -vvv --no-interaction --rerun"
+
+            -   name: "Upload Behat logs"
+                uses: "actions/upload-artifact@v3"
+                if: "failure()"
+                with:
+                    name: "Behat logs"
+                    path: "etc/build/"
+                    if-no-files-found: "ignore"
 
     code-coverage:
         name: "Code Coverage"
@@ -222,7 +255,7 @@ jobs:
 
         steps:
             -   name: "Checkout"
-                uses: "actions/checkout@v2"
+                uses: "actions/checkout@v3"
 
             -   name: "Setup PHP, with composer and extensions"
                 uses: "shivammathur/setup-php@v2"
@@ -235,7 +268,7 @@ jobs:
                 run: "echo \"::add-matcher::${{ runner.tool_cache }}/phpunit.json\""
 
             -   name: "Install composer dependencies"
-                uses: "ramsey/composer-install@v1"
+                uses: "ramsey/composer-install@v2"
                 with:
                     dependency-versions: "${{ matrix.dependencies }}"
 
