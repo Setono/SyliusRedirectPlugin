@@ -31,3 +31,15 @@ Feature: Redirect
     And the store has a redirect from path "/old-path" to "/new-path"
     When I try to access "/old-path?q=ts"
     Then I should be redirected "/new-path?q=ts"
+
+  Scenario: Redirect from old path to new path with query param and keep query string
+    Given I change my current channel to "United States"
+    And the store has a redirect from path "/old-path" to "/new-path?gid=c"
+    When I try to access "/old-path?q=ts"
+    Then I should be redirected "/new-path?gid=c&q=ts"
+
+  Scenario: Redirect from old path to new path with hashtag and keep query string
+    Given I change my current channel to "United States"
+    And the store has a redirect from path "/old-path" to "/new-path#gid=c"
+    When I try to access "/old-path?q=ts"
+    Then I should be redirected "/new-path?q=ts#gid=c"
