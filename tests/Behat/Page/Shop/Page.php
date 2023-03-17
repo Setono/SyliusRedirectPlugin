@@ -6,7 +6,6 @@ namespace Tests\Setono\SyliusRedirectPlugin\Behat\Page\Shop;
 
 use FriendsOfBehat\PageObjectExtension\Page\Page as BasePage;
 use League\Uri\Uri;
-use League\Uri\UriModifier;
 use Webmozart\Assert\Assert;
 
 class Page extends BasePage
