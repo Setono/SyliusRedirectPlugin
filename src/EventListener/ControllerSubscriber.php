@@ -61,6 +61,6 @@ final class ControllerSubscriber implements EventSubscriberInterface
         $lastRedirect = $redirectionPath->last();
         Assert::notNull($lastRedirect);
 
-        $event->setController(static fn() => self::getRedirectResponse($lastRedirect, $request->getQueryString()));
+        $event->setController(static fn () => self::getRedirectResponse($lastRedirect, $request->getQueryString()));
     }
 }
