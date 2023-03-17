@@ -24,7 +24,7 @@ trait RedirectResponseTrait
         }
 
         return new RedirectResponse(
-            $uri->toString(),
+            $uri->__toString(),
             $lastRedirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND
         );
     }
