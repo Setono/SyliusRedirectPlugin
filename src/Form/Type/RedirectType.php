@@ -39,6 +39,10 @@ final class RedirectType extends AbstractResourceType
                 'label' => 'setono_sylius_redirect.form.redirect.only_404',
                 'required' => false,
             ])
+            ->add('keepQueryString', CheckboxType::class, [
+                'label' => 'setono_sylius_redirect.form.redirect.keep_query_string',
+                'required' => false,
+            ])
             ->add('channels', ChannelChoiceType::class, [
                 'multiple' => true,
                 'expanded' => true,

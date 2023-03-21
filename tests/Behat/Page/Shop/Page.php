@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Setono\SyliusRedirectPlugin\Behat\Page\Shop;
 
 use FriendsOfBehat\PageObjectExtension\Page\Page as BasePage;
+use League\Uri\Uri;
 use Webmozart\Assert\Assert;
 
 class Page extends BasePage
@@ -21,9 +22,11 @@ class Page extends BasePage
 
     public function isOnPath(string $path): void
     {
-        $currentPath = parse_url($this->getSession()->getCurrentUrl(), \PHP_URL_PATH);
+        $currentPath = (Uri::createFromString($this->getSession()->getCurrentUrl()))
+            ->withScheme(null)
+            ->withHost(null);
 
-        Assert::same($currentPath, $path);
+        Assert::same($currentPath->__toString(), $path);
     }
 
     protected function getUrl(array $urlParameters = []): string

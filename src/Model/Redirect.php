@@ -40,6 +40,9 @@ class Redirect implements RedirectInterface
     /** @var bool */
     protected $only404 = true;
 
+    /** @var bool */
+    protected $keepQueryString = false;
+
     /** @var Collection|ChannelInterface[] */
     protected $channels;
 
@@ -141,5 +144,15 @@ class Redirect implements RedirectInterface
     public function hasChannel(BaseChannelInterface $channel): bool
     {
         return $this->channels->contains($channel);
+    }
+
+    public function keepQueryString(): bool
+    {
+        return $this->keepQueryString;
+    }
+
+    public function setKeepQueryString(bool $keepQueryString): void
+    {
+        $this->keepQueryString = $keepQueryString;
     }
 }

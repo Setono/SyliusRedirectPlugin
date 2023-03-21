@@ -8,7 +8,6 @@ use Doctrine\Persistence\ObjectManager;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -17,6 +16,8 @@ use Webmozart\Assert\Assert;
 
 class NotFoundSubscriber implements EventSubscriberInterface
 {
+    use RedirectResponseTrait;
+
     /** @var ObjectManager */
     private $objectManager;
 
@@ -54,8 +55,9 @@ class NotFoundSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $request = $event->getRequest();
         $redirectionPath = $this->redirectionPathResolver->resolveFromRequest(
-            $event->getRequest(),
+            $request,
             $this->channelContext->getChannel(),
             true
         );
@@ -70,9 +72,6 @@ class NotFoundSubscriber implements EventSubscriberInterface
         $lastRedirect = $redirectionPath->last();
         Assert::notNull($lastRedirect);
 
-        $event->setResponse(new RedirectResponse(
-            $lastRedirect->getDestination(),
-            $lastRedirect->isPermanent() ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND
-        ));
+        $event->setResponse(self::getRedirectResponse($lastRedirect, $request->getQueryString()));
     }
 }

@@ -17,6 +17,10 @@
             <div class="ui info message">
                 {{ 'setono_sylius_redirect.form.redirect.only_404_help'|trans }}
             </div>
+            {{ form_row(form.keepQueryString) }}
+            <div class="ui info message">
+                {{ 'setono_sylius_redirect.form.redirect.keep_query_string_help'|trans }}
+            </div>
         </div>
     </div>
     <div class="column">

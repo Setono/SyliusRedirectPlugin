@@ -25,6 +25,11 @@
         <field name="lastAccessed" column="last_accessed" type="datetime" nullable="true"/>
         <field name="enabled" column="enabled" type="boolean"/>
         <field name="only404" column="only_404" type="boolean"/>
+        <field name="keepQueryString" column="keep_query_string" type="boolean">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
         <field name="createdAt" column="created_at" type="datetime">
             <gedmo:timestampable on="create"/>
         </field>
