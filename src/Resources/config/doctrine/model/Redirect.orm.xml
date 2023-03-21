@@ -14,7 +14,6 @@
             <index columns="last_accessed"/>
             <index columns="enabled"/>
             <index columns="only_404"/>
-            <index columns="keep_query_string"/>
             <index name="findOneEnabledBySource_idx" columns="source,enabled"/>
             <index name="findOne404EnabledBySource_idx" columns="source,enabled,only_404"/>
         </indexes>
