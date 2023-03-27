@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\EventListener;
 
 use Doctrine\Persistence\ObjectManager;
+use Setono\MainRequestTrait\MainRequestTrait;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -16,6 +17,8 @@ use Webmozart\Assert\Assert;
 
 class NotFoundSubscriber implements EventSubscriberInterface
 {
+    use MainRequestTrait;
+
     use RedirectResponseTrait;
 
     /** @var ObjectManager */
@@ -46,7 +49,7 @@ class NotFoundSubscriber implements EventSubscriberInterface
 
     public function onKernelException(ExceptionEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$this->isMainRequest($event)) {
             return;
         }
 

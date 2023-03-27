@@ -16,6 +16,7 @@
         "doctrine/persistence": "^1.3 || ^2.1",
         "league/uri": "^6.0",
         "league/uri-components": "^2.3",
+        "setono/symfony-main-request-trait": "^1.0",
         "sylius/resource-bundle": "^1.6",
         "symfony/config": "^5.4 || ^6.0",
         "symfony/console": "^5.4 || ^6.0",
