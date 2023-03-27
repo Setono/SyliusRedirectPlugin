@@ -18,6 +18,7 @@ use Webmozart\Assert\Assert;
 class NotFoundSubscriber implements EventSubscriberInterface
 {
     use MainRequestTrait;
+
     use RedirectResponseTrait;
 
     /** @var ObjectManager */
