@@ -7,6 +7,7 @@ namespace Setono\SyliusRedirectPlugin\EventListener;
 use Doctrine\Persistence\ObjectManager;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -45,9 +46,15 @@ final class ControllerSubscriber implements EventSubscriberInterface
     public function onKernelController(ControllerEvent $event): void
     {
         $request = $event->getRequest();
+        $channel = null;
+
+        try {
+            $channel = $this->channelContext->getChannel();
+        } catch (ChannelNotFoundException $e) {
+        }
         $redirectionPath = $this->redirectionPathResolver->resolveFromRequest(
             $request,
-            $this->channelContext->getChannel()
+            $channel
         );
 
         if ($redirectionPath->isEmpty()) {

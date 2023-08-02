@@ -21,6 +21,7 @@
     "Sylius\\Bundle\\TaxonomyBundle\\Form\\Type\\TaxonTranslationType",
     "Sylius\\Bundle\\UiBundle\\Menu\\Event\\MenuBuilderEvent",
     "Sylius\\Component\\Channel\\Context\\ChannelContextInterface",
+    "Sylius\\Component\\Channel\\Context\\ChannelNotFoundException",
     "Sylius\\Component\\Channel\\Model\\ChannelAwareInterface",
     "Sylius\\Component\\Channel\\Model\\ChannelInterface",
     "Sylius\\Component\\Channel\\Model\\ChannelsAwareInterface",

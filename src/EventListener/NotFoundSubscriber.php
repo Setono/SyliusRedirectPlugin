@@ -8,6 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 use Setono\MainRequestTrait\MainRequestTrait;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -57,11 +58,17 @@ class NotFoundSubscriber implements EventSubscriberInterface
         if (!$throwable instanceof HttpException || $throwable->getStatusCode() !== Response::HTTP_NOT_FOUND) {
             return;
         }
+        $channel = null;
+
+        try {
+            $channel = $this->channelContext->getChannel();
+        } catch (ChannelNotFoundException $e) {
+        }
 
         $request = $event->getRequest();
         $redirectionPath = $this->redirectionPathResolver->resolveFromRequest(
             $request,
-            $this->channelContext->getChannel(),
+            $channel,
             true
         );
 
