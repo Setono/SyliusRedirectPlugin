@@ -5,7 +5,6 @@
     <imports>
         <import resource="services/command.xml"/>
         <import resource="services/constraint.xml"/>
-        <import resource="services/event_listener.xml"/>
         <import resource="services/event_subscriber.xml"/>
         <import resource="services/factory.xml"/>
         <import resource="services/finder.xml"/>

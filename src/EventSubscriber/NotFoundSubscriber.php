@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Setono\SyliusRedirectPlugin\EventListener;
+namespace Setono\SyliusRedirectPlugin\EventSubscriber;
 
 use Doctrine\Persistence\ObjectManager;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
