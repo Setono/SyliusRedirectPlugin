@@ -3,7 +3,6 @@
 <container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <imports>
-        <import resource="services/block_event_listener.xml"/>
         <import resource="services/command.xml"/>
         <import resource="services/constraint.xml"/>
         <import resource="services/event_listener.xml"/>
@@ -12,6 +11,5 @@
         <import resource="services/finder.xml"/>
         <import resource="services/form.xml"/>
         <import resource="services/resolver.xml"/>
-        <import resource="services/slug_update_handler.xml"/>
     </imports>
 </container>
