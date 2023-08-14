@@ -2,7 +2,7 @@ name: "build"
 on:
     push:
         branches:
-            - "master"
+            - "*.x"
     pull_request: ~
     workflow_dispatch: ~
 
@@ -210,9 +210,6 @@ jobs:
 
             -   name: "Run phpunit"
                 run: "composer phpunit"
-                
-            -   name: "Run phpspec"
-                run: "composer phpspec"
 
     integration-tests:
         name: "Integration tests"

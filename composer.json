@@ -38,7 +38,6 @@
         "api-platform/core": "^2.7",
         "lexik/jwt-authentication-bundle": "^2.16",
         "php-http/message-factory": "^1.1",
-        "phpspec/phpspec": "^7.3",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.6",
         "psalm/plugin-phpunit": "^0.18",
