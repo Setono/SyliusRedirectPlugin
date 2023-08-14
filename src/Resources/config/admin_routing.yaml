@@ -10,7 +10,7 @@ setono_sylius_redirect_admin_redirect:
             all:
                 subheader: setono_sylius_redirect.ui.manage_redirects
                 templates:
-                    form: "@SetonoSyliusRedirectPlugin/Admin/Redirect/_form.html.twig"
+                    form: "@SetonoSyliusRedirectPlugin/admin/redirect/_form.html.twig"
             index:
                 icon: 'chart bar'
     type: sylius.resource
