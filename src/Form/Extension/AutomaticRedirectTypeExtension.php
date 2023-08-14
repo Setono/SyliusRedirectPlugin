@@ -19,17 +19,14 @@ use Symfony\Component\Validator\ConstraintViolation;
 
 abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
 {
-    /** @var string */
     protected const FIELD_NAME = 'addAutomaticRedirect';
 
-    /** @var SlugUpdateHandlerInterface */
-    private $slugUpdateHandler;
+    private SlugUpdateHandlerInterface $slugUpdateHandler;
 
-    /** @var ViolationMapper */
-    private $violationMapper;
+    private ViolationMapper $violationMapper;
 
     /** @var array<string, string> */
-    private $oldSlugs = [];
+    private array $oldSlugs = [];
 
     public function __construct(SlugUpdateHandlerInterface $slugUpdateHandler)
     {

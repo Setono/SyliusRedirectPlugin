@@ -11,8 +11,7 @@ use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 
 final class RemovableRedirectFinder implements RemovableRedirectFinderInterface
 {
-    /** @var RedirectionPathResolverInterface */
-    private $redirectionPathResolver;
+    private RedirectionPathResolverInterface $redirectionPathResolver;
 
     public function __construct(RedirectionPathResolverInterface $redirectionPathResolver)
     {
@@ -21,18 +20,21 @@ final class RemovableRedirectFinder implements RemovableRedirectFinderInterface
 
     public function findRedirectsTargetedBy(RedirectInterface $redirect): Collection
     {
+        /** @var ArrayCollection<int, RedirectInterface> $result */
         $result = new ArrayCollection();
 
         if ($redirect->getChannels()->isEmpty()) {
             $redirectionPath = $this->redirectionPathResolver->resolve((string) $redirect->getDestination());
-            if (!$redirectionPath->isEmpty() && !$result->contains($redirectionPath->first())) {
-                $result->add($redirectionPath->first());
+            $firstRedirect = $redirectionPath->first();
+            if (null !== $firstRedirect && !$result->contains($firstRedirect)) {
+                $result->add($firstRedirect);
             }
         } else {
             foreach ($redirect->getChannels() as $channel) {
                 $redirectionPath = $this->redirectionPathResolver->resolve((string) $redirect->getDestination(), $channel);
-                if (!$redirectionPath->isEmpty() && !$result->contains($redirectionPath->first())) {
-                    $result->add($redirectionPath->first());
+                $firstRedirect = $redirectionPath->first();
+                if (null !== $firstRedirect && !$result->contains($firstRedirect)) {
+                    $result->add($firstRedirect);
                 }
             }
         }

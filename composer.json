@@ -16,8 +16,13 @@
         "doctrine/persistence": "^1.3 || ^2.1",
         "league/uri": "^6.0",
         "league/uri-components": "^2.3",
-        "setono/symfony-main-request-trait": "^1.0",
+        "sylius/channel": "^1.0",
+        "sylius/channel-bundle": "^1.0",
+        "sylius/core-bundle": "^1.0",
+        "sylius/product-bundle": "^1.0",
         "sylius/resource-bundle": "^1.6",
+        "sylius/taxonomy-bundle": "^1.0",
+        "sylius/ui-bundle": "^1.0",
         "symfony/config": "^5.4 || ^6.0",
         "symfony/console": "^5.4 || ^6.0",
         "symfony/dependency-injection": "^5.4 || ^6.0",
@@ -32,6 +37,7 @@
     "require-dev": {
         "api-platform/core": "^2.7",
         "lexik/jwt-authentication-bundle": "^2.16",
+        "php-http/message-factory": "^1.1",
         "phpspec/phpspec": "^7.3",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.6",
@@ -44,8 +50,7 @@
         "symfony/dotenv": "^5.4 || ^6.0",
         "symfony/intl": "^5.4 || ^6.0",
         "symfony/web-profiler-bundle": "^5.4 || ^6.0",
-        "symfony/webpack-encore-bundle": "^1.16",
-        "weirdan/doctrine-psalm-plugin": "^2.8"
+        "symfony/webpack-encore-bundle": "^1.16"
     },
     "prefer-stable": true,
     "autoload": {
@@ -65,17 +70,14 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": false,
             "ergebnis/composer-normalize": true,
+            "ocramius/package-versions": true,
             "symfony/thanks": false
         },
         "sort-packages": true
     },
     "scripts": {
-        "analyse": [
-            "@ensure-test-container-exists",
-            "psalm"
-        ],
+        "analyse": "psalm",
         "check-style": "ecs check",
-        "ensure-test-container-exists": "[[ -f tests/Application/var/cache/test/ApplicationTests_Setono_SyliusRedirectPlugin_Application_KernelTestDebugContainer.xml ]] || tests/Application/bin/console cache:warmup --env=test",
         "fix-style": "ecs check --fix",
         "phpspec": "phpspec run",
         "phpunit": "phpunit",

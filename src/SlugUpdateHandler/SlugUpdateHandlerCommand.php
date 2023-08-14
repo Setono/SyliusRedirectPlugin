@@ -6,14 +6,11 @@ namespace Setono\SyliusRedirectPlugin\SlugUpdateHandler;
 
 final class SlugUpdateHandlerCommand
 {
-    /** @var object */
-    private $object;
+    private object $object;
 
-    /** @var string */
-    private $oldSlug;
+    private string $oldSlug;
 
-    /** @var string */
-    private $newSlug;
+    private string $newSlug;
 
     public function __construct(object $object, string $oldSlug, string $newSlug)
     {

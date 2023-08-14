@@ -9,6 +9,7 @@ use Setono\SyliusRedirectPlugin\Exception\SlugUpdateHandlerValidationException;
 use Setono\SyliusRedirectPlugin\Factory\RedirectFactoryInterface;
 use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinderInterface;
 use Sylius\Component\Channel\Model\ChannelAwareInterface;
+use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Channel\Model\ChannelsAwareInterface;
 use Sylius\Component\Resource\Model\TranslationInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -16,24 +17,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class SlugUpdateHandler implements SlugUpdateHandlerInterface
 {
-    /** @var RedirectFactoryInterface */
-    protected $redirectFactory;
+    protected RedirectFactoryInterface $redirectFactory;
 
-    /** @var EntityManagerInterface */
-    protected $redirectManager;
+    protected EntityManagerInterface $redirectManager;
 
-    /** @var UrlGeneratorInterface */
-    protected $urlGenerator;
+    protected UrlGeneratorInterface $urlGenerator;
 
-    /** @var RemovableRedirectFinderInterface */
-    protected $removableRedirectFinder;
+    protected RemovableRedirectFinderInterface $removableRedirectFinder;
 
-    /** @var ValidatorInterface */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
-    /** @var array */
-    protected $validationGroups;
+    /** @var list<string> */
+    protected array $validationGroups;
 
+    /**
+     * @param list<string> $validationGroups
+     */
     public function __construct(
         RedirectFactoryInterface $redirectFactory,
         EntityManagerInterface $redirectManager,
@@ -71,10 +70,14 @@ abstract class SlugUpdateHandler implements SlugUpdateHandlerInterface
         $oldUrl = $this->generateUrl($slugUpdateHandlerCommand->getOldSlug(), $locale);
         $newUrl = $this->generateUrl($slugUpdateHandlerCommand->getNewSlug(), $locale);
 
+        /** @var list<ChannelInterface> $channels */
         $channels = [];
 
-        if ($obj instanceof ChannelAwareInterface && $obj->getChannel() !== null) {
-            $channels[] = $obj->getChannel();
+        if ($obj instanceof ChannelAwareInterface) {
+            $channel = $obj->getChannel();
+            if (null !== $channel) {
+                $channels[] = $channel;
+            }
         }
 
         if ($obj instanceof ChannelsAwareInterface) {

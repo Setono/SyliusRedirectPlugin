@@ -17,14 +17,11 @@ final class ControllerSubscriber implements EventSubscriberInterface
 {
     use RedirectResponseTrait;
 
-    /** @var ObjectManager */
-    private $objectManager;
+    private ObjectManager $objectManager;
 
-    /** @var ChannelContextInterface */
-    private $channelContext;
+    private ChannelContextInterface $channelContext;
 
-    /** @var RedirectionPathResolverInterface */
-    private $redirectionPathResolver;
+    private RedirectionPathResolverInterface $redirectionPathResolver;
 
     public function __construct(
         ObjectManager $objectManager,
