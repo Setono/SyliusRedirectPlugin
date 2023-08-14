@@ -8,7 +8,6 @@ use Setono\SyliusRedirectPlugin\Form\Type\RedirectType;
 use Setono\SyliusRedirectPlugin\Model\Redirect;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepository;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
-use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
 use Sylius\Component\Resource\Factory\Factory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
