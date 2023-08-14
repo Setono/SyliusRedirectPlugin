@@ -1,3 +1,0 @@
-setono_sylius_redirect_admin:
-    resource: "@SetonoSyliusRedirectPlugin/Resources/config/admin_routing.yaml"
-    prefix: /admin
