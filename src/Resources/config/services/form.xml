@@ -14,19 +14,5 @@
             <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
             <tag name="form.type"/>
         </service>
-
-        <service id="setono_sylius_redirect.form.extension.product_translation"
-                 class="Setono\SyliusRedirectPlugin\Form\Extension\ProductTranslationTypeExtension">
-            <argument type="service" id="setono_sylius_redirect.slug_update_handler.product_translation"/>
-
-            <tag name="form.type_extension" extended-type="Sylius\Bundle\ProductBundle\Form\Type\ProductTranslationType"/>
-        </service>
-
-        <service id="setono_sylius_redirect.form.extension.taxon_translation"
-                 class="Setono\SyliusRedirectPlugin\Form\Extension\TaxonTranslationTypeExtension">
-            <argument type="service" id="setono_sylius_redirect.slug_update_handler.taxon_translation"/>
-
-            <tag name="form.type_extension" extended-type="Sylius\Bundle\TaxonomyBundle\Form\Type\TaxonTranslationType"/>
-        </service>
     </services>
 </container>
