@@ -8,8 +8,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 final class SlugUpdateHandlerValidationException extends SlugUpdateHandlerException
 {
-    /** @var ConstraintViolationListInterface */
-    private $constraintViolationList;
+    private ConstraintViolationListInterface $constraintViolationList;
 
     public function __construct(ConstraintViolationListInterface $constraintViolationList)
     {

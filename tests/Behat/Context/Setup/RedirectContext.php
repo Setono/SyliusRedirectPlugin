@@ -12,11 +12,9 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 final class RedirectContext implements Context
 {
-    /** @var RepositoryInterface */
-    private $redirectRepository;
+    private RepositoryInterface $redirectRepository;
 
-    /** @var FactoryInterface */
-    private $redirectFactory;
+    private FactoryInterface $redirectFactory;
 
     public function __construct(RepositoryInterface $brandRepository, FactoryInterface $brandFactory)
     {

@@ -15,11 +15,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class InfiniteLoopValidator extends ConstraintValidator
 {
-    /** @var ChannelRepositoryInterface */
-    private $channelRepository;
+    private ChannelRepositoryInterface $channelRepository;
 
-    /** @var RedirectionPathResolverInterface */
-    private $redirectionPathResolver;
+    private RedirectionPathResolverInterface $redirectionPathResolver;
 
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
@@ -30,35 +28,36 @@ final class InfiniteLoopValidator extends ConstraintValidator
     }
 
     /**
-     * @param mixed $redirect
+     * @param mixed $value
      */
-    public function validate($redirect, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
-        if (null === $redirect) {
+        if (null === $value) {
             return;
         }
 
         if (!$constraint instanceof InfiniteLoop) {
-            throw new UnexpectedTypeException($redirect, InfiniteLoop::class);
+            throw new UnexpectedTypeException($value, InfiniteLoop::class);
         }
 
-        if (!$redirect instanceof RedirectInterface) {
-            throw new UnexpectedTypeException($redirect, RedirectInterface::class);
+        if (!$value instanceof RedirectInterface) {
+            throw new UnexpectedTypeException($value, RedirectInterface::class);
         }
 
-        if ($redirect->getSource() === null) {
+        $source = $value->getSource();
+        if (null === $source) {
             return;
         }
 
-        if (!$redirect->isEnabled()) {
+        if (!$value->isEnabled()) {
             return;
         }
 
         try {
             /** @var ChannelInterface $channel */
             foreach ($this->channelRepository->findAll() as $channel) {
-                $this->redirectionPathResolver->resolve($redirect->getSource(), $channel);
-                $this->redirectionPathResolver->resolve($redirect->getSource(), $channel, true);
+                $this->redirectionPathResolver->resolve($source, $channel);
+                $this->redirectionPathResolver->resolve($source, $channel, true);
             }
         } catch (InfiniteLoopException $e) {
             $this->context->buildViolation($constraint->message)

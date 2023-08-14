@@ -23,6 +23,7 @@ final class Configuration implements ConfigurationInterface
         /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
+        /** @psalm-suppress UndefinedInterfaceMethod,PossiblyNullReference,MixedMethodCall,PossiblyUndefinedMethod */
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
@@ -30,8 +31,7 @@ final class Configuration implements ConfigurationInterface
                 ->integerNode('remove_after')
                     ->info('0 means disabled. If the value is > 0 then redirects that have not been accessed in the last x days will be removed')
                     ->defaultValue(0)
-                ->end()
-            ->end();
+        ;
 
         $this->addResourcesSection($rootNode);
 
@@ -40,6 +40,7 @@ final class Configuration implements ConfigurationInterface
 
     private function addResourcesSection(ArrayNodeDefinition $node): void
     {
+        /** @psalm-suppress MixedMethodCall,PossiblyNullReference,UndefinedInterfaceMethod,PossiblyUndefinedMethod */
         $node
             ->children()
                 ->arrayNode('resources')
@@ -57,13 +58,6 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('repository')->defaultValue(RedirectRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->end()
                                         ->scalarNode('form')->defaultValue(RedirectType::class)->cannotBeEmpty()->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
         ;
     }
 }

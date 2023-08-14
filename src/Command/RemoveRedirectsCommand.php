@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Command;
 
-use Exception;
-use Setono\SyliusRedirectPlugin\Repository\RedirectRepository;
+use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class RemoveRedirectsCommand extends Command
 {
-    /** @var RedirectRepository */
-    private $redirectRepository;
+    protected static $defaultName = 'setono:sylius-redirect:remove';
 
-    /** @var int */
-    private $removeAfter;
+    protected static $defaultDescription = 'This command will remove redirects that have not been accessed later than x days ago where x is the `setono_sylius_redirect.remove_after` parameter';
+
+    private RedirectRepositoryInterface $redirectRepository;
+
+    private int $removeAfter;
 
     /**
      * @param int $removeAfter The number of days that has to go before removing redirects
      */
-    public function __construct(RedirectRepository $redirectRepository, int $removeAfter)
+    public function __construct(RedirectRepositoryInterface $redirectRepository, int $removeAfter)
     {
         parent::__construct();
 
@@ -29,17 +30,6 @@ class RemoveRedirectsCommand extends Command
         $this->removeAfter = $removeAfter;
     }
 
-    protected function configure(): void
-    {
-        $this
-            ->setName('setono:sylius-redirect:remove')
-            ->setDescription('This command will remove redirects that have not been accessed later than x days ago where x is the `setono_sylius_redirect.remove_after` parameter')
-        ;
-    }
-
-    /**
-     * @throws Exception
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->redirectRepository->removeNotAccessed($this->removeAfter);

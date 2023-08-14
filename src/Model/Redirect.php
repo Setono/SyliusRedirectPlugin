@@ -8,8 +8,7 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Sylius\Component\Channel\Model\ChannelInterface as BaseChannelInterface;
-use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Resource\Model\TimestampableTrait;
 use Sylius\Component\Resource\Model\ToggleableTrait;
 
@@ -19,31 +18,23 @@ class Redirect implements RedirectInterface
 
     use ToggleableTrait;
 
-    /** @var int */
-    protected $id;
+    protected ?int $id = null;
 
-    /** @var string|null */
-    protected $source;
+    protected ?string $source = null;
 
-    /** @var string|null */
-    protected $destination;
+    protected ?string $destination = null;
 
-    /** @var bool */
-    protected $permanent = true;
+    protected bool $permanent = true;
 
-    /** @var int */
-    protected $count = 0;
+    protected int $count = 0;
 
-    /** @var DateTimeInterface|null */
-    protected $lastAccessed;
+    protected ?DateTimeInterface $lastAccessed = null;
 
-    /** @var bool */
-    protected $only404 = true;
+    protected bool $only404 = true;
 
-    /** @var bool */
-    protected $keepQueryString = false;
+    protected bool $keepQueryString = false;
 
-    /** @var Collection|ChannelInterface[] */
+    /** @var Collection<array-key, ChannelInterface> */
     protected $channels;
 
     public function __construct()
@@ -127,21 +118,21 @@ class Redirect implements RedirectInterface
         return $this->channels;
     }
 
-    public function addChannel(BaseChannelInterface $channel): void
+    public function addChannel(ChannelInterface $channel): void
     {
         if (!$this->hasChannel($channel)) {
             $this->channels->add($channel);
         }
     }
 
-    public function removeChannel(BaseChannelInterface $channel): void
+    public function removeChannel(ChannelInterface $channel): void
     {
         if ($this->hasChannel($channel)) {
             $this->channels->removeElement($channel);
         }
     }
 
-    public function hasChannel(BaseChannelInterface $channel): bool
+    public function hasChannel(ChannelInterface $channel): bool
     {
         return $this->channels->contains($channel);
     }

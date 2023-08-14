@@ -18,7 +18,7 @@ interface RemovableRedirectFinderInterface
      * If all those redirect had multiple channels, this would result in :
      *      new ArrayCollection(['a -> b (channel1)', 'a -> b (channel2)', 'a -> b (channel3)', ...])
      *
-     * @return Collection|RedirectInterface[]
+     * @return Collection<int, RedirectInterface>
      */
     public function findRedirectsTargetedBy(RedirectInterface $redirect): Collection;
 }

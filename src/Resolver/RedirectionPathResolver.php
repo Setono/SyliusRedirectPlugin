@@ -12,8 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class RedirectionPathResolver implements RedirectionPathResolverInterface
 {
-    /** @var RedirectRepositoryInterface */
-    private $redirectRepository;
+    private RedirectRepositoryInterface $redirectRepository;
 
     public function __construct(RedirectRepositoryInterface $redirectRepository)
     {
@@ -35,9 +34,12 @@ final class RedirectionPathResolver implements RedirectionPathResolverInterface
                 $source = (string) $redirect->getDestination();
             }
 
+            /** @psalm-suppress TypeDoesNotContainType */
             if ($redirectionPath->hasCycle()) {
+                $firstRedirect = $redirectionPath->first();
+
                 throw new InfiniteLoopException(
-                    $redirectionPath->first() !== null ? ($redirectionPath->first()->getSource() ?? $source) : $source
+                    null !== $firstRedirect ? ($firstRedirect->getSource() ?? $source) : $source
                 );
             }
         } while (null !== $redirect && !$redirect->isOnly404()); // See this issue for explanation of this: https://github.com/Setono/SyliusRedirectPlugin/issues/27

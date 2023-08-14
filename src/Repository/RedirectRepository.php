@@ -6,16 +6,12 @@ namespace Setono\SyliusRedirectPlugin\Repository;
 
 use DateInterval;
 use DateTime;
-use Exception;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Channel\Model\ChannelInterface;
 
 class RedirectRepository extends EntityRepository implements RedirectRepositoryInterface
 {
-    /**
-     * @throws Exception
-     */
     public function removeNotAccessed(int $threshold): void
     {
         if ($threshold <= 0) {

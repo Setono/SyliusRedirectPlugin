@@ -12,8 +12,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class SourceValidator extends ConstraintValidator
 {
-    /** @var RedirectRepositoryInterface */
-    private $redirectRepository;
+    private RedirectRepositoryInterface $redirectRepository;
 
     public function __construct(RedirectRepositoryInterface $redirectRepository)
     {
@@ -21,45 +20,47 @@ final class SourceValidator extends ConstraintValidator
     }
 
     /**
-     * @param mixed $redirect
+     * @param mixed $value
      */
-    public function validate($redirect, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
-        if (null === $redirect) {
+        if (null === $value) {
             return;
         }
 
         if (!$constraint instanceof Source) {
-            throw new UnexpectedTypeException($redirect, Source::class);
+            throw new UnexpectedTypeException($value, Source::class);
         }
 
-        if (!$redirect instanceof RedirectInterface) {
-            throw new UnexpectedTypeException($redirect, RedirectInterface::class);
+        if (!$value instanceof RedirectInterface) {
+            throw new UnexpectedTypeException($value, RedirectInterface::class);
         }
 
-        if ($redirect->getSource() === null) {
+        $source = $value->getSource();
+
+        if (null === $source) {
             return;
         }
 
-        if (!$redirect->isEnabled()) {
+        if (!$value->isEnabled()) {
             return;
         }
 
-        if ($redirect->getChannels()->isEmpty()) {
-            $conflictingRedirect = $this->redirectRepository->findOneEnabledBySource($redirect->getSource());
-            if (null === $conflictingRedirect || $redirect->getId() === $conflictingRedirect->getId()) {
+        if ($value->getChannels()->isEmpty()) {
+            $conflictingRedirect = $this->redirectRepository->findOneEnabledBySource($source);
+            if (null === $conflictingRedirect || $value->getId() === $conflictingRedirect->getId()) {
                 return;
             }
 
-            $this->buildViolation($constraint, $redirect->getSource(), (int) $conflictingRedirect->getId());
+            $this->buildViolation($constraint, $source, (int) $conflictingRedirect->getId());
         } else {
-            foreach ($redirect->getChannels() as $channel) {
-                $conflictingRedirect = $this->redirectRepository->findOneEnabledBySource($redirect->getSource(), $channel);
-                if (null === $conflictingRedirect || $redirect->getId() === $conflictingRedirect->getId()) {
+            foreach ($value->getChannels() as $channel) {
+                $conflictingRedirect = $this->redirectRepository->findOneEnabledBySource($source, $channel);
+                if (null === $conflictingRedirect || $value->getId() === $conflictingRedirect->getId()) {
                     return;
                 }
 
-                $this->buildViolation($constraint, $redirect->getSource(), (int) $conflictingRedirect->getId());
+                $this->buildViolation($constraint, $source, (int) $conflictingRedirect->getId());
             }
         }
     }

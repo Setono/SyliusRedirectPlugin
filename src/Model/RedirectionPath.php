@@ -11,15 +11,14 @@ final class RedirectionPath implements Countable
     /**
      * Array of seen redirect ids
      *
-     * @var array
+     * @var array<int, true>
      */
-    private $seen = [];
+    private array $seen = [];
 
-    /** @var RedirectInterface[] */
-    private $redirects = [];
+    /** @var list<RedirectInterface> */
+    private array $redirects = [];
 
-    /** @var bool */
-    private $cycle = false;
+    private bool $cycle = false;
 
     public function addRedirect(RedirectInterface $redirect): void
     {
@@ -28,7 +27,7 @@ final class RedirectionPath implements Countable
         }
 
         $this->redirects[] = $redirect;
-        $this->seen[$redirect->getId()] = true;
+        $this->seen[(int) $redirect->getId()] = true;
     }
 
     /**
@@ -43,11 +42,11 @@ final class RedirectionPath implements Countable
 
     public function isEmpty(): bool
     {
-        return $this->count() === 0;
+        return [] === $this->redirects;
     }
 
     /**
-     * @return RedirectInterface[]
+     * @return list<RedirectInterface>
      */
     public function all(): array
     {

@@ -5,6 +5,10 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     errorLevel="1"
     errorBaseline="psalm-baseline.xml"
+    findUnusedBaselineEntry="true"
+    findUnusedPsalmSuppress="false"
+    findUnusedCode="false"
+    findUnusedVariablesAndParams="true"
 >
     <projectFiles>
         <directory name="src"/>
@@ -16,14 +20,24 @@
         </ignoreFiles>
     </projectFiles>
     <plugins>
-        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin">
-            <containerXml>tests/Application/var/cache/test/Tests_Setono_SyliusRedirectPlugin_Application_KernelTestDebugContainer.xml</containerXml>
-        </pluginClass>
+        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin"/>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
-        <pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin"/>
     </plugins>
     <forbiddenFunctions>
         <function name="dd"/>
         <function name="dump"/>
+        <function name="exit"/>
+        <function name="var_dump"/>
+        <function name="print_r"/>
     </forbiddenFunctions>
+    <issueHandlers>
+        <UnnecessaryVarAnnotation errorLevel="suppress"/>
+        <PluginIssue name="QueryBuilderSetParameter" errorLevel="suppress"/>
+        <PropertyNotSetInConstructor>
+            <errorLevel type="suppress">
+                <referencedProperty name="Symfony\Component\Validator\Constraint::$groups"/>
+            </errorLevel>
+        </PropertyNotSetInConstructor>
+        <MissingTemplateParam errorLevel="suppress"/>
+    </issueHandlers>
 </psalm>

@@ -17,7 +17,7 @@ trait RedirectResponseTrait
 {
     public static function getRedirectResponse(RedirectInterface $lastRedirect, string $queryString = null): RedirectResponse
     {
-        $uri = Uri::createFromString($lastRedirect->getDestination());
+        $uri = Uri::createFromString((string) $lastRedirect->getDestination());
 
         if ($lastRedirect->keepQueryString() && null !== $queryString) {
             $uri = UriModifier::appendQuery($uri, $queryString);
