@@ -24,7 +24,7 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
             ->delete()
             ->orWhere(
                 'r.lastAccessed is not null and r.lastAccessed <= :threshold',
-                'r.lastAccessed is null and r.createdAt <= :threshold'
+                'r.lastAccessed is null and r.createdAt <= :threshold',
             )
             ->setParameter('threshold', $dateTimeThreshold)
             ->getQuery()

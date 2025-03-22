@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symplify\EasyCodingStandard\ValueObject\Option;
+use PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->import('vendor/sylius-labs/coding-standard/ecs.php');
-    $containerConfigurator->parameters()->set(Option::PATHS, [
-        'src', 'tests'
+return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->paths([
+        __DIR__ . '/src',
+        __DIR__ . '/tests/',
+        __DIR__ . '/ecs.php',
     ]);
-    $containerConfigurator->parameters()->set(Option::SKIP, [
-        'tests/Application/**',
+
+    $ecsConfig->import('vendor/sylius-labs/coding-standard/ecs.php');
+
+    $ecsConfig->skip([
+        VisibilityRequiredFixer::class => ['*Spec.php'],
     ]);
 };

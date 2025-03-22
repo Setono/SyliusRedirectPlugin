@@ -3,7 +3,7 @@ setono_sylius_redirect_admin_redirect:
         alias: setono_sylius_redirect.redirect
         section: admin
         permission: true
-        templates: "@SyliusAdmin\\Crud"
+        templates: "@SyliusAdmin\\shared\\crud"
         redirect: update
         grid: setono_sylius_redirect_admin_redirect
         vars:

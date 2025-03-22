@@ -22,7 +22,7 @@ final class RedirectionPathResolver implements RedirectionPathResolverInterface
     public function resolve(
         string $source,
         ChannelInterface $channel = null,
-        bool $only404 = false
+        bool $only404 = false,
     ): RedirectionPath {
         $redirectionPath = new RedirectionPath();
 
@@ -39,7 +39,7 @@ final class RedirectionPathResolver implements RedirectionPathResolverInterface
                 $firstRedirect = $redirectionPath->first();
 
                 throw new InfiniteLoopException(
-                    null !== $firstRedirect ? ($firstRedirect->getSource() ?? $source) : $source
+                    null !== $firstRedirect ? ($firstRedirect->getSource() ?? $source) : $source,
                 );
             }
         } while (null !== $redirect && !$redirect->isOnly404()); // See this issue for explanation of this: https://github.com/Setono/SyliusRedirectPlugin/issues/27
@@ -50,7 +50,7 @@ final class RedirectionPathResolver implements RedirectionPathResolverInterface
     public function resolveFromRequest(
         Request $request,
         ChannelInterface $channel = null,
-        bool $only404 = false
+        bool $only404 = false,
     ): RedirectionPath {
         return $this->resolve($request->getPathInfo(), $channel, $only404);
     }

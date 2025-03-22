@@ -15,7 +15,6 @@ use Sylius\Component\Resource\Model\ToggleableTrait;
 class Redirect implements RedirectInterface
 {
     use TimestampableTrait;
-
     use ToggleableTrait;
 
     protected ?int $id = null;

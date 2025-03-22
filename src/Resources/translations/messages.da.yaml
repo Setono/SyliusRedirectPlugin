@@ -9,6 +9,7 @@ setono_sylius_redirect:
         new_redirect: Ny omdirigering
         permanent: Permanent
         redirects: Omdirigeringer
+        redirect: Omvej
         source: Kilde
     menu:
         admin:

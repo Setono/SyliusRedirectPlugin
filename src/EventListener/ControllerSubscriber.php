@@ -31,7 +31,7 @@ final class ControllerSubscriber implements EventSubscriberInterface, LoggerAwar
     public function __construct(
         ObjectManager $objectManager,
         ChannelContextInterface $channelContext,
-        RedirectionPathResolverInterface $redirectionPathResolver
+        RedirectionPathResolverInterface $redirectionPathResolver,
     ) {
         $this->logger = new NullLogger();
         $this->objectManager = $objectManager;
@@ -57,7 +57,7 @@ final class ControllerSubscriber implements EventSubscriberInterface, LoggerAwar
         }
         $redirectionPath = $this->redirectionPathResolver->resolveFromRequest(
             $request,
-            $channel
+            $channel,
         );
 
         if ($redirectionPath->isEmpty()) {

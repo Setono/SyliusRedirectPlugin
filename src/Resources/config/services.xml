@@ -12,5 +12,6 @@
         <import resource="services/form.xml"/>
         <import resource="services/resolver.xml"/>
         <import resource="services/slug_update_handler.xml"/>
+        <import resource="services/twig.xml"/>
     </imports>
 </container>

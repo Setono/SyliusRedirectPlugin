@@ -69,11 +69,7 @@ $ bin/console doctrine:migrations:diff
 $ bin/console doctrine:migrations:migrate
 ```
 
-### Step 5: Copy template
-
-You can copy the templates under `tests/Application/templates/bundles/SyliusAdminBundle` into your own application to enable the possibility to add an automatic redirection when updating product
-
-### Step 6: Install assets
+### Step 5: Install assets
 ```bash
 $ bin/console assets:install
 ```

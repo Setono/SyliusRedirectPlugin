@@ -9,6 +9,7 @@ setono_sylius_redirect:
         new_redirect: Nieuwe omleiding
         permanent: Permanent
         redirects: Omleidingen
+        redirect: Omleiding
         source: Bron
     menu:
         admin:

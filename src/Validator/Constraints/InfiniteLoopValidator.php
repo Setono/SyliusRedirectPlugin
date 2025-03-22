@@ -21,7 +21,7 @@ final class InfiniteLoopValidator extends ConstraintValidator
 
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
-        RedirectionPathResolverInterface $redirectionPathResolver
+        RedirectionPathResolverInterface $redirectionPathResolver,
     ) {
         $this->channelRepository = $channelRepository;
         $this->redirectionPathResolver = $redirectionPathResolver;
