@@ -11,9 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class RemoveRedirectsCommand extends Command
 {
-    protected static $defaultName = 'setono:sylius-redirect:remove';
+    protected static string $defaultName = 'setono:sylius-redirect:remove';
 
-    protected static $defaultDescription = 'This command will remove redirects that have not been accessed later than x days ago where x is the `setono_sylius_redirect.remove_after` parameter';
+    protected static string $defaultDescription = 'This command will remove redirects that have not been accessed later than x days ago where x is the `setono_sylius_redirect.remove_after` parameter';
 
     private RedirectRepositoryInterface $redirectRepository;
 
@@ -25,6 +25,8 @@ class RemoveRedirectsCommand extends Command
     public function __construct(RedirectRepositoryInterface $redirectRepository, int $removeAfter)
     {
         parent::__construct();
+        $this->setName(self::$defaultName);
+        $this->setDescription(self::$defaultDescription);
 
         $this->redirectRepository = $redirectRepository;
         $this->removeAfter = $removeAfter;
