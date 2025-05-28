@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\Command;
 
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'setono:sylius-redirect:remove', description: 'This command will remove redirects that have not been accessed later than x days ago where x is the `setono_sylius_redirect.remove_after` parameter')]
 class RemoveRedirectsCommand extends Command
 {
-    protected static string $defaultName = 'setono:sylius-redirect:remove';
-
-    protected static string $defaultDescription = 'This command will remove redirects that have not been accessed later than x days ago where x is the `setono_sylius_redirect.remove_after` parameter';
-
     private RedirectRepositoryInterface $redirectRepository;
 
     private int $removeAfter;
@@ -25,8 +23,6 @@ class RemoveRedirectsCommand extends Command
     public function __construct(RedirectRepositoryInterface $redirectRepository, int $removeAfter)
     {
         parent::__construct();
-        $this->setName(self::$defaultName);
-        $this->setDescription(self::$defaultDescription);
 
         $this->redirectRepository = $redirectRepository;
         $this->removeAfter = $removeAfter;
