@@ -33,7 +33,7 @@ final readonly class TaxonFormComponentSubscriber implements EventSubscriberInte
             return;
         }
 
-        $data = (array) json_decode((string)$request->request->get('data', ''), true);
+        $data = (array) json_decode((string) $request->request->get('data', ''), true);
         /** @var string $localeCode */
         $localeCode = $data['args']['localeCode'] ?? '';
         if ($localeCode === '') {

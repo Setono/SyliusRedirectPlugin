@@ -20,7 +20,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - "7.4" # Always use the lowest version of PHP since a higher version could create actual syntax errors in lower versions
+                    - "8.2" # Always use the lowest version of PHP since a higher version could create actual syntax errors in lower versions
 
                 dependencies:
                     - "highest"
@@ -67,9 +67,6 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - "7.4"
-                    - "8.0"
-                    - "8.1"
                     - "8.2"
                     - "8.3"
 
@@ -78,12 +75,8 @@ jobs:
                     - "highest"
 
                 symfony:
-                    - "^5.4"
-                    - "^6.0"
-
-                exclude:
-                    -   php-version: "7.4"
-                        symfony: "^6.0"
+                    - "^6.4"
+                    - "^7.1"
 
         steps:
             -   name: "Checkout"
@@ -121,9 +114,6 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - "7.4"
-                    - "8.0"
-                    - "8.1"
                     - "8.2"
                     - "8.3"
 
@@ -132,12 +122,8 @@ jobs:
                     - "highest"
 
                 symfony:
-                    - "^5.4"
-                    - "^6.0"
-
-                exclude:
-                    -   php-version: "7.4"
-                        symfony: "^6.0"
+                    - "^6.4"
+                    - "^7.1"
 
         steps:
             -   name: "Checkout"
@@ -172,9 +158,6 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - "7.4"
-                    - "8.0"
-                    - "8.1"
                     - "8.2"
                     - "8.3"
 
@@ -182,12 +165,8 @@ jobs:
                     - "highest"
 
                 symfony:
-                    - "^5.4"
-                    - "^6.0"
-
-                exclude:
-                    -   php-version: "7.4"
-                        symfony: "^6.0"
+                    - "^6.4"
+                    - "^7.1"
 
         steps:
             -   name: "Checkout"
@@ -225,7 +204,7 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - "7.4"
+                    - "8.2"
 
                 dependencies:
                     - "highest"
@@ -247,7 +226,7 @@ jobs:
             -   name: "Setup node"
                 uses: "actions/setup-node@v3"
                 with:
-                    node-version: "16"
+                    node-version: "20"
             
             -   name: "Install composer dependencies"
                 uses: "ramsey/composer-install@v3"
