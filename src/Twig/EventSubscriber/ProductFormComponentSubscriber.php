@@ -50,6 +50,11 @@ final readonly class ProductFormComponentSubscriber implements EventSubscriberIn
             return;
         }
 
+        /**
+         * @psalm-suppress MixedOperand
+         * @psalm-suppress MixedArrayAccess
+         * @psalm-suppress MixedArrayAssignment
+         */
         $addAutomaticRedirect->vars['attr'] += ['show' => true];
     }
 }
