@@ -19,7 +19,7 @@ final class RedirectFactory implements RedirectFactoryInterface
 
     public function createNew(): RedirectInterface
     {
-        /** @var object|RedirectInterface $redirect */
+        /** @var RedirectInterface $redirect */
         $redirect = $this->decoratedFactory->createNew();
         Assert::isInstanceOf($redirect, RedirectInterface::class);
 
