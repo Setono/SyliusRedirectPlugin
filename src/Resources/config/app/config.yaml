@@ -1,3 +1,0 @@
-imports:
-- { resource: "@SetonoSyliusRedirectPlugin/Resources/config/grids.yaml" }
-- { resource: "@SetonoSyliusRedirectPlugin/Resources/config/twig/twig_hooks.yaml" }

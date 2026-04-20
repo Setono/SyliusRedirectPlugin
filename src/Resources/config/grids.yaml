@@ -1,2 +1,0 @@
-imports:
-- { resource: '@SetonoSyliusRedirectPlugin/Resources/config/grids/setono_sylius_redirect_admin_redirect.yaml' }

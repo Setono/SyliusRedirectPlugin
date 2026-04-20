@@ -34,7 +34,7 @@ vendor/bin/behat
 
 ### Plugin structure
 
-This is a standard Sylius resource plugin. The core entity is `Redirect` (`src/Model/`), registered as a Sylius resource via `SetonoSyliusRedirectPlugin` (extends `AbstractResourceBundle`). DI configuration lives in XML files under `src/Resources/config/services/`.
+This is a standard Sylius resource plugin. The core entity is `Redirect` (`src/Model/`), registered as a Sylius resource via `SetonoSyliusRedirectPlugin` (extends `AbstractResourceBundle`, overrides `getPath()` to point at the repo root). DI configuration lives in XML files under `config/services/`; templates at `templates/`; translations at `translations/`.
 
 ### Request flow
 

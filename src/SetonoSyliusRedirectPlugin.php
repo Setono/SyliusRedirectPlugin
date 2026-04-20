@@ -12,6 +12,11 @@ final class SetonoSyliusRedirectPlugin extends AbstractResourceBundle
 {
     use SyliusPluginTrait;
 
+    public function getPath(): string
+    {
+        return \dirname(__DIR__);
+    }
+
     /**
      * @inheritdoc
      */
