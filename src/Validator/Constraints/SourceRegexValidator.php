@@ -8,7 +8,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\RegexValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/** @psalm-suppress PropertyNotSetInConstructor */
 final class SourceRegexValidator extends RegexValidator
 {
     private string $pattern;

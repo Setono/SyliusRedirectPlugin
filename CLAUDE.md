@@ -9,27 +9,21 @@ Sylius plugin for managing URL redirects (301/302). Supports channel-specific re
 ## Commands
 
 ```bash
-# Run all tests (phpspec + phpunit)
-composer test
-
-# Run PHPUnit tests only
+# Run PHPUnit tests
 composer phpunit
 
 # Run a single PHPUnit test
 vendor/bin/phpunit tests/path/to/TestFile.php
 vendor/bin/phpunit --filter testMethodName
 
-# Run PHPSpec tests only
-composer phpspec
-
-# Static analysis (Psalm at error level 1)
+# Static analysis (PHPStan at level: max)
 composer analyse
 
 # Code style check / fix (ECS with Sylius coding standard)
 composer check-style
 composer fix-style
 
-# Rector dry-run (PHP 7.4 level)
+# Rector dry-run
 vendor/bin/rector --dry-run
 
 # Behat (requires MySQL + test app setup)
@@ -64,15 +58,16 @@ Three custom validators prevent invalid redirects:
 ## Testing
 
 - **PHPUnit** (`tests/`) - unit tests, bootstrapped via `tests/Application/config/bootstrap.php`
-- **PHPSpec** (`spec/`) - BDD specs for validators and finders
 - **Behat** (`features/`) - integration tests requiring a full Sylius test application (`tests/Application/`)
 
 The test application in `tests/Application/` is a minimal Sylius app used for Behat and integration tests. It requires MySQL and asset compilation to run.
 
 ## Code Quality
 
-- PHP >=7.4, targeting Symfony 5.4/6.0
-- Psalm at error level 1 (strictest) with Symfony and PHPUnit plugins
+- PHP >=8.2, targeting Symfony 6.4/7.1
+- Dev tooling (PHPStan, PHPUnit, Rector, ECS, Infection) comes from `setono/sylius-plugin`
+- PHPStan at `level: max` with Sylius/Symfony/Doctrine/PHPUnit/strict-rules extensions
 - ECS imports `sylius-labs/coding-standard`
 - All tools skip `tests/Application/`
 - `declare(strict_types=1)` required in all PHP files
+- CI uses the `setono/sylius-plugin/*@v2` composite GitHub Actions

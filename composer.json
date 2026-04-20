@@ -53,12 +53,7 @@
         "friends-of-behat/variadic-extension": "^1.6",
         "lexik/jwt-authentication-bundle": "^3.1",
         "php-http/message-factory": "^1.1",
-        "phpspec/phpspec": "^7.3",
-        "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^9.6",
-        "psalm/plugin-phpunit": "^0.18",
-        "setono/code-quality-pack": "^2.9",
-        "shipmonk/composer-dependency-analyser": "^1.8",
+        "setono/sylius-plugin": "^2.1",
         "sylius/sylius": "~2.0.0",
         "symfony/debug-bundle": "^6.4 || ^7.1",
         "symfony/dotenv": "^6.4 || ^7.1",
@@ -84,21 +79,18 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": false,
             "ergebnis/composer-normalize": true,
+            "infection/extension-installer": true,
             "ocramius/package-versions": true,
             "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/thanks": false
         },
         "sort-packages": true
     },
     "scripts": {
-        "analyse": "psalm",
+        "analyse": "phpstan analyse",
         "check-style": "ecs check",
         "fix-style": "ecs check --fix",
-        "phpspec": "phpspec run",
-        "phpunit": "phpunit",
-        "test": [
-            "@phpspec",
-            "@phpunit"
-        ]
+        "phpunit": "phpunit"
     }
 }

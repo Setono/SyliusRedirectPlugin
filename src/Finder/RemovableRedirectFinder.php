@@ -27,7 +27,6 @@ final class RemovableRedirectFinder implements RemovableRedirectFinderInterface
             $redirectionPath = $this->redirectionPathResolver->resolve((string) $redirect->getDestination());
             $firstRedirect = $redirectionPath->first();
 
-            /** @psalm-suppress InvalidArgument */
             if (null !== $firstRedirect && !$result->contains($firstRedirect)) {
                 $result->add($firstRedirect);
             }
@@ -36,7 +35,6 @@ final class RemovableRedirectFinder implements RemovableRedirectFinderInterface
                 $redirectionPath = $this->redirectionPathResolver->resolve((string) $redirect->getDestination(), $channel);
                 $firstRedirect = $redirectionPath->first();
 
-                /** @psalm-suppress InvalidArgument */
                 if (null !== $firstRedirect && !$result->contains($firstRedirect)) {
                     $result->add($firstRedirect);
                 }

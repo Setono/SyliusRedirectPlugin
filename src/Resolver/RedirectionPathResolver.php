@@ -34,7 +34,6 @@ final class RedirectionPathResolver implements RedirectionPathResolverInterface
                 $source = (string) $redirect->getDestination();
             }
 
-            /** @psalm-suppress TypeDoesNotContainType */
             if ($redirectionPath->hasCycle()) {
                 $firstRedirect = $redirectionPath->first();
 

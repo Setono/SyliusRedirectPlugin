@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Setono\SyliusRedirectPlugin\Model;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusRedirectPlugin\Model\Redirect;
@@ -14,9 +15,7 @@ final class RedirectionPathTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_adds_redirects_in_the_correct_order_and_utility_methods_returns_correct_values(): void
     {
         $firstRedirect = new Redirect();
@@ -29,15 +28,13 @@ final class RedirectionPathTest extends TestCase
             $path->addRedirect($redirect);
         }
 
-        $this->assertSame($redirects, $path->all());
-        $this->assertSame($firstRedirect, $path->first());
-        $this->assertSame($lastRedirect, $path->last());
-        $this->assertCount(2, $path);
+        self::assertSame($redirects, $path->all());
+        self::assertSame($firstRedirect, $path->first());
+        self::assertSame($lastRedirect, $path->last());
+        self::assertCount(2, $path);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_detects_cycle(): void
     {
         $redirect1 = $this->prophesize(RedirectInterface::class);
@@ -47,7 +44,7 @@ final class RedirectionPathTest extends TestCase
         $redirect2->getId()->willReturn(2);
 
         $redirect3 = $this->prophesize(RedirectInterface::class);
-        $redirect3->getId()->willReturn(1); // returns the same id as the first redirect
+        $redirect3->getId()->willReturn(1);
 
         $redirects = [$redirect1->reveal(), $redirect2->reveal(), $redirect3->reveal()];
 
@@ -57,12 +54,10 @@ final class RedirectionPathTest extends TestCase
             $path->addRedirect($redirect);
         }
 
-        $this->assertTrue($path->hasCycle());
+        self::assertTrue($path->hasCycle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_marks_all_redirects_as_accessed(): void
     {
         $redirect1 = $this->prophesize(RedirectInterface::class);

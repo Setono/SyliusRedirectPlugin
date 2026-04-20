@@ -19,7 +19,6 @@ use Symfony\Component\Validator\ConstraintViolation;
 
 abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
 {
-    /** @psalm-suppress MissingClassConstType */
     protected const FIELD_NAME = 'addAutomaticRedirect';
 
     private SlugUpdateHandlerInterface $slugUpdateHandler;

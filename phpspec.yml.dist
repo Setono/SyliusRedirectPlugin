@@ -1,4 +1,0 @@
-suites:
-    main:
-        namespace: Setono\SyliusRedirectPlugin
-        psr4_prefix: Setono\SyliusRedirectPlugin

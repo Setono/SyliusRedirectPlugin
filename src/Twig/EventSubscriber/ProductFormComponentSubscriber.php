@@ -33,10 +33,13 @@ final readonly class ProductFormComponentSubscriber implements EventSubscriberIn
             return;
         }
 
-        $data = (array) json_decode((string) $request->request->get('data', ''), true);
-        /** @var string $localeCode */
+        $data = json_decode((string) $request->request->get('data', ''), true);
+        if (!is_array($data) || !isset($data['args']) || !is_array($data['args'])) {
+            return;
+        }
+
         $localeCode = $data['args']['localeCode'] ?? '';
-        if ($localeCode === '') {
+        if (!is_string($localeCode) || $localeCode === '') {
             return;
         }
 
@@ -50,11 +53,11 @@ final readonly class ProductFormComponentSubscriber implements EventSubscriberIn
             return;
         }
 
-        /**
-         * @psalm-suppress MixedOperand
-         * @psalm-suppress MixedArrayAccess
-         * @psalm-suppress MixedArrayAssignment
-         */
-        $addAutomaticRedirect->vars['attr'] += ['show' => true];
+        $attr = $addAutomaticRedirect->vars['attr'];
+        if (!is_array($attr)) {
+            return;
+        }
+        $attr['show'] = true;
+        $addAutomaticRedirect->vars['attr'] = $attr;
     }
 }

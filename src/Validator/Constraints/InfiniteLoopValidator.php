@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/** @psalm-suppress PropertyNotSetInConstructor */
 final class InfiniteLoopValidator extends ConstraintValidator
 {
     private ChannelRepositoryInterface $channelRepository;

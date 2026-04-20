@@ -8,7 +8,7 @@ use Rector\Set\ValueObject\LevelSetList;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->cacheClass(FileCacheStorage::class);
-    $rectorConfig->cacheDirectory('./etc/rector');
+    $rectorConfig->cacheDirectory('./.build/rector');
 
     $rectorConfig->paths([
         __DIR__ . '/src',
@@ -20,6 +20,6 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
 
     $rectorConfig->sets([
-        LevelSetList::UP_TO_PHP_74
+        LevelSetList::UP_TO_PHP_82,
     ]);
 };
