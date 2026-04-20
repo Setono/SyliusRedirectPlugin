@@ -17,9 +17,6 @@ final class SetonoSyliusRedirectPlugin extends AbstractResourceBundle
         return \dirname(__DIR__);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getSupportedDrivers(): array
     {
         return [
@@ -27,9 +24,6 @@ final class SetonoSyliusRedirectPlugin extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function getModelNamespace(): string
     {
         return 'Setono\SyliusRedirectPlugin\Model';
