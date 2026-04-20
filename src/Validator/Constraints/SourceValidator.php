@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 final class SourceValidator extends ConstraintValidator
 {
     private RedirectRepositoryInterface $redirectRepository;

@@ -67,7 +67,7 @@ final class ManagingRedirectsContext implements Context
 
         Assert::true(
             $this->indexRedirectPage->theRedirectIsOnThePage($source, $destination),
-            sprintf('Redirect with source %s and destination %s should exist but it does not', $source, $destination)
+            sprintf('Redirect with source %s and destination %s should exist but it does not', $source, $destination),
         );
     }
 

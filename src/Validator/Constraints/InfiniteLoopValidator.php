@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 final class InfiniteLoopValidator extends ConstraintValidator
 {
     private ChannelRepositoryInterface $channelRepository;
@@ -21,7 +22,7 @@ final class InfiniteLoopValidator extends ConstraintValidator
 
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
-        RedirectionPathResolverInterface $redirectionPathResolver
+        RedirectionPathResolverInterface $redirectionPathResolver,
     ) {
         $this->channelRepository = $channelRepository;
         $this->redirectionPathResolver = $redirectionPathResolver;

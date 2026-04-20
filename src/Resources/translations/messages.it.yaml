@@ -9,6 +9,7 @@ setono_sylius_redirect:
         new_redirect: 'Nuovo redirect'
         permanent: 'Permanente'
         redirects: 'Redirects'
+        redirect: 'Redirect'
         source: 'Provenienza'
     menu:
         admin:

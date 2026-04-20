@@ -29,7 +29,7 @@ final class RedirectContext implements Context
         Assert::eq(
             count($redirects),
             1,
-            sprintf('%d redirects has been found with source "%s".', count($redirects), $redirect)
+            sprintf('%d redirects has been found with source "%s".', count($redirects), $redirect),
         );
 
         return $redirects[0];

@@ -22,6 +22,6 @@ interface RedirectionPathResolverInterface
     public function resolveFromRequest(
         Request $request,
         ChannelInterface $channel = null,
-        bool $only404 = false
+        bool $only404 = false,
     ): RedirectionPath;
 }

@@ -9,6 +9,7 @@ setono_sylius_redirect:
         new_redirect: New redirect
         permanent: Permanent
         redirects: Redirects
+        redirect: Redirect
         source: Source
     menu:
         admin:

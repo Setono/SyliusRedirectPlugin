@@ -16,12 +16,12 @@ sylius_grid:
                     type: twig
                     label: setono_sylius_redirect.ui.permanent
                     options:
-                        template: "@SyliusUi/Grid/Field/yesNo.html.twig"
+                        template: "@SyliusUi/grid/field/yes_no.html.twig"
                 enabled:
                     type: twig
                     label: setono_sylius_redirect.ui.enabled
                     options:
-                        template: "@SyliusUi/Grid/Field/yesNo.html.twig"
+                        template: "@SyliusUi/grid/field/yes_no.html.twig"
                 count:
                     type: string
                     label: setono_sylius_redirect.ui.count

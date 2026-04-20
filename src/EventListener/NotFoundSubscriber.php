@@ -33,7 +33,7 @@ class NotFoundSubscriber implements EventSubscriberInterface, LoggerAwareInterfa
     public function __construct(
         ObjectManager $objectManager,
         ChannelContextInterface $channelContext,
-        RedirectionPathResolverInterface $redirectionPathResolver
+        RedirectionPathResolverInterface $redirectionPathResolver,
     ) {
         $this->logger = new NullLogger();
         $this->objectManager = $objectManager;
@@ -69,7 +69,7 @@ class NotFoundSubscriber implements EventSubscriberInterface, LoggerAwareInterfa
         $redirectionPath = $this->redirectionPathResolver->resolveFromRequest(
             $request,
             $channel,
-            true
+            true,
         );
 
         if ($redirectionPath->isEmpty()) {

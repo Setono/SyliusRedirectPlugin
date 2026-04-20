@@ -39,7 +39,7 @@ abstract class SlugUpdateHandler implements SlugUpdateHandlerInterface
         UrlGeneratorInterface $urlGenerator,
         RemovableRedirectFinderInterface $removableRedirectFinder,
         ValidatorInterface $validator,
-        array $validationGroups
+        array $validationGroups,
     ) {
         $this->redirectFactory = $redirectFactory;
         $this->redirectManager = $redirectManager;
