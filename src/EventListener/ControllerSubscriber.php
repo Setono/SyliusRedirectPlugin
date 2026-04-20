@@ -22,21 +22,12 @@ final class ControllerSubscriber implements EventSubscriberInterface, LoggerAwar
 
     private LoggerInterface $logger;
 
-    private ObjectManager $objectManager;
-
-    private ChannelContextInterface $channelContext;
-
-    private RedirectionPathResolverInterface $redirectionPathResolver;
-
     public function __construct(
-        ObjectManager $objectManager,
-        ChannelContextInterface $channelContext,
-        RedirectionPathResolverInterface $redirectionPathResolver,
+        private ObjectManager $objectManager,
+        private ChannelContextInterface $channelContext,
+        private RedirectionPathResolverInterface $redirectionPathResolver,
     ) {
         $this->logger = new NullLogger();
-        $this->objectManager = $objectManager;
-        $this->channelContext = $channelContext;
-        $this->redirectionPathResolver = $redirectionPathResolver;
     }
 
     public static function getSubscribedEvents(): array
@@ -53,7 +44,7 @@ final class ControllerSubscriber implements EventSubscriberInterface, LoggerAwar
 
         try {
             $channel = $this->channelContext->getChannel();
-        } catch (ChannelNotFoundException $e) {
+        } catch (ChannelNotFoundException) {
         }
         $redirectionPath = $this->redirectionPathResolver->resolveFromRequest(
             $request,

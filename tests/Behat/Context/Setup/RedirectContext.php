@@ -10,16 +10,10 @@ use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 
-final class RedirectContext implements Context
+final readonly class RedirectContext implements Context
 {
-    private RepositoryInterface $redirectRepository;
-
-    private FactoryInterface $redirectFactory;
-
-    public function __construct(RepositoryInterface $brandRepository, FactoryInterface $brandFactory)
+    public function __construct(private RepositoryInterface $redirectRepository, private FactoryInterface $redirectFactory)
     {
-        $this->redirectRepository = $brandRepository;
-        $this->redirectFactory = $brandFactory;
     }
 
     /**

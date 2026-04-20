@@ -24,21 +24,12 @@ class NotFoundSubscriber implements EventSubscriberInterface, LoggerAwareInterfa
 
     private LoggerInterface $logger;
 
-    private ObjectManager $objectManager;
-
-    private ChannelContextInterface $channelContext;
-
-    private RedirectionPathResolverInterface $redirectionPathResolver;
-
     public function __construct(
-        ObjectManager $objectManager,
-        ChannelContextInterface $channelContext,
-        RedirectionPathResolverInterface $redirectionPathResolver,
+        private ObjectManager $objectManager,
+        private ChannelContextInterface $channelContext,
+        private RedirectionPathResolverInterface $redirectionPathResolver,
     ) {
         $this->logger = new NullLogger();
-        $this->objectManager = $objectManager;
-        $this->channelContext = $channelContext;
-        $this->redirectionPathResolver = $redirectionPathResolver;
     }
 
     public static function getSubscribedEvents(): array
@@ -62,7 +53,7 @@ class NotFoundSubscriber implements EventSubscriberInterface, LoggerAwareInterfa
 
         try {
             $channel = $this->channelContext->getChannel();
-        } catch (ChannelNotFoundException $e) {
+        } catch (ChannelNotFoundException) {
         }
 
         $request = $event->getRequest();

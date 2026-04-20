@@ -17,36 +17,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class SlugUpdateHandler implements SlugUpdateHandlerInterface
 {
-    protected RedirectFactoryInterface $redirectFactory;
-
-    protected EntityManagerInterface $redirectManager;
-
-    protected UrlGeneratorInterface $urlGenerator;
-
-    protected RemovableRedirectFinderInterface $removableRedirectFinder;
-
-    protected ValidatorInterface $validator;
-
-    /** @var list<string> */
-    protected array $validationGroups;
-
     /**
      * @param list<string> $validationGroups
      */
-    public function __construct(
-        RedirectFactoryInterface $redirectFactory,
-        EntityManagerInterface $redirectManager,
-        UrlGeneratorInterface $urlGenerator,
-        RemovableRedirectFinderInterface $removableRedirectFinder,
-        ValidatorInterface $validator,
-        array $validationGroups,
-    ) {
-        $this->redirectFactory = $redirectFactory;
-        $this->redirectManager = $redirectManager;
-        $this->urlGenerator = $urlGenerator;
-        $this->removableRedirectFinder = $removableRedirectFinder;
-        $this->validator = $validator;
-        $this->validationGroups = $validationGroups;
+    public function __construct(protected RedirectFactoryInterface $redirectFactory, protected EntityManagerInterface $redirectManager, protected UrlGeneratorInterface $urlGenerator, protected RemovableRedirectFinderInterface $removableRedirectFinder, protected ValidatorInterface $validator, protected array $validationGroups)
+    {
     }
 
     public function handle(SlugUpdateHandlerCommand $slugUpdateHandlerCommand): void

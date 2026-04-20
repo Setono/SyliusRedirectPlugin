@@ -21,16 +21,13 @@ abstract class AutomaticRedirectTypeExtension extends AbstractTypeExtension
 {
     protected const FIELD_NAME = 'addAutomaticRedirect';
 
-    private SlugUpdateHandlerInterface $slugUpdateHandler;
-
-    private ViolationMapper $violationMapper;
+    private readonly ViolationMapper $violationMapper;
 
     /** @var array<string, string> */
     private array $oldSlugs = [];
 
-    public function __construct(SlugUpdateHandlerInterface $slugUpdateHandler)
+    public function __construct(private readonly SlugUpdateHandlerInterface $slugUpdateHandler)
     {
-        $this->slugUpdateHandler = $slugUpdateHandler;
         $this->violationMapper = new ViolationMapper();
     }
 

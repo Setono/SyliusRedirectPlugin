@@ -10,13 +10,10 @@ use Setono\SyliusRedirectPlugin\Repository\RedirectRepositoryInterface;
 use Sylius\Component\Channel\Model\ChannelInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-final class RedirectionPathResolver implements RedirectionPathResolverInterface
+final readonly class RedirectionPathResolver implements RedirectionPathResolverInterface
 {
-    private RedirectRepositoryInterface $redirectRepository;
-
-    public function __construct(RedirectRepositoryInterface $redirectRepository)
+    public function __construct(private RedirectRepositoryInterface $redirectRepository)
     {
-        $this->redirectRepository = $redirectRepository;
     }
 
     public function resolve(

@@ -7,13 +7,10 @@ namespace Tests\Setono\SyliusRedirectPlugin\Behat\Context\Ui\Shop;
 use Behat\Behat\Context\Context;
 use Tests\Setono\SyliusRedirectPlugin\Behat\Page\Shop\Page;
 
-final class RedirectContext implements Context
+final readonly class RedirectContext implements Context
 {
-    private Page $oldPathPage;
-
-    public function __construct(Page $oldPathPage)
+    public function __construct(private Page $oldPathPage)
     {
-        $this->oldPathPage = $oldPathPage;
     }
 
     /**

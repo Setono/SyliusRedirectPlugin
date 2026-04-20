@@ -4,19 +4,10 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\SlugUpdateHandler;
 
-final class SlugUpdateHandlerCommand
+final readonly class SlugUpdateHandlerCommand
 {
-    private object $object;
-
-    private string $oldSlug;
-
-    private string $newSlug;
-
-    public function __construct(object $object, string $oldSlug, string $newSlug)
+    public function __construct(private object $object, private string $oldSlug, private string $newSlug)
     {
-        $this->object = $object;
-        $this->oldSlug = $oldSlug;
-        $this->newSlug = $newSlug;
     }
 
     public function getObject(): object

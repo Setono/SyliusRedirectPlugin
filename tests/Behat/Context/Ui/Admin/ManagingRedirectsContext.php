@@ -11,19 +11,10 @@ use Tests\Setono\SyliusRedirectPlugin\Behat\Page\Admin\Redirect\IndexRedirectPag
 use Tests\Setono\SyliusRedirectPlugin\Behat\Page\Admin\Redirect\UpdateRedirectPage;
 use Webmozart\Assert\Assert;
 
-final class ManagingRedirectsContext implements Context
+final readonly class ManagingRedirectsContext implements Context
 {
-    private IndexRedirectPage $indexRedirectPage;
-
-    private CreateRedirectPage $createRedirectPage;
-
-    private UpdateRedirectPage $updateRedirectPage;
-
-    public function __construct(IndexRedirectPage $indexRedirectPage, CreateRedirectPage $createRedirectPage, UpdateRedirectPage $updateRedirectPage)
+    public function __construct(private IndexRedirectPage $indexRedirectPage, private CreateRedirectPage $createRedirectPage, private UpdateRedirectPage $updateRedirectPage)
     {
-        $this->indexRedirectPage = $indexRedirectPage;
-        $this->createRedirectPage = $createRedirectPage;
-        $this->updateRedirectPage = $updateRedirectPage;
     }
 
     /**

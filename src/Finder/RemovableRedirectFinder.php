@@ -9,13 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 
-final class RemovableRedirectFinder implements RemovableRedirectFinderInterface
+final readonly class RemovableRedirectFinder implements RemovableRedirectFinderInterface
 {
-    private RedirectionPathResolverInterface $redirectionPathResolver;
-
-    public function __construct(RedirectionPathResolverInterface $redirectionPathResolver)
+    public function __construct(private RedirectionPathResolverInterface $redirectionPathResolver)
     {
-        $this->redirectionPathResolver = $redirectionPathResolver;
     }
 
     public function findRedirectsTargetedBy(RedirectInterface $redirect): Collection

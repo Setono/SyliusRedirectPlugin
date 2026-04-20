@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class SourceRegexValidator extends RegexValidator
 {
-    private string $pattern;
+    private readonly string $pattern;
 
     public function __construct(string $pattern)
     {

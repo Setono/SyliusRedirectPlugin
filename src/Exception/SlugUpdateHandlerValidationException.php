@@ -8,13 +8,9 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 final class SlugUpdateHandlerValidationException extends SlugUpdateHandlerException
 {
-    private ConstraintViolationListInterface $constraintViolationList;
-
-    public function __construct(ConstraintViolationListInterface $constraintViolationList)
+    public function __construct(private readonly ConstraintViolationListInterface $constraintViolationList)
     {
         parent::__construct('A validation constraint failed when trying to handle the slug update');
-
-        $this->constraintViolationList = $constraintViolationList;
     }
 
     public function getConstraintViolationList(): ConstraintViolationListInterface

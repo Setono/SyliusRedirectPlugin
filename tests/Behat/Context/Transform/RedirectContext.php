@@ -8,13 +8,10 @@ use Behat\Behat\Context\Context;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
-final class RedirectContext implements Context
+final readonly class RedirectContext implements Context
 {
-    private RepositoryInterface $redirectRepository;
-
-    public function __construct(RepositoryInterface $redirectRepository)
+    public function __construct(private RepositoryInterface $redirectRepository)
     {
-        $this->redirectRepository = $redirectRepository;
     }
 
     /**

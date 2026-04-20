@@ -8,13 +8,10 @@ use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Webmozart\Assert\Assert;
 
-final class RedirectFactory implements RedirectFactoryInterface
+final readonly class RedirectFactory implements RedirectFactoryInterface
 {
-    private FactoryInterface $decoratedFactory;
-
-    public function __construct(FactoryInterface $decoratedFactory)
+    public function __construct(private FactoryInterface $decoratedFactory)
     {
-        $this->decoratedFactory = $decoratedFactory;
     }
 
     public function createNew(): RedirectInterface

@@ -12,11 +12,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class SourceValidator extends ConstraintValidator
 {
-    private RedirectRepositoryInterface $redirectRepository;
-
-    public function __construct(RedirectRepositoryInterface $redirectRepository)
+    public function __construct(private readonly RedirectRepositoryInterface $redirectRepository)
     {
-        $this->redirectRepository = $redirectRepository;
     }
 
     /**

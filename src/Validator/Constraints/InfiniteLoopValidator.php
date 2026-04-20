@@ -15,16 +15,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class InfiniteLoopValidator extends ConstraintValidator
 {
-    private ChannelRepositoryInterface $channelRepository;
-
-    private RedirectionPathResolverInterface $redirectionPathResolver;
-
-    public function __construct(
-        ChannelRepositoryInterface $channelRepository,
-        RedirectionPathResolverInterface $redirectionPathResolver,
-    ) {
-        $this->channelRepository = $channelRepository;
-        $this->redirectionPathResolver = $redirectionPathResolver;
+    public function __construct(private readonly ChannelRepositoryInterface $channelRepository, private readonly RedirectionPathResolverInterface $redirectionPathResolver)
+    {
     }
 
     /**
@@ -59,7 +51,7 @@ final class InfiniteLoopValidator extends ConstraintValidator
                 $this->redirectionPathResolver->resolve($source, $channel);
                 $this->redirectionPathResolver->resolve($source, $channel, true);
             }
-        } catch (InfiniteLoopException $e) {
+        } catch (InfiniteLoopException) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('destination')
                 ->addViolation();
