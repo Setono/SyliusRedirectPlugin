@@ -53,11 +53,14 @@ final readonly class TaxonFormComponentSubscriber implements EventSubscriberInte
             return;
         }
 
-        $attr = $addAutomaticRedirect->vars['attr'];
+        /** @var array<string, mixed> $formVars */
+        $formVars = $addAutomaticRedirect->vars;
+        $attr = $formVars['attr'] ?? [];
         if (!is_array($attr)) {
             return;
         }
         $attr['show'] = true;
-        $addAutomaticRedirect->vars['attr'] = $attr;
+        $formVars['attr'] = $attr;
+        $addAutomaticRedirect->vars = $formVars;
     }
 }
