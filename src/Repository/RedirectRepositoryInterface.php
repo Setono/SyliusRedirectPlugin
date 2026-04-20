@@ -16,5 +16,5 @@ interface RedirectRepositoryInterface extends RepositoryInterface
      * If the $channel is set and the underlying query returns two results, the result with a matching channel will be returned
      * If the $only404 is set, the underlying query will filter the redirects based on the value of this variable
      */
-    public function findOneEnabledBySource(string $source, ChannelInterface $channel = null, bool $only404 = null): ?RedirectInterface;
+    public function findOneEnabledBySource(string $source, ?ChannelInterface $channel = null, ?bool $only404 = null): ?RedirectInterface;
 }

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 trait RedirectResponseTrait
 {
-    public static function getRedirectResponse(RedirectInterface $lastRedirect, string $queryString = null): RedirectResponse
+    public static function getRedirectResponse(RedirectInterface $lastRedirect, ?string $queryString = null): RedirectResponse
     {
         $uri = Uri::createFromString((string) $lastRedirect->getDestination());
 

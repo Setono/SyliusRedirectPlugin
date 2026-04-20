@@ -18,7 +18,7 @@ final readonly class RedirectionPathResolver implements RedirectionPathResolverI
 
     public function resolve(
         string $source,
-        ChannelInterface $channel = null,
+        ?ChannelInterface $channel = null,
         bool $only404 = false,
     ): RedirectionPath {
         $redirectionPath = new RedirectionPath();
@@ -45,7 +45,7 @@ final readonly class RedirectionPathResolver implements RedirectionPathResolverI
 
     public function resolveFromRequest(
         Request $request,
-        ChannelInterface $channel = null,
+        ?ChannelInterface $channel = null,
         bool $only404 = false,
     ): RedirectionPath {
         return $this->resolve($request->getPathInfo(), $channel, $only404);
