@@ -34,4 +34,13 @@ final class SetonoSyliusRedirectPlugin extends AbstractResourceBundle
     {
         return 'Setono\SyliusRedirectPlugin\Model';
     }
+
+    protected function getConfigFilesPath(): string
+    {
+        return sprintf(
+            '%s/config/doctrine/%s',
+            $this->getPath(),
+            strtolower($this->getDoctrineMappingDirectory()),
+        );
+    }
 }
