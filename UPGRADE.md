@@ -61,5 +61,65 @@ prunes stay memory-safe on large tables. As a consequence,
 `RedirectRepositoryInterface::removeNotAccessed()` was removed — call
 `PrunerInterface::prune()` instead.
 
+### Automatic redirects on slug changes are now config-driven
+
+The "Add automatic redirect" checkbox on the admin Product/Taxon translation
+forms is gone. The plugin now creates redirects automatically when a slug
+changes on an admin update — but only for the resource aliases you opt in
+under a new configuration key:
+
+```yaml
+setono_sylius_redirect:
+    automatic_redirects:
+        sylius.product: true
+        sylius.taxon: true
+```
+
+The default is "off everywhere": if `automatic_redirects` is missing or
+empty, no automatic redirects are created. Aliases must implement
+`Sylius\Component\Resource\Model\SlugAwareInterface`; the plugin fails the
+container build with an `InvalidConfigurationException` for unknown aliases
+or non-slug-aware models.
+
+The defaults baked into every automatic redirect are now `permanent = true`,
+`only404 = true`, and an empty channel scope. `only404 = true` is a
+**behavior change**: in 2.x the form-driven path used `false`. Old slugs
+that still resolve will no longer redirect, which is usually what you want
+— it self-heals if the slug is later rolled back. If you need different
+attributes, create the redirect manually.
+
+### Removed classes, services, templates, and translation keys
+
+| Removed                                                                                  | Replacement                                                              |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `Setono\SyliusRedirectPlugin\SlugUpdateHandler\SlugUpdateHandler` (and `Interface`, `Command`) | Inlined into `Setono\SyliusRedirectPlugin\EventListener\AutomaticRedirectListener` |
+| `Setono\SyliusRedirectPlugin\SlugUpdateHandler\ProductTranslationSlugUpdateHandler`      | `AutomaticRedirectListener` + `ProductAutomaticRedirectUrlResolver`      |
+| `Setono\SyliusRedirectPlugin\SlugUpdateHandler\TaxonTranslationSlugUpdateHandler`        | `AutomaticRedirectListener` + `TaxonAutomaticRedirectUrlResolver`        |
+| `Setono\SyliusRedirectPlugin\Form\Extension\AutomaticRedirectTypeExtension`              | (none — opt-in is config-driven)                                         |
+| `Setono\SyliusRedirectPlugin\Form\Extension\ProductTranslationTypeExtension`             | (none)                                                                   |
+| `Setono\SyliusRedirectPlugin\Form\Extension\TaxonTranslationTypeExtension`               | (none)                                                                   |
+| `Setono\SyliusRedirectPlugin\Twig\EventSubscriber\ProductFormComponentSubscriber`        | (none — only existed to expose the removed checkbox)                     |
+| `Setono\SyliusRedirectPlugin\Twig\EventSubscriber\TaxonFormComponentSubscriber`          | (none)                                                                   |
+| Templates `templates/admin/Product/add_automatic_redirect.html.twig` and `templates/admin/Taxon/add_automatic_redirect.html.twig` | (none)                          |
+| Twig hooks `config/twig_hooks/product.yaml` and `config/twig_hooks/taxon.yaml`           | (none)                                                                   |
+| Translation key `setono_sylius_redirect.form.add_automatic_redirect`                     | (none)                                                                   |
+
+If you wrote your own slug-update handler subclassing `SlugUpdateHandler`
+or generating URLs via the abstract `generateUrl()`, port the URL logic
+to a service implementing
+`Setono\SyliusRedirectPlugin\UrlResolver\AutomaticRedirectUrlResolverInterface`
+and tag it `setono_sylius_redirect.automatic_redirect_url_resolver`. The
+composite resolver routes `resolve()` calls to the first child whose
+`supports(string $class): bool` returns true.
+
+### Scope: admin only
+
+Automatic redirects fire only through Sylius's `ResourceController::updateAction`
+event stream (`<alias>.pre_update`). API edits, fixture loads, CLI scripts,
+or repository-level writes do not trigger redirect creation. If you need
+that, write your own listener against the relevant event (Doctrine
+lifecycle, API platform, etc.) and wire it through the same
+`AutomaticRedirectUrlResolverInterface` composite.
+
 [twig-hooks]: https://docs.sylius.com/the-customization-guide/customization/twig-hooks
 [doctrine-batch-utils]: https://github.com/Ocramius/DoctrineBatchUtils

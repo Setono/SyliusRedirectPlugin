@@ -95,17 +95,65 @@ There is a built-in security when creating/modifying redirection that prevent cr
 
 A second security is to prevent same source redirection leading to inconstant redirect.
 
-### Automatic redirect
+### Automatic redirects on slug changes
 
-There is a built-in feature that allows you to automatically create a redirection when changing a product slug.
-It also handles the case where it would create an infinite loop and remove the unnecessary redirect.
+When you opt in, the plugin creates a redirect every time an admin renames
+the slug of a configured Sylius resource. Opt-in is per resource alias and
+defaults to **off everywhere**:
 
-Example: Having a slug like `/products/a`, renaming it to `/products/b` then renaming it to `/products/a` will result in a redirect from `b` to `a` and will automatically delete the one from `a` to `b`.
+```yaml
+# config/packages/setono_sylius_redirect.yaml
+setono_sylius_redirect:
+    automatic_redirects:
+        sylius.product: true
+        sylius.taxon: true
+```
 
-## Contributors
-- [Joachim Løvgaard](https://github.com/loevgaard)
-- [Stephane Decock](https://github.com/Roshyo)
-- [Stefan Doorn](https://github.com/stefandoorn)
+Aliases must implement
+`Sylius\Component\Resource\Model\SlugAwareInterface`. Unknown aliases or
+non-slug-aware models fail container compilation with a clear error.
+
+Each automatic redirect is created with these fixed defaults:
+`permanent = true`, `only404 = true`, no channel scope, `enabled = true`.
+`only404 = true` means the redirect kicks in only when the request would
+otherwise 404 — so if the slug is later rolled back to its original value,
+the entry self-heals without you having to clean up. The plugin also
+collapses chains: if you rename `a → b` and then `b → c`, the earlier
+`a → b` redirect is replaced with `a → c`.
+
+The trigger is admin-only: only edits that flow through Sylius's
+`ResourceController::updateAction` create redirects. API edits, fixture
+loads, CLI scripts, and direct repository writes do not.
+
+#### Adding coverage for your own resources
+
+To redirect on slug changes for a custom resource, register a service
+implementing `Setono\SyliusRedirectPlugin\UrlResolver\AutomaticRedirectUrlResolverInterface`
+and tag it `setono_sylius_redirect.automatic_redirect_url_resolver`:
+
+```php
+final class BlogPostAutomaticRedirectUrlResolver implements AutomaticRedirectUrlResolverInterface
+{
+    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
+    {
+    }
+
+    public function supports(string $class): bool
+    {
+        return is_a($class, BlogPostInterface::class, true);
+    }
+
+    public function resolve(object $resource, string $slug, string $locale): string
+    {
+        return $this->urlGenerator->generate('app_blog_post_show', [
+            'slug' => $slug,
+            '_locale' => $locale,
+        ]);
+    }
+}
+```
+
+…then enable the alias under `automatic_redirects: app.blog_post: true`.
 
 [ico-version]: https://img.shields.io/packagist/v/setono/sylius-redirect-plugin.svg
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
@@ -113,4 +161,3 @@ Example: Having a slug like `/products/a`, renaming it to `/products/b` then ren
 
 [link-packagist]: https://packagist.org/packages/setono/sylius-redirect-plugin
 [link-github-actions]: https://github.com/Setono/SyliusRedirectPlugin/actions
-

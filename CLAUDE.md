@@ -47,7 +47,11 @@ Both use `RedirectionPathResolver` to resolve redirect chains and detect infinit
 
 ### Auto-redirect on slug change
 
-`ProductTranslationSlugUpdateHandler` and `TaxonTranslationSlugUpdateHandler` hook into product/taxon edit forms via form extensions. When a slug changes, they automatically create a redirect from the old URL to the new one.
+`AutomaticRedirectListener` (`src/EventListener/`) listens on Sylius's `<alias>.pre_update` resource events and persists a `Redirect` whenever a translation slug changes on an admin update. The set of aliases is opt-in via the `setono_sylius_redirect.automatic_redirects` config tree (default off; e.g. `sylius.product: true`). `ConfigureAutomaticRedirectsPass` validates each alias against the Sylius resource registry at compile time and dynamically adds one `kernel.event_listener` tag per enabled alias to the listener.
+
+URL generation goes through a composite `AutomaticRedirectUrlResolverInterface` (`src/UrlResolver/`), wired via [`setono/composite-compiler-pass`](https://github.com/Setono/composite-compiler-pass). Built-ins: `ProductAutomaticRedirectUrlResolver`, `TaxonAutomaticRedirectUrlResolver`. Third-party plugins extend coverage by tagging a service `setono_sylius_redirect.automatic_redirect_url_resolver`.
+
+The listener inlines URL resolution, redundant-redirect cleanup, validation, and persistence — there is no separate `SlugUpdateHandler` service. Defaults baked into every produced redirect: `permanent = true`, `only404 = true`, `channels = []`, `enabled = true`. The trigger is admin-only; API/CLI/fixtures don't dispatch the resource events.
 
 ### Validation
 
@@ -92,6 +96,7 @@ symfony server:start                                            # https://127.0.
 - Always use relative paths in shell commands. Absolute paths inside this working directory trigger a Claude Code permission prompt for the user; relative paths run without one.
 - If you've changed directory (e.g. into `tests/Application/`) for a previous step, return to the project root before subsequent commands so relative paths still resolve correctly. Don't try to compensate by prepending an absolute path — `cd` back to the root instead.
 - Run the test-app console from the project root via `./tests/Application/bin/console <cmd>` instead of `cd tests/Application && php bin/console <cmd>`. It avoids the `cd` round-trip and keeps the working directory at the project root for any follow-up commands.
+- Before running `symfony server:start`, run `symfony server:status` first — the test app server may already be up from a previous step. Starting a second instance fails noisily; reusing the existing one (its URL is in the status output) skips a multi-second boot. `symfony server:start --dir=...` interprets the dir relative to its own internals and rejects relative paths like `tests/Application` (looks for `tests/Application/tests`); pass `$(pwd)/tests/Application` if you really need to start a fresh server.
 - When you build or change a feature with a UI surface (admin form, grid, page), verify it via the Playwright MCP — boot the test app (see "Booting the test app locally"), navigate to the affected page, and confirm the rendered output before reporting the task as complete. Don't rely on PHPUnit/PHPStan/ECS alone for UI work.
 - Twig extensions should split into an `Extension` (eagerly loaded, declares functions/filters) and a `Runtime` (lazily instantiated, holds dependencies and runs the logic). Wire functions via `[Runtime::class, 'method']` and tag the runtime service with `twig.runtime`. This keeps the extension cheap to load and the dependencies (e.g. repositories) only constructed when a template actually calls one.
 - When adding or updating translation keys, update every locale file in `translations/` (e.g. `messages.en.yaml`, `messages.da.yaml`, ...), not just English. Missing translations leak the raw key into the UI for non-English admins.

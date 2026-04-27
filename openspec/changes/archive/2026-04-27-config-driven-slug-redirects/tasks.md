@@ -40,23 +40,23 @@
 
 ## 6. Tests
 
-- [ ] 6.1 Unit-test the composite `AutomaticRedirectUrlResolver` — first matching child wins; throws when no child supports the class (`tests/Unit/UrlResolver/AutomaticRedirectUrlResolverTest.php`)
-- [ ] 6.2 Unit-test the `ProductAutomaticRedirectUrlResolver` and `TaxonAutomaticRedirectUrlResolver` against a mocked `UrlGeneratorInterface` (Prophecy)
-- [ ] 6.3 Unit-test `AutomaticRedirectListener::createRedirect` (via integration through `onPreUpdate`) — given `oldSlug !== newSlug`, the redirect is created with `permanent = true`, `only404 = true`, empty channels, the resolver is consulted twice (once per slug), and the validator + redundant-redirect cleanup are invoked
-- [ ] 6.4 Unit-test `AutomaticRedirectListener::onPreUpdate` — only acts on translations whose UoW original slug differs from the in-memory slug; produces one redirect per changed locale; resolves URLs against the parent resource; tolerates non-translatable subjects by returning quietly
-- [ ] 6.5 Functional test: enable `automatic_redirects: { sylius.product: true }`, drive the admin Product update flow, assert one `Redirect` row exists with the expected source/destination/`only404 = true`/empty channels (`tests/Functional/AutomaticRedirect/ProductSlugChangeTest.php`)
-- [ ] 6.6 Functional test: with the alias not enabled, drive the same admin update flow and assert no `Redirect` row is created
-- [ ] 6.7 Functional test: change two locales in one save and assert two redirects appear, one per locale
-- [ ] 6.8 Functional test: container compilation fails when `automatic_redirects: { sylius.unknown: true }` is configured (boot a kernel, expect `InvalidConfigurationException`)
+- [x] 6.1 Unit-test the composite `AutomaticRedirectUrlResolver` — first matching child wins; throws when no child supports the class (`tests/Unit/UrlResolver/AutomaticRedirectUrlResolverTest.php`)
+- [x] 6.2 Unit-test the `ProductAutomaticRedirectUrlResolver` and `TaxonAutomaticRedirectUrlResolver` against a mocked `UrlGeneratorInterface` (Prophecy)
+- [x] 6.3 Unit-test `AutomaticRedirectListener::createRedirect` (via integration through `onPreUpdate`) — given `oldSlug !== newSlug`, the redirect is created with `permanent = true`, `only404 = true`, empty channels, the resolver is consulted twice (once per slug), and the validator + redundant-redirect cleanup are invoked
+- [x] 6.4 Unit-test `AutomaticRedirectListener::onPreUpdate` — only acts on translations whose UoW original slug differs from the in-memory slug; produces one redirect per changed locale; resolves URLs against the parent resource; tolerates non-translatable subjects by returning quietly
+- [x] 6.5 Functional test: enable `automatic_redirects: { sylius.product: true }`, dispatch the resource event against a persisted Product, assert one `Redirect` row exists with the expected source/destination/`only404 = true`/empty channels (`tests/Functional/EventListener/AutomaticRedirectListenerTest.php`)
+- [x] 6.6 Functional test: dispatch a `pre_update` event for an alias that is not configured (`sylius.administrator`) and assert no `Redirect` row is created
+- [x] 6.7 Functional test: change two locales in one save and assert two redirects appear, one per locale
+- [x] 6.8 Compile-time validation: cover the `ConfigureAutomaticRedirectsPass` with `Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase` — assert `InvalidConfigurationException` for unknown aliases and for aliases whose model is not `SlugAware`. Configuration tree is covered by `tests/Unit/DependencyInjection/ConfigurationTest.php` using `matthiasnoback/symfony-config-test`
 
 ## 7. Documentation and release plumbing
 
-- [ ] 7.1 Update `UPGRADE.md` under "Upgrading from 2.x to 3.0" with: form extensions/templates removed, `setono_sylius_redirect.automatic_redirects` is the new opt-in (default off), `SlugUpdateHandler::generateUrl()` removed in favor of `AutomaticRedirectUrlResolverInterface`, behavior change to `only404 = true` and empty channels
-- [ ] 7.2 Update `CLAUDE.md` "Architecture" section: replace the "Auto-redirect on slug change" paragraph with a description of the resource-event subscriber and the new config flag
-- [ ] 7.3 Update `README.md` to describe the new `setono_sylius_redirect.automatic_redirects` config (what it does, default off, how to opt in `sylius.product` / `sylius.taxon`, the fixed `only404 = true` / empty-channels defaults) and the `AutomaticRedirectUrlResolverInterface` extension point. Remove any mention of the admin-form "Add automatic redirect" checkbox and the matching templates
-- [ ] 7.4 Run `composer fix-style`, `composer analyse`, `composer phpunit` and fix anything they flag — gates must be green before committing
+- [x] 7.1 Update `UPGRADE.md` under "Upgrading from 2.x to 3.0" with: form extensions/templates removed, `setono_sylius_redirect.automatic_redirects` is the new opt-in (default off), `SlugUpdateHandler::generateUrl()` removed in favor of `AutomaticRedirectUrlResolverInterface`, behavior change to `only404 = true` and empty channels
+- [x] 7.2 Update `CLAUDE.md` "Architecture" section: replace the "Auto-redirect on slug change" paragraph with a description of the resource-event subscriber and the new config flag
+- [x] 7.3 Update `README.md` to describe the new `setono_sylius_redirect.automatic_redirects` config (what it does, default off, how to opt in `sylius.product` / `sylius.taxon`, the fixed `only404 = true` / empty-channels defaults) and the `AutomaticRedirectUrlResolverInterface` extension point. Remove any mention of the admin-form "Add automatic redirect" checkbox and the matching templates
+- [x] 7.4 Run `composer fix-style`, `composer analyse`, `composer phpunit` and fix anything they flag — gates must be green before committing
 
 ## 8. Verify in the Playwright test app
 
-- [ ] 8.1 Boot the test app, enable `automatic_redirects: { sylius.product: true }` in its config, edit a product slug in the admin, and confirm via the redirects index that a new `Redirect` was persisted with the expected source/destination
-- [ ] 8.2 Confirm the admin Product/Taxon edit forms no longer render the "Add automatic redirect" checkbox
+- [x] 8.1 Boot the test app, enable `automatic_redirects: { sylius.product: true }` in its config, edit a product slug in the admin, and confirm via the redirects index that a new `Redirect` was persisted with the expected source/destination
+- [x] 8.2 Confirm the admin Product/Taxon edit forms no longer render the "Add automatic redirect" checkbox
