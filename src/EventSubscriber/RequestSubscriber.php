@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Webmozart\Assert\Assert;
 
-final class ControllerSubscriber implements EventSubscriberInterface, LoggerAwareInterface
+final class RequestSubscriber implements EventSubscriberInterface, LoggerAwareInterface
 {
     use RedirectResponseTrait;
 

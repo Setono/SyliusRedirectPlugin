@@ -39,7 +39,7 @@ This is a standard Sylius resource plugin. The core entity is `Redirect` (`src/M
 ### Request flow
 
 Two event subscribers handle redirects at different stages:
-- **`ControllerSubscriber`** (KernelEvents::REQUEST, priority 31) - intercepts requests right after `RouterListener` (32) but before Sylius's `NonChannelLocaleListener` (10), so locale-prefix routes like `sylius_shop_homepage` matching `/anything` don't short-circuit the redirect via `setResponse()` to the default-locale homepage.
+- **`RequestSubscriber`** (KernelEvents::REQUEST, priority 31) - intercepts requests right after `RouterListener` (32) but before Sylius's `NonChannelLocaleListener` (10), so locale-prefix routes like `sylius_shop_homepage` matching `/anything` don't short-circuit the redirect via `setResponse()` to the default-locale homepage.
 - **`NotFoundSubscriber`** (KernelEvents::EXCEPTION) - catches 404 responses to apply `only404` redirects
 
 Both use `RedirectionPathResolver` to resolve redirect chains and detect infinite loops, producing a `RedirectionPath` model that tracks the chain of visited redirects.
