@@ -77,6 +77,38 @@ jobs:
                     dependencies: "${{ matrix.dependencies }}"
                     symfony: "${{ matrix.symfony }}"
 
+    functional-tests:
+        runs-on: "ubuntu-latest"
+        strategy:
+            fail-fast: false
+            matrix:
+                php-version: ["8.2", "8.3", "8.4"]
+                dependencies: ["highest"]
+                symfony: ["~6.4.0", "~7.4.0"]
+        env:
+            DATABASE_URL: "mysql://root:root@127.0.0.1/setono_sylius_redirect_plugin_test?serverVersion=8.0"
+        steps:
+            -   shell: "bash"
+                run: "sudo /etc/init.d/mysql start"
+
+            -   uses: "actions/checkout@v6"
+
+            -   uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: "${{ matrix.php-version }}"
+                    extensions: "intl, mbstring, pdo_mysql"
+                    coverage: "none"
+                    tools: "flex"
+
+            -   uses: "ramsey/composer-install@v4"
+                env:
+                    SYMFONY_REQUIRE: "${{ matrix.symfony }}"
+                with:
+                    dependency-versions: "${{ matrix.dependencies }}"
+
+            -   shell: "bash"
+                run: "vendor/bin/phpunit --testsuite functional"
+
     code-coverage:
         runs-on: "ubuntu-latest"
         steps:
