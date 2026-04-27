@@ -35,7 +35,8 @@
         "symfony/routing": "^6.4 || ^7.1",
         "symfony/ux-twig-component": "^2.20",
         "symfony/validator": "^6.4 || ^7.1",
-        "webmozart/assert": "^1.11"
+        "webmozart/assert": "^1.11",
+        "twig/twig": "^3.0"
     },
     "require-dev": {
         "api-platform/core": "^4.0.3",
