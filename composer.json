@@ -82,6 +82,8 @@
         "analyse": "phpstan analyse",
         "check-style": "ecs check",
         "fix-style": "ecs check --fix",
-        "phpunit": "phpunit"
+        "phpunit": "phpunit",
+        "phpunit:unit": "phpunit --testsuite unit",
+        "phpunit:functional": "phpunit --testsuite functional"
     }
 }

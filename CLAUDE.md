@@ -9,8 +9,12 @@ Sylius plugin for managing URL redirects (301/302). Supports channel-specific re
 ## Commands
 
 ```bash
-# Run PHPUnit tests
+# Run PHPUnit tests (both suites)
 composer phpunit
+
+# Run only the unit or functional suite
+composer phpunit:unit
+composer phpunit:functional
 
 # Run a single PHPUnit test
 vendor/bin/phpunit tests/path/to/TestFile.php
@@ -54,9 +58,22 @@ Three custom validators prevent invalid redirects:
 
 ## Testing
 
-- **PHPUnit** (`tests/`) - unit tests, bootstrapped via `tests/Application/config/bootstrap.php`
+- **PHPUnit unit tests** (`tests/Unit/`) — pure-PHP tests with no Symfony container; mock collaborators directly. The PHPUnit `unit` testsuite runs only this directory.
+- **PHPUnit functional tests** (`tests/Functional/`) — boot the Sylius test kernel from `tests/Application/`, exercise services through the container, and hit the database / HTTP layer. The PHPUnit `functional` testsuite runs only this directory.
 
-The test application in `tests/Application/` is a minimal Sylius app used for integration testing and the Playwright UI checks. It requires MySQL and asset compilation to run.
+Both suites bootstrap via `tests/Application/config/bootstrap.php`. Functional tests require MySQL.
+
+When you add or change behavior:
+- Cover it with a **unit test** whenever the logic can be exercised without a kernel — pure functions, value objects, validators, services with mockable collaborators. Aim for unit tests as the default.
+- Add a **functional test** when the unit cannot represent the behavior (Sylius resource wiring, Doctrine queries against real schema, controllers, form types that depend on the container, end-to-end request flows). Skip functional tests for code already covered at the unit level.
+- UI surfaces (admin form/grid/page) keep their Playwright check — see "Working in this repo" below.
+
+Specific testing patterns:
+- **Forms**: follow the [Symfony 6.4 form unit testing guide](https://symfony.com/doc/6.4/form/unit_testing.html). Extend `Symfony\Component\Form\Test\TypeTestCase`, stub form types with external dependencies (e.g. `Sylius\Bundle\ChannelBundle\Form\Type\ChannelChoiceType`) via a `PreloadedExtension` so the test stays in the unit suite, and assert against the synchronized model and view data after `submit()`.
+- **Console commands**: follow the [Symfony 6.4 command testing guide](https://symfony.com/doc/6.4/console.html#testing-commands). Use `Symfony\Component\Console\Tester\CommandTester` against a stand-alone `Application` (no kernel) with mocked collaborators; assert on the exit code and `getDisplay()` output.
+- **Mocks/stubs**: always use [Prophecy](https://github.com/phpspec/prophecy) (`use Prophecy\PhpUnit\ProphecyTrait;`, then `$this->prophesize(Foo::class)`, `->method()->willReturn(...)`, `->reveal()`). Don't reach for PHPUnit's native `createMock()` / `createStub()` — keep the doubles consistent across the suite.
+
+The test application in `tests/Application/` is a minimal Sylius app used by the functional suite and the Playwright UI checks. It requires MySQL and asset compilation to run.
 
 ### Booting the test app locally
 
