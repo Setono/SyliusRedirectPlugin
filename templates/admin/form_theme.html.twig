@@ -1,0 +1,7 @@
+{% block _setono_sylius_redirect_redirect_channels_row %}
+    {% for channel in form %}
+        {{ form_row(channel, sylius_test_form_attribute('channel-code', channel.vars.value)|merge({label_attr: {class: 'checkbox-switch'}})) }}
+    {% endfor %}
+
+    {{ form_errors(form) }}
+{% endblock %}

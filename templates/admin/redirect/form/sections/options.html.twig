@@ -1,0 +1,17 @@
+<div class="col-12 col-md-6">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2 class="card-title">{{ 'setono_sylius_redirect.ui.options'|trans }}</h2>
+        </div>
+        <div class="card-body">
+            {{ form_row(hookable_metadata.context.form.permanent) }}
+            <div class="alert alert-info">{{ 'setono_sylius_redirect.form.redirect.permanent_help'|trans }}</div>
+
+            {{ form_row(hookable_metadata.context.form.only404) }}
+            <div class="alert alert-info">{{ 'setono_sylius_redirect.form.redirect.only_404_help'|trans }}</div>
+
+            {{ form_row(hookable_metadata.context.form.keepQueryString) }}
+            <div class="alert alert-info">{{ 'setono_sylius_redirect.form.redirect.keep_query_string_help'|trans }}</div>
+        </div>
+    </div>
+</div>

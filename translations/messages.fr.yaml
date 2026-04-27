@@ -1,16 +1,21 @@
 setono_sylius_redirect:
     ui:
+        activation: Activation
+        channels: Canaux
         count: Nombre
         destination: Destination
+        destination_matches_channel_hint: "La destination pointe vers le nom d'hôte d'un canal activé. Supprimez le nom d'hôte (utilisez une URL relative) afin que la redirection puisse être optimisée entre les canaux."
         edit_redirect: Modifier une redirection
         enabled: Activée
         last_accessed: Dernier accès
         manage_redirects: Gérez les redirections
         new_redirect: Créer une redirection
+        options: Options
         permanent: Permanente
         redirects: Redirections
-        redirect: Redirect
+        redirect: Redirection
         source: Source
+        source_and_destination: Source et destination
     menu:
         admin:
             main:

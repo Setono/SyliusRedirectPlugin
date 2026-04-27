@@ -1,0 +1,56 @@
+<div class="col-12">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2 class="card-title">{{ 'setono_sylius_redirect.ui.source_and_destination'|trans }}</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    {{ form_row(hookable_metadata.context.form.source) }}
+                </div>
+                <div class="col-12 col-md-6">
+                    {{ form_row(hookable_metadata.context.form.destination) }}
+                    <div
+                        data-setono-sylius-redirect-destination-hostname-warning
+                        data-channel-hostnames="{{ setono_sylius_redirect_enabled_channel_hostnames()|json_encode|e('html_attr') }}"
+                        data-message="{{ 'setono_sylius_redirect.ui.destination_matches_channel_hint'|trans }}"
+                    ></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+(() => {
+    document.querySelectorAll('[data-setono-sylius-redirect-destination-hostname-warning]').forEach((wrapper) => {
+        const hostnames = JSON.parse(wrapper.dataset.channelHostnames || '[]');
+        if (hostnames.length === 0) {
+            return;
+        }
+        const input = wrapper.parentElement.querySelector('input[type="text"]');
+        if (input === null) {
+            return;
+        }
+        const check = () => {
+            wrapper.innerHTML = '';
+            const value = input.value.trim();
+            if (value === '') {
+                return;
+            }
+            let url;
+            try {
+                url = new URL(value);
+            } catch (e) {
+                return;
+            }
+            if (hostnames.includes(url.hostname) || hostnames.includes(url.host)) {
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-info mt-2';
+                alert.textContent = wrapper.dataset.message;
+                wrapper.appendChild(alert);
+            }
+        };
+        input.addEventListener('blur', check);
+    });
+})();
+</script>

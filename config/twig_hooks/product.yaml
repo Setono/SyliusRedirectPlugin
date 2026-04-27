@@ -1,0 +1,6 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.product.update.content.form.sections.translations':
+            setono_sylius_redirect_admin_redirect:
+                template: '@SetonoSyliusRedirectPlugin/admin/Product/add_automatic_redirect.html.twig'
+                priority: 350

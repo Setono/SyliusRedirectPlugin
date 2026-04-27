@@ -12,5 +12,14 @@
             <argument type="service" id="request_stack" />
             <tag name="kernel.event_subscriber" />
         </service>
+
+        <service id="setono_sylius_redirect.twig.extension" class="Setono\SyliusRedirectPlugin\Twig\Extension">
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="setono_sylius_redirect.twig.runtime" class="Setono\SyliusRedirectPlugin\Twig\Runtime">
+            <argument type="service" id="sylius.repository.channel" />
+            <tag name="twig.runtime" />
+        </service>
     </services>
 </container>

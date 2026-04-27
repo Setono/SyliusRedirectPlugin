@@ -1,23 +1,28 @@
 setono_sylius_redirect:
     ui:
+        activation: Aktivering
+        channels: Kanaler
         count: Tælle
         destination: Destination
+        destination_matches_channel_hint: 'Destinationen peger på et hostnavn for en aktiveret kanal. Fjern hostnavnet (brug en relativ URL), så omdirigeringen kan optimeres på tværs af kanaler.'
         edit_redirect: Rediger omdirigering
-        enabled: Aktiveret 
+        enabled: Aktiveret
         last_accessed: Senest åbnet
-        manage_redirects: Administrer omdirigering 
+        manage_redirects: Administrer omdirigering
         new_redirect: Ny omdirigering
+        options: Indstillinger
         permanent: Permanent
         redirects: Omdirigeringer
-        redirect: Omvej
+        redirect: Omdirigering
         source: Kilde
+        source_and_destination: Kilde og destination
     menu:
         admin:
             main:
                 configuration:
                     redirects: Omdirigeringer
     form:
-        add_automatic_redirect: Tilføj automatisk omdirigering 
+        add_automatic_redirect: Tilføj automatisk omdirigering
         redirect:
             channels: Kanaler
             channels_help: Hvis du ikke aktiverer nogen kanaler, fungerer omdirigering på alle kanaler
@@ -30,3 +35,5 @@ setono_sylius_redirect:
             permanent_help: Den mest brugte omdirigering er en permanent (301) omdirigering. Dette er også den der anbefales til SEO-formål
             source: Kilde
             source_placeholder: /en_US/redirect-from
+            keep_query_string: Behold query string
+            keep_query_string_help: 'Hvis dette er indstillet, beholder omdirigeringen query string, f.eks. /en_US/redirect-from?q=ts vil omdirigere dig til destinationen og bevare alle query-parametre: /en_US/redirect-to?q=ts'

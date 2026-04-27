@@ -31,10 +31,10 @@ class Redirect implements RedirectInterface
 
     protected bool $only404 = true;
 
-    protected bool $keepQueryString = false;
+    protected bool $keepQueryString = true;
 
     /** @var Collection<array-key, ChannelInterface> */
-    protected $channels;
+    protected Collection $channels;
 
     public function __construct()
     {

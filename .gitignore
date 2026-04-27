@@ -7,6 +7,7 @@
 !/etc/build/.gitignore
 
 /tests/Application/yarn.lock
+/tests/Application/config/reference.php
 
 /behat.yml
 /.phpunit.cache
@@ -16,3 +17,4 @@
 /php.ini
 
 /.claude/
+/.mcp.json

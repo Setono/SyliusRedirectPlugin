@@ -1,16 +1,21 @@
 setono_sylius_redirect:
     ui:
+        activation: Activation
+        channels: Channels
         count: Count
         destination: Destination
+        destination_matches_channel_hint: 'The destination points at a hostname of an enabled channel. Drop the hostname (use a relative URL) so the redirect can be optimized across channels.'
         edit_redirect: Edit redirect
         enabled: Enabled
         last_accessed: Last accessed
         manage_redirects: Manage redirects
         new_redirect: New redirect
+        options: Options
         permanent: Permanent
         redirects: Redirects
         redirect: Redirect
         source: Source
+        source_and_destination: Source and destination
     menu:
         admin:
             main:

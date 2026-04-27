@@ -1,0 +1,41 @@
+{% import '@SyliusUi/macro/labels.html.twig' as label %}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h2 class="card-title">{{ 'sylius.ui.general'|trans }}</h2>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">{{ 'setono_sylius_redirect.ui.source'|trans }}</dt>
+            <dd class="col-sm-9">{{ hookable_metadata.context.resource.source }}</dd>
+
+            <dt class="col-sm-3">{{ 'setono_sylius_redirect.ui.destination'|trans }}</dt>
+            <dd class="col-sm-9"><a href="{{ hookable_metadata.context.resource.destination }}" target="_blank" rel="noopener">{{ hookable_metadata.context.resource.destination }}</a></dd>
+
+            <dt class="col-sm-3">{{ 'setono_sylius_redirect.ui.permanent'|trans }}</dt>
+            <dd class="col-sm-9">{{ label.yesNo(hookable_metadata.context.resource.permanent) }}</dd>
+
+            <dt class="col-sm-3">{{ 'setono_sylius_redirect.ui.enabled'|trans }}</dt>
+            <dd class="col-sm-9">{{ label.yesNo(hookable_metadata.context.resource.enabled) }}</dd>
+
+            <dt class="col-sm-3">{{ 'setono_sylius_redirect.form.redirect.only_404'|trans }}</dt>
+            <dd class="col-sm-9">{{ label.yesNo(hookable_metadata.context.resource.only404) }}</dd>
+
+            <dt class="col-sm-3">{{ 'setono_sylius_redirect.form.redirect.keep_query_string'|trans }}</dt>
+            <dd class="col-sm-9">{{ label.yesNo(hookable_metadata.context.resource.keepQueryString) }}</dd>
+
+            <dt class="col-sm-3">{{ 'setono_sylius_redirect.ui.count'|trans }}</dt>
+            <dd class="col-sm-9">{{ hookable_metadata.context.resource.count }}</dd>
+
+            <dt class="col-sm-3">{{ 'setono_sylius_redirect.ui.last_accessed'|trans }}</dt>
+            <dd class="col-sm-9">{{ hookable_metadata.context.resource.lastAccessed ? hookable_metadata.context.resource.lastAccessed|date('Y-m-d H:i:s') : '-' }}</dd>
+
+            <dt class="col-sm-3">{{ 'setono_sylius_redirect.form.redirect.channels'|trans }}</dt>
+            <dd class="col-sm-9">
+                {%- if hookable_metadata.context.resource.channels|length -%}
+                    {%- for channel in hookable_metadata.context.resource.channels -%}{{ channel.name }}{% if not loop.last %}, {% endif %}{%- endfor -%}
+                {%- else -%}-{%- endif -%}
+            </dd>
+        </dl>
+    </div>
+</div>

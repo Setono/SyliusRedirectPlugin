@@ -1,0 +1,37 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.redirect.create.content.form.sections':
+            general:
+                enabled: false
+            source_destination:
+                template: '@SetonoSyliusRedirectPlugin/admin/redirect/form/sections/source_destination.html.twig'
+                priority: 200
+            options:
+                template: '@SetonoSyliusRedirectPlugin/admin/redirect/form/sections/options.html.twig'
+                priority: 100
+            channels:
+                template: '@SetonoSyliusRedirectPlugin/admin/redirect/form/sections/channels.html.twig'
+                priority: 50
+
+        'sylius_admin.redirect.update.content.form.sections':
+            general:
+                enabled: false
+            source_destination:
+                template: '@SetonoSyliusRedirectPlugin/admin/redirect/form/sections/source_destination.html.twig'
+                priority: 200
+            options:
+                template: '@SetonoSyliusRedirectPlugin/admin/redirect/form/sections/options.html.twig'
+                priority: 100
+            channels:
+                template: '@SetonoSyliusRedirectPlugin/admin/redirect/form/sections/channels.html.twig'
+                priority: 50
+
+        'sylius_admin.redirect.show.content':
+            sections:
+                template: '@SetonoSyliusRedirectPlugin/admin/redirect/show/content/sections.html.twig'
+                priority: 0
+
+        'sylius_admin.redirect.show.content.sections':
+            general:
+                template: '@SetonoSyliusRedirectPlugin/admin/redirect/show/content/sections/general.html.twig'
+                priority: 0

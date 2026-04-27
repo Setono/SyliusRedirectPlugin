@@ -1,0 +1,18 @@
+{% form_theme hookable_metadata.context.form.channels '@SetonoSyliusRedirectPlugin/admin/form_theme.html.twig' %}
+
+<div class="col-12 col-md-6">
+    <div class="card mb-3">
+        <div class="card-header">
+            <h2 class="card-title">{{ 'setono_sylius_redirect.ui.activation'|trans }}</h2>
+        </div>
+        <div class="card-body">
+            {{ form_row(hookable_metadata.context.form.enabled) }}
+
+            <hr>
+
+            <div class="alert alert-info">{{ 'setono_sylius_redirect.form.redirect.channels_help'|trans }}</div>
+            {{ form_label(hookable_metadata.context.form.channels) }}
+            {{ form_row(hookable_metadata.context.form.channels) }}
+        </div>
+    </div>
+</div>

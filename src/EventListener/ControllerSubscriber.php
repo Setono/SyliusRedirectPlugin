@@ -12,7 +12,7 @@ use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Webmozart\Assert\Assert;
 
@@ -23,9 +23,9 @@ final class ControllerSubscriber implements EventSubscriberInterface, LoggerAwar
     private LoggerInterface $logger;
 
     public function __construct(
-        private ObjectManager $objectManager,
-        private ChannelContextInterface $channelContext,
-        private RedirectionPathResolverInterface $redirectionPathResolver,
+        private readonly ObjectManager $objectManager,
+        private readonly ChannelContextInterface $channelContext,
+        private readonly RedirectionPathResolverInterface $redirectionPathResolver,
     ) {
         $this->logger = new NullLogger();
     }
@@ -33,12 +33,17 @@ final class ControllerSubscriber implements EventSubscriberInterface, LoggerAwar
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::CONTROLLER => 'onKernelController',
+            // priority 31: after RouterListener (32) but before NonChannelLocaleListener (10) and LocaleListener (16)
+            KernelEvents::REQUEST => ['onKernelRequest', 31],
         ];
     }
 
-    public function onKernelController(ControllerEvent $event): void
+    public function onKernelRequest(RequestEvent $event): void
     {
+        if (!$event->isMainRequest()) {
+            return;
+        }
+
         $request = $event->getRequest();
         $channel = null;
 
@@ -71,7 +76,7 @@ final class ControllerSubscriber implements EventSubscriberInterface, LoggerAwar
             return;
         }
 
-        $event->setController(static fn () => self::getRedirectResponse($lastRedirect, $request->getQueryString()));
+        $event->setResponse(self::getRedirectResponse($lastRedirect, $request->getQueryString()));
     }
 
     public function setLogger(LoggerInterface $logger): void
