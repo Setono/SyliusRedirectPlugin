@@ -41,4 +41,25 @@ The admin templates were rebuilt around [Sylius Twig hooks][twig-hooks]. If
 you previously overrode the 2.x templates directly, port your customizations
 to the matching hook.
 
+### Pruning command renamed and moved behind `PrunerInterface`
+
+The `setono:sylius-redirect:remove` command was renamed to
+`setono:sylius-redirect:prune`. The class was renamed in turn:
+
+| 2.x                                                    | 3.0                                          |
+| ------------------------------------------------------ | -------------------------------------------- |
+| `Setono\SyliusRedirectPlugin\Command\RemoveRedirectsCommand` | `Setono\SyliusRedirectPlugin\Command\PruneCommand` |
+
+Update any cron jobs, deploy scripts, or service overrides that referenced
+the old name.
+
+The pruning logic moved out of the repository and into a dedicated
+`Setono\SyliusRedirectPlugin\Pruner\PrunerInterface` (default implementation:
+`Setono\SyliusRedirectPlugin\Pruner\Pruner`). It now iterates eligible
+redirects with [`ocramius/doctrine-batch-utils`][doctrine-batch-utils], so
+prunes stay memory-safe on large tables. As a consequence,
+`RedirectRepositoryInterface::removeNotAccessed()` was removed — call
+`PrunerInterface::prune()` instead.
+
 [twig-hooks]: https://docs.sylius.com/the-customization-guide/customization/twig-hooks
+[doctrine-batch-utils]: https://github.com/Ocramius/DoctrineBatchUtils

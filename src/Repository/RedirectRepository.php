@@ -4,34 +4,12 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Repository;
 
-use DateInterval;
-use DateTime;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Channel\Model\ChannelInterface;
 
 class RedirectRepository extends EntityRepository implements RedirectRepositoryInterface
 {
-    public function removeNotAccessed(int $threshold): void
-    {
-        if ($threshold <= 0) {
-            return;
-        }
-
-        $dateTimeThreshold = (new DateTime())->sub(new DateInterval('P' . $threshold . 'D'));
-
-        $this->createQueryBuilder('r')
-            ->delete()
-            ->orWhere(
-                'r.lastAccessed is not null and r.lastAccessed <= :threshold',
-                'r.lastAccessed is null and r.createdAt <= :threshold',
-            )
-            ->setParameter('threshold', $dateTimeThreshold)
-            ->getQuery()
-            ->execute()
-        ;
-    }
-
     public function findOneEnabledBySource(string $source, ?ChannelInterface $channel = null, ?bool $only404 = null): ?RedirectInterface
     {
         $qb = $this->createQueryBuilder('o')
@@ -76,5 +54,12 @@ class RedirectRepository extends EntityRepository implements RedirectRepositoryI
         }
 
         return $preferredRedirect;
+    }
+
+    public function findOneBySource(string $source): ?RedirectInterface
+    {
+        $redirect = $this->findOneBy(['source' => $source]);
+
+        return $redirect instanceof RedirectInterface ? $redirect : null;
     }
 }

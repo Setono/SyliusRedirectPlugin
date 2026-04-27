@@ -27,7 +27,7 @@ final class CheckSourceAction
         $excludeIdRaw = $request->query->get('excludeId');
         $excludeId = (null !== $excludeIdRaw && '' !== $excludeIdRaw) ? (int) $excludeIdRaw : null;
 
-        $redirect = $this->redirectRepository->findOneBy(['source' => $source]);
+        $redirect = $this->redirectRepository->findOneBySource($source);
         if (null === $redirect || (null !== $excludeId && $redirect->getId() === $excludeId)) {
             return new JsonResponse(['exists' => false]);
         }
