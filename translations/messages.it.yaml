@@ -5,6 +5,8 @@ setono_sylius_redirect:
         count: Totale
         destination: Destinazione
         destination_matches_channel_hint: "La destinazione punta al nome host di un canale abilitato. Rimuovi il nome host (usa un URL relativo) in modo che il redirect possa essere ottimizzato tra i canali."
+        source_already_exists: "Esiste già un redirect con questa provenienza."
+        view_existing_redirect: "Visualizza redirect esistente"
         edit_redirect: Modifica redirect
         enabled: Abilitato
         last_accessed: Ultimo accesso
@@ -30,7 +32,7 @@ setono_sylius_redirect:
             destination_placeholder: /en_US/redirect-to oppure https://redirect.to/
             enabled: Abilitato
             only_404: Reindirizza solo se la pagina di provenienza non esiste
-            only_404_help: "Se abilitato, il redirect verrà applicato solo se il percorso inserito in provenienza restituisce un 404 (non trovato). È consigliabile lasciarlo disabilitato, perché consente una maggiore ottimizzazione del redirect."
+            only_404_help: Se abilitato, il redirect verrà applicato solo se il percorso inserito in provenienza restituisce un 404 (non trovato)
             permanent: Permanente (Codice 301 invece di 302)
             permanent_help: Il redirect più utilizzato è quello permanente (301). Questo è anche quello raccomandato per scopi SEO.
             source: Provenienza

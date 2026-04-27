@@ -13,18 +13,12 @@ versions of the plugin. When upgrading, follow each section in order.
 
 The plugin no longer supports Sylius 1.x or PHP `< 8.2`.
 
-### Default values changed on `Redirect`
+### Default value changed on `Redirect`
 
-Two boolean defaults on `Setono\SyliusRedirectPlugin\Model\Redirect` were
-flipped to better match how the feature is most commonly used:
-
-| Property          | 2.x default | 3.0 default |
-| ----------------- | ----------- | ----------- |
-| `$keepQueryString` | `false`     | `true`      |
-| `$only404`         | `true`      | `false`     |
-
-If your fixtures, factories, or migrations rely on the old defaults, set the
-values explicitly.
+The default for `Setono\SyliusRedirectPlugin\Model\Redirect::$keepQueryString`
+flipped from `false` to `true` to better match how the feature is most
+commonly used. If your fixtures, factories, or migrations rely on the old
+default, set the value explicitly.
 
 ### Plugin file layout aligned with the Sylius 2.x plugin skeleton
 

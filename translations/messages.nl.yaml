@@ -5,6 +5,8 @@ setono_sylius_redirect:
         count: Aantal
         destination: Bestemming
         destination_matches_channel_hint: 'De bestemming verwijst naar de hostnaam van een ingeschakeld kanaal. Verwijder de hostnaam (gebruik een relatieve URL) zodat de omleiding over kanalen heen kan worden geoptimaliseerd.'
+        source_already_exists: 'Er bestaat al een omleiding met deze bron.'
+        view_existing_redirect: 'Bekijk bestaande omleiding'
         edit_redirect: Omleiding aanpassen
         enabled: Ingeschakeld
         last_accessed: Laatste toegang
@@ -30,7 +32,7 @@ setono_sylius_redirect:
             destination_placeholder: /nl_NL/omleiding-naar or https://omleiding.naar/
             enabled: Ingeschakeld
             only_404: Alleen omleiden wanneer de bronpagina niet bestaat
-            only_404_help: "Als dit is ingeschakeld, wordt de omleiding alleen toegepast als het pad dat u in de bron hebt ingevoerd een 404 retourneert (niet gevonden). Het wordt aanbevolen dit uitgeschakeld te laten, omdat dit een betere optimalisatie van omleidingen mogelijk maakt."
+            only_404_help: Als dit is ingeschakeld, wordt de omleiding alleen toegepast als het pad dat u in de bron hebt ingevoerd een 404 retourneert (niet gevonden)
             permanent: Permanent (301 omleiding in plaats van 302)
             permanent_help: De meest gebruikte omleiding is een permanente (301) omleiding. Dit wordt ook aanbevolen voor SEO-doeleinden
             source: Bron

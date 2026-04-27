@@ -5,6 +5,8 @@ setono_sylius_redirect:
         count: Count
         destination: Destination
         destination_matches_channel_hint: 'The destination points at a hostname of an enabled channel. Drop the hostname (use a relative URL) so the redirect can be optimized across channels.'
+        source_already_exists: 'A redirect with this source already exists.'
+        view_existing_redirect: 'View existing redirect'
         edit_redirect: Edit redirect
         enabled: Enabled
         last_accessed: Last accessed
@@ -30,7 +32,7 @@ setono_sylius_redirect:
             destination_placeholder: /en_US/redirect-to or https://redirect.to/
             enabled: Enabled
             only_404: Only redirect when the source page is missing
-            only_404_help: "If this is set, the redirect will only be applied if the path you entered in source returns a 404 (not found). Leaving this disabled is recommended, because it allows for greater redirect optimization."
+            only_404_help: If this is set, the redirect will only be applied if the path you entered in source returns a 404 (not found)
             permanent: Permanent (301 redirect instead of 302)
             permanent_help: The most used redirect is a permanent (301) redirect. This is also the one recommended for SEO purposes
             source: Source

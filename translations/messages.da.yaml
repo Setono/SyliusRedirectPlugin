@@ -5,6 +5,8 @@ setono_sylius_redirect:
         count: Tælle
         destination: Destination
         destination_matches_channel_hint: 'Destinationen peger på et hostnavn for en aktiveret kanal. Fjern hostnavnet (brug en relativ URL), så omdirigeringen kan optimeres på tværs af kanaler.'
+        source_already_exists: 'Der findes allerede en omdirigering med denne kilde.'
+        view_existing_redirect: 'Se eksisterende omdirigering'
         edit_redirect: Rediger omdirigering
         enabled: Aktiveret
         last_accessed: Senest åbnet
@@ -30,7 +32,7 @@ setono_sylius_redirect:
             destination_placeholder: /en_US/redirect-to or https://redirect.to/
             enabled: Aktiveret
             only_404: Omdiriger kun når kildesiden ikke findes
-            only_404_help: "Hvis dette er indstillet, anvendes omdirigeringen kun, hvis den sti du indtastede i kilden returnerer en 404 (ikke fundet). Det anbefales at lade dette være deaktiveret, da det giver bedre mulighed for at optimere omdirigeringen."
+            only_404_help: Hvis dette er indstillet, anvendes omdirigeringen kun, hvis den sti du indtastede i kilden returnerer en 404 (ikke fundet)
             permanent: Permanent (301 omdirigering i stedet for 302)
             permanent_help: Den mest brugte omdirigering er en permanent (301) omdirigering. Dette er også den der anbefales til SEO-formål
             source: Kilde

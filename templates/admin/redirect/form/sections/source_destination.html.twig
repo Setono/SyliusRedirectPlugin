@@ -7,6 +7,13 @@
             <div class="row">
                 <div class="col-12 col-md-6">
                     {{ form_row(hookable_metadata.context.form.source) }}
+                    <div
+                        data-setono-sylius-redirect-source-duplicate-warning
+                        data-check-url="{{ path('setono_sylius_redirect_admin_redirect_check_source') }}"
+                        data-exclude-id="{{ hookable_metadata.context.resource.id|default('') }}"
+                        data-message="{{ 'setono_sylius_redirect.ui.source_already_exists'|trans }}"
+                        data-link-label="{{ 'setono_sylius_redirect.ui.view_existing_redirect'|trans }}"
+                    ></div>
                 </div>
                 <div class="col-12 col-md-6">
                     {{ form_row(hookable_metadata.context.form.destination) }}
@@ -49,6 +56,56 @@
                 alert.textContent = wrapper.dataset.message;
                 wrapper.appendChild(alert);
             }
+        };
+        input.addEventListener('blur', check);
+    });
+
+    document.querySelectorAll('[data-setono-sylius-redirect-source-duplicate-warning]').forEach((wrapper) => {
+        const input = wrapper.parentElement.querySelector('input[type="text"]');
+        if (input === null) {
+            return;
+        }
+        const checkUrl = wrapper.dataset.checkUrl;
+        const excludeId = wrapper.dataset.excludeId || '';
+        const message = wrapper.dataset.message;
+        const linkLabel = wrapper.dataset.linkLabel;
+        const check = async () => {
+            wrapper.innerHTML = '';
+            const value = input.value.trim();
+            if (value === '') {
+                return;
+            }
+            const url = new URL(checkUrl, window.location.origin);
+            url.searchParams.set('source', value);
+            if (excludeId !== '') {
+                url.searchParams.set('excludeId', excludeId);
+            }
+            let payload;
+            try {
+                const response = await fetch(url.toString(), { credentials: 'same-origin' });
+                if (!response.ok) {
+                    return;
+                }
+                payload = await response.json();
+            } catch (e) {
+                return;
+            }
+            if (!payload.exists) {
+                return;
+            }
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-warning mt-2 d-flex justify-content-between align-items-center gap-2';
+            const text = document.createElement('span');
+            text.textContent = message;
+            const link = document.createElement('a');
+            link.href = payload.editUrl;
+            link.className = 'btn btn-sm btn-outline-warning';
+            link.textContent = linkLabel;
+            link.target = '_blank';
+            link.rel = 'noopener';
+            alert.appendChild(text);
+            alert.appendChild(link);
+            wrapper.appendChild(alert);
         };
         input.addEventListener('blur', check);
     });
