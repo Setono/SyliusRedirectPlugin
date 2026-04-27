@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Setono\SyliusRedirectPlugin\EventListener;
+namespace Setono\SyliusRedirectPlugin\EventSubscriber;
 
 use Doctrine\Persistence\ObjectManager;
 use Psr\Log\LoggerAwareInterface;
@@ -12,20 +12,22 @@ use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Webmozart\Assert\Assert;
 
-final class ControllerSubscriber implements EventSubscriberInterface, LoggerAwareInterface
+class NotFoundSubscriber implements EventSubscriberInterface, LoggerAwareInterface
 {
     use RedirectResponseTrait;
 
     private LoggerInterface $logger;
 
     public function __construct(
-        private readonly ObjectManager $objectManager,
-        private readonly ChannelContextInterface $channelContext,
-        private readonly RedirectionPathResolverInterface $redirectionPathResolver,
+        private ObjectManager $objectManager,
+        private ChannelContextInterface $channelContext,
+        private RedirectionPathResolverInterface $redirectionPathResolver,
     ) {
         $this->logger = new NullLogger();
     }
@@ -33,27 +35,32 @@ final class ControllerSubscriber implements EventSubscriberInterface, LoggerAwar
     public static function getSubscribedEvents(): array
     {
         return [
-            // priority 31: after RouterListener (32) but before NonChannelLocaleListener (10) and LocaleListener (16)
-            KernelEvents::REQUEST => ['onKernelRequest', 31],
+            KernelEvents::EXCEPTION => 'onKernelException',
         ];
     }
 
-    public function onKernelRequest(RequestEvent $event): void
+    public function onKernelException(ExceptionEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
         }
 
-        $request = $event->getRequest();
+        $throwable = $event->getThrowable();
+        if (!$throwable instanceof HttpException || $throwable->getStatusCode() !== Response::HTTP_NOT_FOUND) {
+            return;
+        }
         $channel = null;
 
         try {
             $channel = $this->channelContext->getChannel();
         } catch (ChannelNotFoundException) {
         }
+
+        $request = $event->getRequest();
         $redirectionPath = $this->redirectionPathResolver->resolveFromRequest(
             $request,
             $channel,
+            true,
         );
 
         if ($redirectionPath->isEmpty()) {
@@ -61,7 +68,6 @@ final class ControllerSubscriber implements EventSubscriberInterface, LoggerAwar
         }
 
         $redirectionPath->markAsAccessed();
-
         $this->objectManager->flush();
 
         $lastRedirect = $redirectionPath->last();

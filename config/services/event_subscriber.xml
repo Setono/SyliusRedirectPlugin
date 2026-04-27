@@ -10,7 +10,7 @@
         </service>
 
         <service id="setono_sylius_redirect.event_listener.controller"
-                 class="Setono\SyliusRedirectPlugin\EventListener\ControllerSubscriber">
+                 class="Setono\SyliusRedirectPlugin\EventSubscriber\ControllerSubscriber">
             <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
             <argument type="service" id="sylius.context.channel"/>
             <argument type="service" id="setono_sylius_redirect.resolver.redirection_path"/>
@@ -23,7 +23,7 @@
         </service>
 
         <service id="setono_sylius_redirect.event_listener.not_found"
-                 class="Setono\SyliusRedirectPlugin\EventListener\NotFoundSubscriber">
+                 class="Setono\SyliusRedirectPlugin\EventSubscriber\NotFoundSubscriber">
             <argument type="service" id="setono_sylius_redirect.manager.redirect"/>
             <argument type="service" id="sylius.context.channel"/>
             <argument type="service" id="setono_sylius_redirect.resolver.redirection_path"/>

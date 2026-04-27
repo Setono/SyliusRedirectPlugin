@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Setono\SyliusRedirectPlugin\EventListener;
+namespace Setono\SyliusRedirectPlugin\EventSubscriber;
 
 use League\Uri\Uri;
 use League\Uri\UriModifier;

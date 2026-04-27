@@ -28,17 +28,11 @@ final class AdminMenuListener
         }
 
         foreach (self::ITEMS_TO_COLLAPSE as $name) {
-            $child = $menu->getChild($name);
-            if (null !== $child) {
-                $child->setExtra('always_open', false);
-            }
+            $menu->getChild($name)?->setExtra('always_open', false);
         }
 
         foreach (self::ITEMS_TO_EXPAND as $name) {
-            $child = $menu->getChild($name);
-            if (null !== $child) {
-                $child->setExtra('always_open', true);
-            }
+            $menu->getChild($name)?->setExtra('always_open', true);
         }
     }
 }
