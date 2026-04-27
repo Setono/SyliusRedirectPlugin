@@ -34,5 +34,23 @@
 
             <tag name="kernel.event_subscriber"/>
         </service>
+
+        <!--
+            kernel.event_listener tags are added at compile time by
+            Setono\SyliusRedirectPlugin\DependencyInjection\Compiler\ConfigureAutomaticRedirectsPass,
+            one per alias enabled in setono_sylius_redirect.automatic_redirects.
+        -->
+        <service id="Setono\SyliusRedirectPlugin\EventListener\AutomaticRedirectListener">
+            <argument type="service" id="doctrine"/>
+            <argument type="service" id="setono_sylius_redirect.factory.redirect"/>
+            <argument type="service" id="setono_sylius_redirect.url_resolver.automatic_redirect.composite"/>
+            <argument type="service" id="setono_sylius_redirect.finder.removable_redirect"/>
+            <argument type="service" id="validator"/>
+            <argument>%setono_sylius_redirect.form.type.redirect.validation_groups%</argument>
+
+            <call method="setLogger">
+                <argument type="service" id="logger" on-invalid="ignore"/>
+            </call>
+        </service>
     </services>
 </container>

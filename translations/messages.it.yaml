@@ -24,7 +24,6 @@ setono_sylius_redirect:
                 configuration:
                     redirects: Redirects
     form:
-        add_automatic_redirect: Aggiungi redirect automaticamente
         redirect:
             channels: Canali
             channels_help: "Se non abiliti alcun canale, il redirect funzionerà per tutti i canali. È consigliabile lasciare tutti i canali disabilitati, perché consente una maggiore ottimizzazione del redirect."

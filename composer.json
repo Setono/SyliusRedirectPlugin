@@ -18,6 +18,7 @@
         "league/uri-components": "^2.3 || ^7.5",
         "ocramius/doctrine-batch-utils": "^2.4",
         "psr/log": "^1.1 || ^2.0 || ^3.0",
+        "setono/composite-compiler-pass": "^1.2",
         "setono/doctrine-orm-trait": "^1.2",
         "sylius/admin-bundle": "^2.0",
         "sylius/channel": "^2.0",

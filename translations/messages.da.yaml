@@ -24,7 +24,6 @@ setono_sylius_redirect:
                 configuration:
                     redirects: Omdirigeringer
     form:
-        add_automatic_redirect: Tilføj automatisk omdirigering
         redirect:
             channels: Kanaler
             channels_help: "Hvis du ikke aktiverer nogen kanaler, fungerer omdirigeringen på alle kanaler. Det anbefales at lade alle kanaler være deaktiveret, da det giver bedre mulighed for at optimere omdirigeringen."
