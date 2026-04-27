@@ -44,7 +44,6 @@
         "lexik/jwt-authentication-bundle": "^3.1",
         "php-http/message-factory": "^1.1",
         "setono/sylius-plugin": "^2.1",
-        "sylius/grid-bundle": "^1.15.1",
         "sylius/sylius": "~2.2.5",
         "symfony/debug-bundle": "^6.4 || ^7.1",
         "symfony/dotenv": "^6.4 || ^7.1",
