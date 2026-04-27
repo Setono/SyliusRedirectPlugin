@@ -55,36 +55,6 @@ jobs:
                 php-version: ["8.2", "8.3", "8.4"]
                 dependencies: ["lowest", "highest"]
                 symfony: ["~6.4.0", "~7.4.0"]
-        steps:
-            -   uses: "setono/sylius-plugin/unit-tests@v2"
-                with:
-                    php-version: "${{ matrix.php-version }}"
-                    dependencies: "${{ matrix.dependencies }}"
-                    symfony: "${{ matrix.symfony }}"
-
-    integration-tests:
-        runs-on: "ubuntu-latest"
-        strategy:
-            fail-fast: false
-            matrix:
-                php-version: ["8.2", "8.3", "8.4"]
-                dependencies: ["highest"]
-                symfony: ["~6.4.0", "~7.4.0"]
-        steps:
-            -   uses: "setono/sylius-plugin/integration-tests@v2"
-                with:
-                    php-version: "${{ matrix.php-version }}"
-                    dependencies: "${{ matrix.dependencies }}"
-                    symfony: "${{ matrix.symfony }}"
-
-    functional-tests:
-        runs-on: "ubuntu-latest"
-        strategy:
-            fail-fast: false
-            matrix:
-                php-version: ["8.2", "8.3", "8.4"]
-                dependencies: ["highest"]
-                symfony: ["~6.4.0", "~7.4.0"]
         env:
             DATABASE_URL: "mysql://root:root@127.0.0.1/setono_sylius_redirect_plugin_test?serverVersion=8.0"
         steps:
@@ -107,11 +77,43 @@ jobs:
                     dependency-versions: "${{ matrix.dependencies }}"
 
             -   shell: "bash"
-                run: "vendor/bin/phpunit --testsuite functional"
+                run: "vendor/bin/phpunit"
+
+    integration-tests:
+        runs-on: "ubuntu-latest"
+        strategy:
+            fail-fast: false
+            matrix:
+                php-version: ["8.2", "8.3", "8.4"]
+                dependencies: ["highest"]
+                symfony: ["~6.4.0", "~7.4.0"]
+        steps:
+            -   uses: "setono/sylius-plugin/integration-tests@v2"
+                with:
+                    php-version: "${{ matrix.php-version }}"
+                    dependencies: "${{ matrix.dependencies }}"
+                    symfony: "${{ matrix.symfony }}"
 
     code-coverage:
         runs-on: "ubuntu-latest"
+        env:
+            DATABASE_URL: "mysql://root:root@127.0.0.1/setono_sylius_redirect_plugin_test?serverVersion=8.0"
         steps:
-            -   uses: "setono/sylius-plugin/code-coverage@v2"
+            -   shell: "bash"
+                run: "sudo /etc/init.d/mysql start"
+
+            -   uses: "actions/checkout@v6"
+
+            -   uses: "shivammathur/setup-php@v2"
                 with:
-                    codecov-token: "${{ secrets.CODECOV_TOKEN }}"
+                    extensions: "intl, mbstring, pdo_mysql"
+                    coverage: "pcov"
+
+            -   uses: "ramsey/composer-install@v4"
+
+            -   shell: "bash"
+                run: "vendor/bin/phpunit --coverage-clover=.build/logs/clover.xml"
+
+            -   uses: "codecov/codecov-action@v5"
+                with:
+                    token: "${{ secrets.CODECOV_TOKEN }}"

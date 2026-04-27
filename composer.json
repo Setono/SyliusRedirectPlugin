@@ -48,6 +48,7 @@
         "symfony/debug-bundle": "^6.4 || ^7.1",
         "symfony/dotenv": "^6.4 || ^7.1",
         "symfony/intl": "^6.4 || ^7.1",
+        "symfony/maker-bundle": "^1.36",
         "symfony/web-profiler-bundle": "^6.4 || ^7.1",
         "symfony/webpack-encore-bundle": "^2.2"
     },
@@ -81,7 +82,7 @@
         "analyse": "phpstan analyse",
         "check-style": "ecs check",
         "fix-style": "ecs check --fix",
-        "phpunit": "phpunit --testsuite unit,functional",
+        "phpunit": "phpunit",
         "phpunit:functional": "phpunit --testsuite functional",
         "phpunit:unit": "phpunit --testsuite unit"
     }
