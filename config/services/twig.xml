@@ -3,16 +3,6 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="setono_sylius_redirect.twig.product_form_subscriber" class="Setono\SyliusRedirectPlugin\Twig\EventSubscriber\ProductFormComponentSubscriber">
-            <argument type="service" id="request_stack" />
-            <tag name="kernel.event_subscriber" />
-        </service>
-
-        <service id="setono_sylius_redirect.twig.taxon_form_subscriber" class="Setono\SyliusRedirectPlugin\Twig\EventSubscriber\TaxonFormComponentSubscriber">
-            <argument type="service" id="request_stack" />
-            <tag name="kernel.event_subscriber" />
-        </service>
-
         <service id="setono_sylius_redirect.twig.extension" class="Setono\SyliusRedirectPlugin\Twig\Extension">
             <tag name="twig.extension" />
         </service>

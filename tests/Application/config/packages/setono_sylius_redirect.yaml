@@ -3,3 +3,6 @@ imports:
 
 setono_sylius_redirect:
     remove_after: 1
+    automatic_redirects:
+        sylius.product: true
+        sylius.taxon: true

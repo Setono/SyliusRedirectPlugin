@@ -9,11 +9,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final class CheckSourceAction
+final readonly class CheckSourceAction
 {
     public function __construct(
-        private readonly RedirectRepositoryInterface $redirectRepository,
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private RedirectRepositoryInterface $redirectRepository,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

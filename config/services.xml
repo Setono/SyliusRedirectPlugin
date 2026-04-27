@@ -12,7 +12,7 @@
         <import resource="services/form.xml"/>
         <import resource="services/pruner.xml"/>
         <import resource="services/resolver.xml"/>
-        <import resource="services/slug_update_handler.xml"/>
         <import resource="services/twig.xml"/>
+        <import resource="services/url_resolver.xml"/>
     </imports>
 </container>

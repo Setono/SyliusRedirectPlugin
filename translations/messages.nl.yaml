@@ -24,7 +24,6 @@ setono_sylius_redirect:
                 configuration:
                     redirects: Omleidingen
     form:
-        add_automatic_redirect: Automatische omleiding toevoegen
         redirect:
             channels: Kanalen
             channels_help: "Als u geen kanalen inschakelt, werkt de omleiding op alle kanalen. Het wordt aanbevolen alle kanalen uitgeschakeld te laten, omdat dit een betere optimalisatie van omleidingen mogelijk maakt."

@@ -30,6 +30,13 @@ final class Configuration implements ConfigurationInterface
                 ->integerNode('remove_after')
                     ->info('0 means disabled. If the value is > 0 then redirects that have not been accessed in the last x days will be removed')
                     ->defaultValue(0)
+                ->end()
+                ->arrayNode('automatic_redirects')
+                    ->info('Sylius resource aliases for which a redirect is automatically created when an admin updates a translation slug. Default: none. Example: { sylius.product: true, sylius.taxon: true }')
+                    ->normalizeKeys(false)
+                    ->useAttributeAsKey('alias')
+                    ->prototype('boolean')->defaultFalse()->end()
+                ->end()
         ;
 
         $this->addResourcesSection($rootNode);
