@@ -61,6 +61,7 @@ jobs:
                     php-version: "${{ matrix.php-version }}"
                     dependencies: "${{ matrix.dependencies }}"
                     symfony: "${{ matrix.symfony }}"
+                    testsuite: "unit"
 
     integration-tests:
         runs-on: "ubuntu-latest"
@@ -70,17 +71,13 @@ jobs:
                 php-version: ["8.2", "8.3", "8.4"]
                 dependencies: ["highest"]
                 symfony: ["~6.4.0", "~7.4.0"]
-        env:
-            DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?serverVersion=8.0"
         steps:
             -   uses: "setono/sylius-plugin/integration-tests@v2"
                 with:
                     php-version: "${{ matrix.php-version }}"
                     dependencies: "${{ matrix.dependencies }}"
                     symfony: "${{ matrix.symfony }}"
-
-            -   shell: "bash"
-                run: "vendor/bin/phpunit --testsuite functional"
+                    testsuite: "functional"
 
     code-coverage:
         runs-on: "ubuntu-latest"
@@ -88,3 +85,4 @@ jobs:
             -   uses: "setono/sylius-plugin/code-coverage@v2"
                 with:
                     codecov-token: "${{ secrets.CODECOV_TOKEN }}"
+                    testsuite: "unit"
