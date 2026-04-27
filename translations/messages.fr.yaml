@@ -25,12 +25,12 @@ setono_sylius_redirect:
         add_automatic_redirect: Créer automatiquement une redirection
         redirect:
             channels: Canaux
-            channels_help: Si vous n'activez aucun canal, la redirection fonctionnera sur tous les canaux
+            channels_help: "Si vous n'activez aucun canal, la redirection fonctionnera sur tous les canaux. Il est recommandé de laisser tous les canaux désactivés, car cela permet une meilleure optimisation des redirections."
             destination: Destination
             destination_placeholder: /fr_FR/destination ou https://destination.externe/
             enabled: Activée
-            only_404: Rediriger seulement si la source retourne une 404
-            only_404_help: Si cette option est activée, la redirection ne sera appliquée que si le chemin que vous avez entré dans la source retourne une 404 (non trouvé)
+            only_404: Rediriger uniquement si la page source est introuvable
+            only_404_help: "Si cette option est activée, la redirection ne sera appliquée que si le chemin que vous avez entré dans la source retourne une 404 (non trouvé). Il est recommandé de laisser cette option désactivée, car cela permet une meilleure optimisation des redirections."
             permanent: Permanente (redirection 301 au lieu de 302)
             permanent_help: La redirection la plus utilisée est une redirection permanente (301). C'est également celle recommandée à des fins de référencement
             source: Source

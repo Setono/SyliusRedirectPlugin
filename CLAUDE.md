@@ -78,9 +78,11 @@ symfony server:start                                            # https://127.0.
 
 - Always use relative paths in shell commands. Absolute paths inside this working directory trigger a Claude Code permission prompt for the user; relative paths run without one.
 - If you've changed directory (e.g. into `tests/Application/`) for a previous step, return to the project root before subsequent commands so relative paths still resolve correctly. Don't try to compensate by prepending an absolute path — `cd` back to the root instead.
+- Run the test-app console from the project root via `./tests/Application/bin/console <cmd>` instead of `cd tests/Application && php bin/console <cmd>`. It avoids the `cd` round-trip and keeps the working directory at the project root for any follow-up commands.
 - When you build or change a feature with a UI surface (admin form, grid, page), verify it via the Playwright MCP — boot the test app (see "Booting the test app locally"), navigate to the affected page, and confirm the rendered output before reporting the task as complete. Don't rely on PHPUnit/PHPStan/ECS alone for UI work.
 - Twig extensions should split into an `Extension` (eagerly loaded, declares functions/filters) and a `Runtime` (lazily instantiated, holds dependencies and runs the logic). Wire functions via `[Runtime::class, 'method']` and tag the runtime service with `twig.runtime`. This keeps the extension cheap to load and the dependencies (e.g. repositories) only constructed when a template actually calls one.
 - When adding or updating translation keys, update every locale file in `translations/` (e.g. `messages.en.yaml`, `messages.da.yaml`, ...), not just English. Missing translations leak the raw key into the UI for non-English admins.
+- When you make a breaking change a plugin user would need to act on during a major-version upgrade (default-value flips, renamed/removed public classes or services, template-path moves, changed model APIs, removed config keys), document it in `UPGRADE.md` under the relevant "Upgrading from X to Y" section. Skip changes that consumers don't have to react to: dev tooling, listener-priority tweaks, translation-key additions, and other internal refactors.
 
 ## Code Quality
 

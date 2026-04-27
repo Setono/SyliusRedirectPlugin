@@ -29,7 +29,7 @@ class Redirect implements RedirectInterface
 
     protected ?DateTimeInterface $lastAccessed = null;
 
-    protected bool $only404 = true;
+    protected bool $only404 = false;
 
     protected bool $keepQueryString = true;
 

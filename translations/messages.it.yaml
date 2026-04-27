@@ -25,12 +25,12 @@ setono_sylius_redirect:
         add_automatic_redirect: Aggiungi redirect automaticamente
         redirect:
             channels: Canali
-            channels_help: Se non abiliti alcun canale, il redirect funzionerà per tutti i canali
+            channels_help: "Se non abiliti alcun canale, il redirect funzionerà per tutti i canali. È consigliabile lasciare tutti i canali disabilitati, perché consente una maggiore ottimizzazione del redirect."
             destination: Destinazione
             destination_placeholder: /en_US/redirect-to oppure https://redirect.to/
             enabled: Abilitato
-            only_404: Redirect solo se la provenienza restituisce un 404
-            only_404_help: Se abilitato, il redirect verrà applicato solo se il percorso inserito in provenienza restituisce un 404 (non trovato)
+            only_404: Reindirizza solo se la pagina di provenienza non esiste
+            only_404_help: "Se abilitato, il redirect verrà applicato solo se il percorso inserito in provenienza restituisce un 404 (non trovato). È consigliabile lasciarlo disabilitato, perché consente una maggiore ottimizzazione del redirect."
             permanent: Permanente (Codice 301 invece di 302)
             permanent_help: Il redirect più utilizzato è quello permanente (301). Questo è anche quello raccomandato per scopi SEO.
             source: Provenienza
