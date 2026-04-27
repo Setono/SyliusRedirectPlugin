@@ -155,6 +155,10 @@ final class BlogPostAutomaticRedirectUrlResolver implements AutomaticRedirectUrl
 
 …then enable the alias under `automatic_redirects: app.blog_post: true`.
 
+## Development
+
+This project uses [OpenSpec](https://github.com/Fission-AI/OpenSpec) to plan and track non-trivial features. Active proposals live under `openspec/changes/<name>/`; the current accepted specs live under `openspec/specs/<capability>/`; completed proposals move to `openspec/changes/archive/`. If you're contributing a sizeable change, write the proposal / design / spec / tasks artifacts there first so the why and the contract are clear before any code lands.
+
 [ico-version]: https://img.shields.io/packagist/v/setono/sylius-redirect-plugin.svg
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [ico-github-actions]: https://github.com/Setono/SyliusRedirectPlugin/workflows/build/badge.svg

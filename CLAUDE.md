@@ -105,6 +105,22 @@ symfony server:start                                            # https://127.0.
 - Before each commit, run the code-quality tools and fix what they flag: `composer fix-style` (or `composer check-style` if you only want a report), `composer analyse` (PHPStan at `level: max`), and `composer phpunit`. Don't commit on top of pre-existing failures — re-run the suite locally first so CI doesn't catch regressions you could've caught in seconds.
 - For services that need a Doctrine `EntityManager`, don't inject `EntityManagerInterface` (or `setono_sylius_redirect.manager.redirect`) directly. Inject `Doctrine\Persistence\ManagerRegistry` plus the relevant `class-string` (e.g. `%setono_sylius_redirect.model.redirect.class%`) and `use Setono\Doctrine\ORMTrait;` so the manager is resolved lazily via `$this->getManager($class)`. This matches the established pattern (`src/Pruner/Pruner.php`, `src/EventListener/AutomaticRedirectListener.php`) and keeps services from binding to a single hard-coded manager.
 
+## OpenSpec workflow
+
+Non-trivial features and refactors are scoped through [OpenSpec](https://github.com/Fission-AI/OpenSpec). The project tree:
+
+- `openspec/specs/<capability>/spec.md` — current, accepted spec for each capability the plugin exposes (e.g. `automatic-redirects`).
+- `openspec/changes/<change-name>/` — in-flight proposal: `proposal.md` (why), `design.md` (architectural decisions, trade-offs), `specs/<capability>/spec.md` (delta against the main spec, using `## ADDED Requirements` / `## MODIFIED Requirements` / `## REMOVED Requirements` markers), `tasks.md` (the punch list).
+- `openspec/changes/archive/YYYY-MM-DD-<change-name>/` — completed changes, kept for historical context.
+
+Slash commands available in this repo:
+
+- `/opsx:ff <name-or-description>` — fast-forward through artifact creation; produces proposal/design/specs/tasks ready for implementation.
+- `/opsx:apply [<name>]` — implement tasks from an active change, ticking off `tasks.md` as work progresses.
+- `/opsx:archive [<name>]` — sync the delta spec into `openspec/specs/` and move the change folder to `openspec/changes/archive/`.
+
+Before starting non-trivial work, check `openspec list --json` for active changes — if one already covers the work, continue it via `/opsx:apply` rather than starting fresh. After implementation, archive the change so the main specs stay current.
+
 ## Code Quality
 
 - PHP >=8.2, targeting Symfony 6.4/7.1
