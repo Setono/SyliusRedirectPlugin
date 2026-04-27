@@ -7,7 +7,6 @@ parameters:
 
     excludePaths:
         - tests/Application/*
-        - tests/Behat/*
 
     bootstrapFiles:
         - tests/Application/config/bootstrap.php

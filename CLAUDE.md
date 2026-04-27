@@ -25,9 +25,6 @@ composer fix-style
 
 # Rector dry-run
 vendor/bin/rector --dry-run
-
-# Behat (requires MySQL + test app setup)
-vendor/bin/behat
 ```
 
 ## Architecture
@@ -58,9 +55,8 @@ Three custom validators prevent invalid redirects:
 ## Testing
 
 - **PHPUnit** (`tests/`) - unit tests, bootstrapped via `tests/Application/config/bootstrap.php`
-- **Behat** (`features/`) - integration tests requiring a full Sylius test application (`tests/Application/`)
 
-The test application in `tests/Application/` is a minimal Sylius app used for Behat and integration tests. It requires MySQL and asset compilation to run.
+The test application in `tests/Application/` is a minimal Sylius app used for integration testing and the Playwright UI checks. It requires MySQL and asset compilation to run.
 
 ### Booting the test app locally
 

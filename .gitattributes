@@ -6,12 +6,9 @@
 /CLAUDE.md                          export-ignore
 /README.md                          export-ignore
 /UPGRADE.md                         export-ignore
-/behat.yml.dist                     export-ignore
 /composer-dependency-analyser.php   export-ignore
 /docs                               export-ignore
 /ecs.php                            export-ignore
-/etc                                export-ignore
-/features                           export-ignore
 /node_modules                       export-ignore
 /phpstan.neon                       export-ignore
 /phpunit.xml.dist                   export-ignore
