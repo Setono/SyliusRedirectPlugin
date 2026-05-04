@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\DependencyInjection;
 
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
+use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -25,7 +26,7 @@ final class SetonoSyliusRedirectExtension extends AbstractResourceExtension impl
 
         $loader->load('services.php');
 
-        $this->registerResources('setono_sylius_redirect', $config['driver'], $config['resources'], $container);
+        $this->registerResources('setono_sylius_redirect', SyliusResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
     }
 
     public function prepend(ContainerBuilder $container): void

@@ -8,7 +8,6 @@ use Setono\SyliusRedirectPlugin\Form\Type\RedirectType;
 use Setono\SyliusRedirectPlugin\Model\Redirect;
 use Setono\SyliusRedirectPlugin\Repository\RedirectRepository;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
-use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
 use Sylius\Component\Resource\Factory\Factory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -26,7 +25,6 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('driver')->defaultValue(SyliusResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->integerNode('remove_after')
                     ->info('0 means disabled. If the value is > 0 then redirects that have not been accessed in the last x days will be removed')
                     ->defaultValue(0)
