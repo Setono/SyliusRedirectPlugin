@@ -9,8 +9,12 @@
             <option name="message">setono_sylius_redirect.form.redirect.target_result_in_infinite_loop</option>
             <option name="groups">setono_sylius_redirect</option>
         </constraint>
-        <constraint name="Setono\SyliusRedirectPlugin\Validator\Constraints\Source">
-            <option name="message">setono_sylius_redirect.form.redirect.source_already_existing</option>
+        <constraint name="Setono\SyliusRedirectPlugin\Validator\Constraints\UniqueSource">
+            <option name="message">setono_sylius_redirect.form.redirect.source.unique_globally</option>
+            <option name="groups">setono_sylius_redirect</option>
+        </constraint>
+        <constraint name="Setono\SyliusRedirectPlugin\Validator\Constraints\UniqueSourcePerChannel">
+            <option name="message">setono_sylius_redirect.form.redirect.source.unique_per_channel</option>
             <option name="groups">setono_sylius_redirect</option>
         </constraint>
         <property name="source">
@@ -26,11 +30,6 @@
             <constraint name="Regex">
                 <option name="message">setono_sylius_redirect.form.redirect.source.regex</option>
                 <option name="pattern">#^/#</option>
-                <option name="groups">setono_sylius_redirect</option>
-            </constraint>
-            <constraint name="Setono\SyliusRedirectPlugin\Validator\Constraints\SourceRegex">
-                <option name="message">setono_sylius_redirect.form.redirect.source.source_regex</option>
-                <option name="pattern"> </option> <!-- Is overridden in Setono\SyliusRedirectPlugin\Validator\Constraints\SourceRegexValidator -->
                 <option name="groups">setono_sylius_redirect</option>
             </constraint>
         </property>

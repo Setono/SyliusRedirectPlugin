@@ -12,17 +12,17 @@ use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 final class InfiniteLoopValidator extends ConstraintValidator
 {
-    public function __construct(private readonly ChannelRepositoryInterface $channelRepository, private readonly RedirectionPathResolverInterface $redirectionPathResolver)
-    {
+    public function __construct(
+        private readonly ChannelRepositoryInterface $channelRepository,
+        private readonly RedirectionPathResolverInterface $redirectionPathResolver,
+    ) {
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (null === $value) {
             return;
@@ -33,15 +33,11 @@ final class InfiniteLoopValidator extends ConstraintValidator
         }
 
         if (!$value instanceof RedirectInterface) {
-            throw new UnexpectedTypeException($value, RedirectInterface::class);
+            throw new UnexpectedValueException($value, RedirectInterface::class);
         }
 
         $source = $value->getSource();
-        if (null === $source) {
-            return;
-        }
-
-        if (!$value->isEnabled()) {
+        if (null === $source || !$value->isEnabled()) {
             return;
         }
 

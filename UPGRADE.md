@@ -103,6 +103,10 @@ attributes, create the redirect manually.
 | Templates `templates/admin/Product/add_automatic_redirect.html.twig` and `templates/admin/Taxon/add_automatic_redirect.html.twig` | (none)                          |
 | Twig hooks `config/twig_hooks/product.yaml` and `config/twig_hooks/taxon.yaml`           | (none)                                                                   |
 | Translation key `setono_sylius_redirect.form.add_automatic_redirect`                     | (none)                                                                   |
+| `Setono\SyliusRedirectPlugin\Validator\Constraints\SourceRegex` (and `SourceRegexValidator`) | (none — sources are no longer regex-validated against `sylius.security.shop_regex`) |
+| Translation key `setono_sylius_redirect.form.redirect.source.source_regex`               | (none)                                                                   |
+| `Setono\SyliusRedirectPlugin\Validator\Constraints\Source` (and `SourceValidator`)       | Split into `UniqueSource` (global redirects) and `UniqueSourcePerChannel` (channel-scoped redirects). Both ship with their own validators, both are registered on `Redirect` in `config/validation/Redirect.xml`. |
+| Translation key `setono_sylius_redirect.form.redirect.source_already_existing`           | Replaced by `setono_sylius_redirect.form.redirect.source.unique_globally` and `setono_sylius_redirect.form.redirect.source.unique_per_channel` (the latter exposes a `{{ channel }}` placeholder for the conflicting channel code). |
 
 If you wrote your own slug-update handler subclassing `SlugUpdateHandler`
 or generating URLs via the abstract `generateUrl()`, port the URL logic

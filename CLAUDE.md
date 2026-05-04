@@ -57,8 +57,8 @@ The listener inlines URL resolution, redundant-redirect cleanup, validation, and
 
 Three custom validators prevent invalid redirects:
 - `InfiniteLoopValidator` - prevents redirect chains that cycle
-- `SourceValidator` - enforces source URL uniqueness
-- `SourceRegexValidator` - validates against Sylius shop security regex
+- `UniqueSourceValidator` - enforces source URL uniqueness for global (channel-less) redirects
+- `UniqueSourcePerChannelValidator` - enforces source URL uniqueness per channel for channel-scoped redirects
 
 ## Testing
 
@@ -76,6 +76,7 @@ Specific testing patterns:
 - **Forms**: follow the [Symfony 6.4 form unit testing guide](https://symfony.com/doc/6.4/form/unit_testing.html). Extend `Symfony\Component\Form\Test\TypeTestCase`, stub form types with external dependencies (e.g. `Sylius\Bundle\ChannelBundle\Form\Type\ChannelChoiceType`) via a `PreloadedExtension` so the test stays in the unit suite, and assert against the synchronized model and view data after `submit()`.
 - **Console commands**: follow the [Symfony 6.4 command testing guide](https://symfony.com/doc/6.4/console.html#testing-commands). Use `Symfony\Component\Console\Tester\CommandTester` against a stand-alone `Application` (no kernel) with mocked collaborators; assert on the exit code and `getDisplay()` output.
 - **Mocks/stubs**: always use [Prophecy](https://github.com/phpspec/prophecy) (`use Prophecy\PhpUnit\ProphecyTrait;`, then `$this->prophesize(Foo::class)`, `->method()->willReturn(...)`, `->reveal()`). Don't reach for PHPUnit's native `createMock()` / `createStub()` — keep the doubles consistent across the suite.
+- **Constraint validators**: extend `Symfony\Component\Validator\Test\ConstraintValidatorTestCase`. Implement `createValidator(): ConstraintValidatorInterface`, then assert with `$this->buildViolation(...)->atPath(...)->setParameter(...)->assertRaised()` and `$this->assertNoViolation()`. The base class wires up an execution context, sets a default `property.path` propertyPath, and chains additional violations via `buildNextViolation()`.
 
 The test application in `tests/Application/` is a minimal Sylius app used by the functional suite and the Playwright UI checks. It requires MySQL and asset compilation to run.
 
@@ -104,6 +105,7 @@ symfony server:start                                            # https://127.0.
 - When you ship a change that affects what the plugin does for end users — new feature surfaces, new configuration keys, behavior shifts, removed UI — update `README.md` to describe the current state. `README.md` is what end users read first; it must reflect what the latest published version of the plugin does, not what an old version did. `UPGRADE.md` covers the migration path; `README.md` covers the current product.
 - Before each commit, run the code-quality tools and fix what they flag: `composer fix-style` (or `composer check-style` if you only want a report), `composer analyse` (PHPStan at `level: max`), and `composer phpunit`. Don't commit on top of pre-existing failures — re-run the suite locally first so CI doesn't catch regressions you could've caught in seconds.
 - For services that need a Doctrine `EntityManager`, don't inject `EntityManagerInterface` (or `setono_sylius_redirect.manager.redirect`) directly. Inject `Doctrine\Persistence\ManagerRegistry` plus the relevant `class-string` (e.g. `%setono_sylius_redirect.model.redirect.class%`) and `use Setono\Doctrine\ORMTrait;` so the manager is resolved lazily via `$this->getManager($class)`. This matches the established pattern (`src/Pruner/Pruner.php`, `src/EventListener/AutomaticRedirectListener.php`) and keeps services from binding to a single hard-coded manager.
+- All new services must be registered using their FQCN as the service id (e.g. `id="Setono\SyliusRedirectPlugin\Validator\Constraints\UniqueSourceValidator"`), not a snake-cased alias like `setono_sylius_redirect.validator.unique_source`. This matches Symfony's autowiring conventions and lets consumers override or decorate by class name. The plugin still has older snake-cased ids — leave those as-is unless the surrounding work touches them, but don't add any new ones.
 
 ## OpenSpec workflow
 

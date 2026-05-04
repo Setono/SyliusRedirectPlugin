@@ -8,7 +8,7 @@ setono_sylius_redirect:
                 not_blank: La source ne peut pas être vide
                 not_identical_to: La source et la destination ne peuvent pas être identiques
                 regex: "La source doit commencer par '/'"
-                source_regex: La source n'est pas valide
-            source_already_existing: 'Il y a déjà une redirection ayant pour source "{{ source }}". ID de la redirection : {{ conflictingId }}'
+                unique_globally: 'Il y a déjà une redirection ayant pour source "{{ source }}". ID de la redirection : {{ conflictingId }}'
+                unique_per_channel: 'Il y a déjà une redirection ayant pour source "{{ source }}" pour le canal "{{ channel }}". ID de la redirection : {{ conflictingId }}'
             source_must_not_equal_destination: La source doit être différente de la destination
             target_result_in_infinite_loop: 'Ceci entraine une boucle infinie.'

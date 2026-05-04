@@ -6,9 +6,9 @@ namespace Setono\SyliusRedirectPlugin\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-final class InfiniteLoop extends Constraint
+final class UniqueSource extends Constraint
 {
-    public string $message = 'setono_sylius_redirect.form.redirect.target_result_in_infinite_loop';
+    public string $message = 'setono_sylius_redirect.form.redirect.source.unique_globally';
 
     public function getTargets(): string
     {
