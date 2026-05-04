@@ -5,20 +5,17 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Setono\SyliusRedirectPlugin\EventListener\AutomaticRedirectListener;
+use Setono\SyliusRedirectPlugin\EventSubscriber\AdminMenuSubscriber;
 use Setono\SyliusRedirectPlugin\EventSubscriber\NotFoundSubscriber;
 use Setono\SyliusRedirectPlugin\EventSubscriber\RequestSubscriber;
-use Setono\SyliusRedirectPlugin\Menu\AdminMenuListener;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
-    $services->set('setono_sylius_redirect_plugin.menu.admin_menu', AdminMenuListener::class)
-        ->tag('kernel.event_listener', [
-            'event' => 'sylius.menu.admin.main',
-            'method' => 'addAdminMenuItems',
-        ]);
+    $services->set(AdminMenuSubscriber::class)
+        ->tag('kernel.event_subscriber');
 
-    $services->set('setono_sylius_redirect.event_subscriber.request', RequestSubscriber::class)
+    $services->set(RequestSubscriber::class)
         ->args([
             service('setono_sylius_redirect.manager.redirect'),
             service('sylius.context.channel'),
@@ -27,7 +24,7 @@ return static function (ContainerConfigurator $container): void {
         ->call('setLogger', [service('logger')->ignoreOnInvalid()])
         ->tag('kernel.event_subscriber');
 
-    $services->set('setono_sylius_redirect.event_listener.not_found', NotFoundSubscriber::class)
+    $services->set(NotFoundSubscriber::class)
         ->args([
             service('setono_sylius_redirect.manager.redirect'),
             service('sylius.context.channel'),
