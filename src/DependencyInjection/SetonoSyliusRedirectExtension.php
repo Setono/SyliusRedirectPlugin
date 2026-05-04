@@ -15,11 +15,12 @@ final class SetonoSyliusRedirectExtension extends AbstractResourceExtension impl
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        /** @var array{driver: string, resources: array<string, mixed>, remove_after: int, automatic_redirects: array<string, bool>} $config */
+        /** @var array{driver: string, resources: array<string, mixed>, remove_after: int, allow_non_404_redirects: bool, automatic_redirects: array<string, bool>} $config */
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
 
         $container->setParameter('setono_sylius_redirect.remove_after', $config['remove_after']);
+        $container->setParameter('setono_sylius_redirect.allow_non_404_redirects', $config['allow_non_404_redirects']);
 
         $automaticRedirects = array_filter($config['automatic_redirects']);
         $container->setParameter('setono_sylius_redirect.automatic_redirects', $automaticRedirects);

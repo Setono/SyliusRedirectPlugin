@@ -97,6 +97,28 @@ endpoint `/admin/ajax/redirects/check-source` while you type and surfaces
 a warning with a link to the conflicting redirect, so you can spot the
 collision before submitting.
 
+### Disabling non-404 redirects
+
+By default the plugin checks for a matching redirect on every request, so a
+`only404 = false` redirect can intercept the request before the controller
+runs. That convenience comes at the cost of one database query per request,
+even on installations that exclusively use `only404 = true` redirects.
+
+If you only ever use 404-only redirects, disable the always-on listener:
+
+```yaml
+# config/packages/setono_sylius_redirect.yaml
+setono_sylius_redirect:
+    allow_non_404_redirects: false # default: true
+```
+
+When `false`, the plugin no longer registers its `KernelEvents::REQUEST`
+listener — there is zero per-request overhead. Redirects continue to work
+on the 404 path, which is all you need when every redirect has
+`only404 = true`. Note: any existing `only404 = false` rows in the database
+will go silently dormant until you re-enable the option, so flip it only if
+you're sure none of your live redirects rely on the always-on path.
+
 ### Pruning unused redirects
 
 The bundled `setono:sylius-redirect:prune` command deletes redirects that

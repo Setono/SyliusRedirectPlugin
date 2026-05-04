@@ -11,21 +11,24 @@ use Setono\SyliusRedirectPlugin\EventSubscriber\RequestSubscriber;
 use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinder;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolver;
 use Setono\SyliusRedirectPlugin\UrlResolver\AutomaticRedirectUrlResolver;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-return static function (ContainerConfigurator $container): void {
+return static function (ContainerConfigurator $container, ContainerBuilder $builder): void {
     $services = $container->services();
 
     $services->set(AdminMenuSubscriber::class)
         ->tag('kernel.event_subscriber');
 
-    $services->set(RequestSubscriber::class)
-        ->args([
-            service('doctrine'),
-            service('sylius.context.channel'),
-            service(RedirectionPathResolver::class),
-        ])
-        ->call('setLogger', [service('logger')->ignoreOnInvalid()])
-        ->tag('kernel.event_subscriber');
+    if (true === $builder->getParameter('setono_sylius_redirect.allow_non_404_redirects')) {
+        $services->set(RequestSubscriber::class)
+            ->args([
+                service('doctrine'),
+                service('sylius.context.channel'),
+                service(RedirectionPathResolver::class),
+            ])
+            ->call('setLogger', [service('logger')->ignoreOnInvalid()])
+            ->tag('kernel.event_subscriber');
+    }
 
     $services->set(NotFoundSubscriber::class)
         ->args([

@@ -52,6 +52,32 @@ final class ConfigurationTest extends TestCase
         );
     }
 
+    public function test_allow_non_404_redirects_defaults_to_true(): void
+    {
+        $this->assertProcessedConfigurationEquals(
+            [[]],
+            ['allow_non_404_redirects' => true],
+            'allow_non_404_redirects',
+        );
+    }
+
+    public function test_allow_non_404_redirects_can_be_disabled(): void
+    {
+        $this->assertProcessedConfigurationEquals(
+            [['allow_non_404_redirects' => false]],
+            ['allow_non_404_redirects' => false],
+            'allow_non_404_redirects',
+        );
+    }
+
+    public function test_allow_non_404_redirects_rejects_non_boolean_values(): void
+    {
+        $this->assertConfigurationIsInvalid(
+            [['allow_non_404_redirects' => 'yes']],
+            'allow_non_404_redirects',
+        );
+    }
+
     protected function getConfiguration(): Configuration
     {
         return new Configuration();
