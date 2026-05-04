@@ -35,7 +35,7 @@ vendor/bin/rector --dry-run
 
 ### Plugin structure
 
-This is a standard Sylius resource plugin. The core entity is `Redirect` (`src/Model/`), registered as a Sylius resource via `SetonoSyliusRedirectPlugin` (extends `AbstractResourceBundle`, overrides `getPath()` to point at the repo root). DI configuration lives in XML files under `config/services/`; templates at `templates/`; translations at `translations/`.
+This is a standard Sylius resource plugin. The core entity is `Redirect` (`src/Model/`), registered as a Sylius resource via `SetonoSyliusRedirectPlugin` (extends `AbstractResourceBundle`, overrides `getPath()` to point at the repo root). DI configuration lives in PHP files under `config/services/`, loaded via `PhpFileLoader` from `config/services.php`; templates at `templates/`; translations at `translations/`. Each service file declares `namespace Symfony\Component\DependencyInjection\Loader\Configurator;` so `service()`, `param()`, etc. resolve without explicit `use function` imports.
 
 ### Request flow
 
