@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolver;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoopValidator;
+use Setono\SyliusRedirectPlugin\Validator\Constraints\RequireOnly404Validator;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\UniqueSourcePerChannelValidator;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\UniqueSourceValidator;
 
@@ -25,5 +26,9 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(UniqueSourcePerChannelValidator::class)
         ->args([service('setono_sylius_redirect.repository.redirect')])
+        ->tag('validator.constraint_validator');
+
+    $services->set(RequireOnly404Validator::class)
+        ->args(['%setono_sylius_redirect.allow_non_404_redirects%'])
         ->tag('validator.constraint_validator');
 };

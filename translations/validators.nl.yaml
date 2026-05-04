@@ -12,3 +12,5 @@ setono_sylius_redirect:
                 unique_per_channel: 'Er is al een omleiding met de bron "{{ source }}" voor kanaal "{{ channel }}". Omleiding ID: {{ conflictingId }}'
             source_must_not_equal_destination: De bron mag niet gelijk zijn aan de bestemming
             target_result_in_infinite_loop: 'Dit resulteert in een oneindige lus.'
+            only_404:
+                required_when_non_404_redirects_disabled: '"Alleen bij 404" moet zijn ingeschakeld omdat niet-404 omleidingen zijn uitgeschakeld in de plugin-configuratie.'

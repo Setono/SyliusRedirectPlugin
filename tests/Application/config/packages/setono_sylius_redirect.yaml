@@ -1,4 +1,5 @@
 setono_sylius_redirect:
+    allow_non_404_redirects: false
     remove_after: 1
     automatic_redirects:
         sylius.product: true

@@ -115,9 +115,12 @@ setono_sylius_redirect:
 When `false`, the plugin no longer registers its `KernelEvents::REQUEST`
 listener — there is zero per-request overhead. Redirects continue to work
 on the 404 path, which is all you need when every redirect has
-`only404 = true`. Note: any existing `only404 = false` rows in the database
-will go silently dormant until you re-enable the option, so flip it only if
-you're sure none of your live redirects rely on the always-on path.
+`only404 = true`. The admin form drops the *Only when 404* checkbox and a
+class-level constraint on `Redirect` rejects any save (form, API, CLI,
+fixtures) where `only404 = false`, so you can't accidentally create a row
+that would never fire. Pre-existing `only404 = false` rows go dormant until
+you either flip the option back, delete them, or set their `only404` to
+`true`.
 
 ### Pruning unused redirects
 

@@ -12,6 +12,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class RedirectType extends AbstractResourceType
 {
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(
+        string $dataClass,
+        array $validationGroups,
+        private readonly bool $allowNon404Redirects,
+    ) {
+        parent::__construct($dataClass, $validationGroups);
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -35,10 +46,16 @@ final class RedirectType extends AbstractResourceType
                 'label' => 'setono_sylius_redirect.form.redirect.enabled',
                 'required' => false,
             ])
-            ->add('only404', CheckboxType::class, [
+        ;
+
+        if ($this->allowNon404Redirects) {
+            $builder->add('only404', CheckboxType::class, [
                 'label' => 'setono_sylius_redirect.form.redirect.only_404',
                 'required' => false,
-            ])
+            ]);
+        }
+
+        $builder
             ->add('keepQueryString', CheckboxType::class, [
                 'label' => 'setono_sylius_redirect.form.redirect.keep_query_string',
                 'required' => false,

@@ -55,10 +55,11 @@ The listener inlines URL resolution, redundant-redirect cleanup, validation, and
 
 ### Validation
 
-Three custom validators prevent invalid redirects:
+Four custom validators prevent invalid redirects:
 - `InfiniteLoopValidator` - prevents redirect chains that cycle
 - `UniqueSourceValidator` - enforces source URL uniqueness for global (channel-less) redirects
 - `UniqueSourcePerChannelValidator` - enforces source URL uniqueness per channel for channel-scoped redirects
+- `RequireOnly404Validator` - rejects `only404 = false` whenever the `setono_sylius_redirect.allow_non_404_redirects` parameter is `false`. Paired with `RedirectType` dropping the `only404` checkbox in the same configuration so the admin form never offers a value it would later refuse.
 
 ## Testing
 

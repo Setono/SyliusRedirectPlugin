@@ -16,6 +16,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             '%setono_sylius_redirect.model.redirect.class%',
             '%setono_sylius_redirect.form.type.redirect.validation_groups%',
+            '%setono_sylius_redirect.allow_non_404_redirects%',
         ])
         ->tag('form.type');
 };

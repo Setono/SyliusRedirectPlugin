@@ -17,6 +17,10 @@
             <option name="message">setono_sylius_redirect.form.redirect.source.unique_per_channel</option>
             <option name="groups">setono_sylius_redirect</option>
         </constraint>
+        <constraint name="Setono\SyliusRedirectPlugin\Validator\Constraints\RequireOnly404">
+            <option name="message">setono_sylius_redirect.form.redirect.only_404.required_when_non_404_redirects_disabled</option>
+            <option name="groups">setono_sylius_redirect</option>
+        </constraint>
         <property name="source">
             <constraint name="NotBlank">
                 <option name="message">setono_sylius_redirect.form.redirect.source.not_blank</option>
