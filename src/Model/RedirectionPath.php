@@ -40,6 +40,10 @@ final class RedirectionPath implements Countable
         }
     }
 
+    /**
+     * @phpstan-assert-if-false RedirectInterface $this->first()
+     * @phpstan-assert-if-false RedirectInterface $this->last()
+     */
     public function isEmpty(): bool
     {
         return [] === $this->redirects;
