@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Model;
 
+use ArrayIterator;
 use Countable;
+use IteratorAggregate;
+use Traversable;
 
-final class RedirectionPath implements Countable
+/**
+ * @implements IteratorAggregate<int, RedirectInterface>
+ */
+final class RedirectionPath implements Countable, IteratorAggregate
 {
     /**
      * Array of seen redirect ids
@@ -28,16 +34,6 @@ final class RedirectionPath implements Countable
 
         $this->redirects[] = $redirect;
         $this->seen[(int) $redirect->getId()] = true;
-    }
-
-    /**
-     * Will mark all redirects in this path as accessed
-     */
-    public function markAsAccessed(): void
-    {
-        foreach ($this->redirects as $redirect) {
-            $redirect->onAccess();
-        }
     }
 
     /**
@@ -74,6 +70,14 @@ final class RedirectionPath implements Countable
     public function count(): int
     {
         return count($this->redirects);
+    }
+
+    /**
+     * @return Traversable<int, RedirectInterface>
+     */
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->redirects);
     }
 
     /**

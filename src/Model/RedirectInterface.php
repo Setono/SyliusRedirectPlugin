@@ -35,9 +35,14 @@ interface RedirectInterface extends ResourceInterface, ToggleableInterface, Chan
     public function setLastAccessed(DateTimeInterface $lastAccessed): void;
 
     /**
-     * Is called when the redirect source path is accessed
+     * Records a hit on this redirect: increments the access counter and stamps
+     * `lastAccessed` with the current time.
+     *
+     * Called by the runtime each time the redirect is followed; downstream
+     * tooling (the prune command, admin grid) reads `count` and `lastAccessed`
+     * to identify stale or unused redirects.
      */
-    public function onAccess(): void;
+    public function markAsAccessed(): void;
 
     public function isEnabled(): bool;
 

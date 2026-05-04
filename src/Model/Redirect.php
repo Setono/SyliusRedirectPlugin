@@ -96,7 +96,7 @@ class Redirect implements RedirectInterface
         $this->lastAccessed = $lastAccessed;
     }
 
-    public function onAccess(): void
+    public function markAsAccessed(): void
     {
         ++$this->count;
         $this->setLastAccessed(new DateTime());

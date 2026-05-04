@@ -52,7 +52,9 @@ abstract class AbstractRedirectSubscriber implements EventSubscriberInterface, L
 
         $lastRedirect = $redirectionPath->last();
 
-        $redirectionPath->markAsAccessed();
+        foreach ($redirectionPath as $redirect) {
+            $redirect->markAsAccessed();
+        }
         $this->objectManager->flush();
 
         if ($lastRedirect->getDestination() === $request->getPathInfo()) {

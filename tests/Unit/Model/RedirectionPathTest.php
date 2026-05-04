@@ -56,26 +56,4 @@ final class RedirectionPathTest extends TestCase
 
         self::assertTrue($path->hasCycle());
     }
-
-    #[Test]
-    public function it_marks_all_redirects_as_accessed(): void
-    {
-        $redirect1 = $this->prophesize(RedirectInterface::class);
-        $redirect1->getId()->willReturn(1);
-        $redirect1->onAccess()->shouldBeCalled();
-
-        $redirect2 = $this->prophesize(RedirectInterface::class);
-        $redirect2->getId()->willReturn(1);
-        $redirect2->onAccess()->shouldBeCalled();
-
-        $redirects = [$redirect1->reveal(), $redirect2->reveal()];
-
-        $path = new RedirectionPath();
-
-        foreach ($redirects as $redirect) {
-            $path->addRedirect($redirect);
-        }
-
-        $path->markAsAccessed();
-    }
 }
