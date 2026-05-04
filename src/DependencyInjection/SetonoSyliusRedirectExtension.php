@@ -143,9 +143,27 @@ final class SetonoSyliusRedirectExtension extends AbstractResourceExtension impl
             'hooks' => [
                 'sylius_admin.redirect.create.content.form.sections' => $formSections,
                 'sylius_admin.redirect.update.content.form.sections' => $formSections,
+                'sylius_admin.redirect.update.content.header' => [
+                    'breadcrumbs' => [
+                        'template' => '@SyliusAdmin/shared/crud/update/content/header/breadcrumbs.html.twig',
+                        'configuration' => [
+                            'rendered_field' => 'source',
+                        ],
+                        'priority' => 0,
+                    ],
+                ],
                 'sylius_admin.redirect.show.content' => [
                     'sections' => [
                         'template' => '@SetonoSyliusRedirectPlugin/admin/redirect/show/content/sections.html.twig',
+                        'priority' => 0,
+                    ],
+                ],
+                'sylius_admin.redirect.show.content.header' => [
+                    'breadcrumbs' => [
+                        'template' => '@SyliusAdmin/shared/crud/show/content/header/breadcrumbs.html.twig',
+                        'configuration' => [
+                            'rendered_field' => 'source',
+                        ],
                         'priority' => 0,
                     ],
                 ],
