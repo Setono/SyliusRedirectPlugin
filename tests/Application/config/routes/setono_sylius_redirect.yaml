@@ -1,0 +1,2 @@
+setono_sylius_redirect:
+    resource: "@SetonoSyliusRedirectPlugin/config/routes.yaml"

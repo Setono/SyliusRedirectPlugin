@@ -46,10 +46,11 @@ It is **IMPORTANT** to add the plugin before the grid bundle else you will get a
 ```yaml
 # config/routes/setono_sylius_redirect.yaml
 
-setono_sylius_redirect_admin:
-    resource: "@SetonoSyliusRedirectPlugin/config/admin_routing.yaml"
-    prefix: /%sylius_admin.path_name%
+setono_sylius_redirect:
+    resource: "@SetonoSyliusRedirectPlugin/config/routes.yaml"
 ```
+
+The imported file already prefixes the admin routes with `/%sylius_admin.path_name%`, so no extra `prefix:` is needed.
 
 ### Step 4: Update database
 
