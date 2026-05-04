@@ -40,7 +40,7 @@ return [
 ];
 ```
 
-It is **IMPORTANT** to add the plugin before the grid bundle else you will get a an exception saying `You have requested a non-existent parameter "setono_sylius_redirect.model.redirect.class".`
+It is **IMPORTANT** to add the plugin before the grid bundle, otherwise you will get an exception saying `You have requested a non-existent parameter "setono_sylius_redirect.model.redirect.class".`
 
 ### Step 3: Import routes
 ```yaml
@@ -70,22 +70,54 @@ bin/console assets:install
 
 This plugin allows you to create new redirects.
 
-Under the new menu entry `Redirects` unders `Configuration`, you can manage redirects.
+Under the new menu entry `Redirects` under `Configuration`, you can manage redirects.
 
 ### Redirection entry
 
 An entry is composed by:
-* Source url, relative to your website
-* Target URL, can be relative or absolute in case you want to redirect to another website
-* Permanent or Temporary (This impact the HTTP response code of the redirection, 301 or 302)
-* Enabled
-* Redirect only if 404 (to manage potentially dead links)
+* **Source URL** — must start with `/` (relative to your shop)
+* **Destination URL** — relative or absolute (you can redirect to another host)
+* **Permanent / Temporary** — drives the HTTP status code (301 or 302)
+* **Enabled** — disabled rows are ignored at request time
+* **Only when 404** — only fire the redirect when the request would otherwise 404, useful for cleaning up dead inbound links
+* **Keep query string** — append the inbound query string to the destination (defaults to `true`)
+* **Channels** — restrict the redirect to one or more channels; leave empty to match every channel
 
 ### Security
 
-There is a built-in security when creating/modifying redirection that prevent creating an infinite loop. This work with infinite recursive checking.
+There is a built-in safeguard when creating/modifying a redirect that prevents
+infinite loops. It walks the redirect chain recursively and refuses to save a
+redirect that would cycle.
 
-A second security is to prevent same source redirection leading to inconstant redirect.
+A second safeguard prevents two enabled redirects from sharing the same
+source URL within the same channel scope (or globally, if neither uses
+channels) — otherwise the runtime would have to pick between two
+inconsistent destinations. The admin form additionally probes the AJAX
+endpoint `/admin/ajax/redirects/check-source` while you type and surfaces
+a warning with a link to the conflicting redirect, so you can spot the
+collision before submitting.
+
+### Pruning unused redirects
+
+The bundled `setono:sylius-redirect:prune` command deletes redirects that
+have not been accessed in the last *N* days. Configure the threshold under
+`remove_after`:
+
+```yaml
+# config/packages/setono_sylius_redirect.yaml
+setono_sylius_redirect:
+    remove_after: 90 # days; 0 (the default) disables pruning
+```
+
+Then schedule the command (cron, `messenger` cron, deploy hook, …):
+
+```bash
+bin/console setono:sylius-redirect:prune
+```
+
+Pruning iterates eligible redirects in batches via
+[`ocramius/doctrine-batch-utils`][doctrine-batch-utils], so it stays
+memory-safe even on tables with millions of rows.
 
 ### Automatic redirects on slug changes
 
@@ -157,3 +189,5 @@ This project uses [OpenSpec](https://github.com/Fission-AI/OpenSpec) to plan and
 
 [link-packagist]: https://packagist.org/packages/setono/sylius-redirect-plugin
 [link-github-actions]: https://github.com/Setono/SyliusRedirectPlugin/actions
+
+[doctrine-batch-utils]: https://github.com/Ocramius/DoctrineBatchUtils
