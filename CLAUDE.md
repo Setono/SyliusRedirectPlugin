@@ -40,8 +40,8 @@ This is a standard Sylius resource plugin. The core entity is `Redirect` (`src/M
 ### Request flow
 
 Two event subscribers handle redirects at different stages:
-- **`RequestSubscriber`** (KernelEvents::REQUEST, priority 31) - intercepts requests right after `RouterListener` (32) but before Sylius's `NonChannelLocaleListener` (10), so locale-prefix routes like `sylius_shop_homepage` matching `/anything` don't short-circuit the redirect via `setResponse()` to the default-locale homepage.
-- **`NotFoundSubscriber`** (KernelEvents::EXCEPTION) - catches 404 responses to apply `only404` redirects
+- **`RequestSubscriber`** (KernelEvents::REQUEST, priority 31) - intercepts requests right after `RouterListener` (32) but before Sylius's `NonChannelLocaleListener` (10), so locale-prefix routes like `sylius_shop_homepage` matching `/anything` don't short-circuit the redirect via `setResponse()` to the default-locale homepage. Registration is gated by the `setono_sylius_redirect.allow_non_404_redirects` config option (default `true`); when set to `false`, `config/services/event_subscriber.php` skips the `$services->set(RequestSubscriber::class)` call entirely so the listener is never on the dispatcher.
+- **`NotFoundSubscriber`** (KernelEvents::EXCEPTION) - catches 404 responses to apply `only404` redirects. Always registered, regardless of the toggle above.
 
 Both use `RedirectionPathResolver` to resolve redirect chains and detect infinite loops, producing a `RedirectionPath` model that tracks the chain of visited redirects.
 
