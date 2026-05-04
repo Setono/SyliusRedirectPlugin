@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\Finder;
 
-use Doctrine\Common\Collections\Collection;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 
 interface RemovableRedirectFinderInterface
 {
     /**
-     * Returns the redirects that have for source the destination of the given redirect
+     * Returns the redirects whose source matches the destination of the given redirect.
      *
-     * If the redirect has multiple channels it does the operation for each channel
-     * Ie: There is a RedirectionPath with ['a -> b', 'b -> c'], both without channel, findRedirectsTargetedBy->('c -> a');
-     * will return new ArrayCollection(['a -> b']);
-     * If all those redirect had multiple channels, this would result in :
-     *      new ArrayCollection(['a -> b (channel1)', 'a -> b (channel2)', 'a -> b (channel3)', ...])
+     * If the redirect has multiple channels the lookup is performed for each channel.
+     * Ie: With a RedirectionPath ['a -> b', 'b -> c'] (no channels), findRedirectsTargetedBy('c -> a')
+     * yields ['a -> b']. If those redirects had multiple channels, the result would be
+     * ['a -> b (channel1)', 'a -> b (channel2)', ...].
      *
-     * @return Collection<int, RedirectInterface>
+     * @return iterable<RedirectInterface>
      */
-    public function findRedirectsTargetedBy(RedirectInterface $redirect): Collection;
+    public function findRedirectsTargetedBy(RedirectInterface $redirect): iterable;
 }

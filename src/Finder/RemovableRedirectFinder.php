@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Setono\SyliusRedirectPlugin\Finder;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 
@@ -15,7 +14,7 @@ final readonly class RemovableRedirectFinder implements RemovableRedirectFinderI
     {
     }
 
-    public function findRedirectsTargetedBy(RedirectInterface $redirect): Collection
+    public function findRedirectsTargetedBy(RedirectInterface $redirect): iterable
     {
         /** @var ArrayCollection<int, RedirectInterface> $result */
         $result = new ArrayCollection();
