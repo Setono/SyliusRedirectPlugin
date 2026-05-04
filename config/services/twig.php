@@ -10,10 +10,10 @@ use Setono\SyliusRedirectPlugin\Twig\Runtime;
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
-    $services->set('setono_sylius_redirect.twig.extension', Extension::class)
+    $services->set(Extension::class)
         ->tag('twig.extension');
 
-    $services->set('setono_sylius_redirect.twig.runtime', Runtime::class)
+    $services->set(Runtime::class)
         ->args([service('sylius.repository.channel')])
         ->tag('twig.runtime');
 };

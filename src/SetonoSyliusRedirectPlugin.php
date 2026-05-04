@@ -6,6 +6,7 @@ namespace Setono\SyliusRedirectPlugin;
 
 use Setono\CompositeCompilerPass\CompositeCompilerPass;
 use Setono\SyliusRedirectPlugin\DependencyInjection\Compiler\ConfigureAutomaticRedirectsPass;
+use Setono\SyliusRedirectPlugin\UrlResolver\AutomaticRedirectUrlResolver;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Sylius\Bundle\ResourceBundle\AbstractResourceBundle;
 use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
@@ -21,7 +22,7 @@ final class SetonoSyliusRedirectPlugin extends AbstractResourceBundle
         parent::build($container);
 
         $container->addCompilerPass(new CompositeCompilerPass(
-            'setono_sylius_redirect.url_resolver.automatic_redirect.composite',
+            AutomaticRedirectUrlResolver::class,
             'setono_sylius_redirect.automatic_redirect_url_resolver',
         ));
 

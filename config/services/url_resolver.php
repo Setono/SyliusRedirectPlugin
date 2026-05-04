@@ -12,18 +12,15 @@ use Setono\SyliusRedirectPlugin\UrlResolver\TaxonAutomaticRedirectUrlResolver;
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
-    $services->set('setono_sylius_redirect.url_resolver.automatic_redirect.composite', AutomaticRedirectUrlResolver::class);
+    $services->set(AutomaticRedirectUrlResolver::class);
 
-    $services->alias(
-        AutomaticRedirectUrlResolverInterface::class,
-        'setono_sylius_redirect.url_resolver.automatic_redirect.composite',
-    );
+    $services->alias(AutomaticRedirectUrlResolverInterface::class, AutomaticRedirectUrlResolver::class);
 
-    $services->set('setono_sylius_redirect.url_resolver.automatic_redirect.product', ProductAutomaticRedirectUrlResolver::class)
+    $services->set(ProductAutomaticRedirectUrlResolver::class)
         ->args([service('router')])
         ->tag('setono_sylius_redirect.automatic_redirect_url_resolver');
 
-    $services->set('setono_sylius_redirect.url_resolver.automatic_redirect.taxon', TaxonAutomaticRedirectUrlResolver::class)
+    $services->set(TaxonAutomaticRedirectUrlResolver::class)
         ->args([service('router')])
         ->tag('setono_sylius_redirect.automatic_redirect_url_resolver');
 };

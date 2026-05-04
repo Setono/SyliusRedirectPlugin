@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolver;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\InfiniteLoopValidator;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\UniqueSourcePerChannelValidator;
 use Setono\SyliusRedirectPlugin\Validator\Constraints\UniqueSourceValidator;
@@ -14,7 +15,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(InfiniteLoopValidator::class)
         ->args([
             service('sylius.repository.channel'),
-            service('setono_sylius_redirect.resolver.redirection_path'),
+            service(RedirectionPathResolver::class),
         ])
         ->tag('validator.constraint_validator');
 

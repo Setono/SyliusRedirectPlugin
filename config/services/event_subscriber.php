@@ -8,6 +8,9 @@ use Setono\SyliusRedirectPlugin\EventListener\AutomaticRedirectListener;
 use Setono\SyliusRedirectPlugin\EventSubscriber\AdminMenuSubscriber;
 use Setono\SyliusRedirectPlugin\EventSubscriber\NotFoundSubscriber;
 use Setono\SyliusRedirectPlugin\EventSubscriber\RequestSubscriber;
+use Setono\SyliusRedirectPlugin\Finder\RemovableRedirectFinder;
+use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolver;
+use Setono\SyliusRedirectPlugin\UrlResolver\AutomaticRedirectUrlResolver;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -19,7 +22,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service('setono_sylius_redirect.manager.redirect'),
             service('sylius.context.channel'),
-            service('setono_sylius_redirect.resolver.redirection_path'),
+            service(RedirectionPathResolver::class),
         ])
         ->call('setLogger', [service('logger')->ignoreOnInvalid()])
         ->tag('kernel.event_subscriber');
@@ -28,7 +31,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service('setono_sylius_redirect.manager.redirect'),
             service('sylius.context.channel'),
-            service('setono_sylius_redirect.resolver.redirection_path'),
+            service(RedirectionPathResolver::class),
         ])
         ->call('setLogger', [service('logger')->ignoreOnInvalid()])
         ->tag('kernel.event_subscriber');
@@ -40,8 +43,8 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service('doctrine'),
             service('setono_sylius_redirect.factory.redirect'),
-            service('setono_sylius_redirect.url_resolver.automatic_redirect.composite'),
-            service('setono_sylius_redirect.finder.removable_redirect'),
+            service(AutomaticRedirectUrlResolver::class),
+            service(RemovableRedirectFinder::class),
             service('validator'),
             '%setono_sylius_redirect.form.type.redirect.validation_groups%',
         ])

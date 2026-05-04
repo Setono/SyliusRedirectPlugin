@@ -10,11 +10,11 @@ use Setono\SyliusRedirectPlugin\Pruner\PrunerInterface;
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
-    $services->set('setono_sylius_redirect.pruner.redirect', Pruner::class)
+    $services->set(Pruner::class)
         ->args([
             service('doctrine'),
             '%setono_sylius_redirect.model.redirect.class%',
         ]);
 
-    $services->alias(PrunerInterface::class, 'setono_sylius_redirect.pruner.redirect');
+    $services->alias(PrunerInterface::class, Pruner::class);
 };

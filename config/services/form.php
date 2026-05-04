@@ -12,7 +12,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services = $container->services();
 
-    $services->set('setono_sylius_redirect.form.type.redirect', RedirectType::class)
+    $services->set(RedirectType::class)
         ->args([
             '%setono_sylius_redirect.model.redirect.class%',
             '%setono_sylius_redirect.form.type.redirect.validation_groups%',
