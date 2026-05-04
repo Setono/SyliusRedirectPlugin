@@ -20,7 +20,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(RequestSubscriber::class)
         ->args([
-            service('setono_sylius_redirect.manager.redirect'),
+            service('doctrine'),
             service('sylius.context.channel'),
             service(RedirectionPathResolver::class),
         ])
@@ -29,7 +29,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(NotFoundSubscriber::class)
         ->args([
-            service('setono_sylius_redirect.manager.redirect'),
+            service('doctrine'),
             service('sylius.context.channel'),
             service(RedirectionPathResolver::class),
         ])

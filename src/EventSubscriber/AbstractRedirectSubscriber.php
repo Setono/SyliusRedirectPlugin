@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Setono\SyliusRedirectPlugin\EventSubscriber;
 
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use League\Uri\Uri;
 use League\Uri\UriModifier;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Setono\Doctrine\ORMTrait;
 use Setono\SyliusRedirectPlugin\Model\RedirectInterface;
 use Setono\SyliusRedirectPlugin\Resolver\RedirectionPathResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
@@ -21,13 +22,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractRedirectSubscriber implements EventSubscriberInterface, LoggerAwareInterface
 {
+    use ORMTrait;
+
     private LoggerInterface $logger;
 
     public function __construct(
-        private readonly ObjectManager $objectManager,
+        ManagerRegistry $managerRegistry,
         private readonly ChannelContextInterface $channelContext,
         private readonly RedirectionPathResolverInterface $redirectionPathResolver,
     ) {
+        $this->managerRegistry = $managerRegistry;
         $this->logger = new NullLogger();
     }
 
@@ -50,13 +54,14 @@ abstract class AbstractRedirectSubscriber implements EventSubscriberInterface, L
             return null;
         }
 
-        $lastRedirect = $redirectionPath->last();
-
+        $manager = null;
         foreach ($redirectionPath as $redirect) {
+            $manager = $this->getManager($redirect);
             $redirect->markAsAccessed();
         }
-        $this->objectManager->flush();
+        $manager?->flush();
 
+        $lastRedirect = $redirectionPath->last();
         if ($lastRedirect->getDestination() === $request->getPathInfo()) {
             $this->logger->error('Infinite loop detected', [
                 'url' => $request->getUri(),
