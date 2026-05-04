@@ -9,7 +9,7 @@
                     {{ form_row(hookable_metadata.context.form.source) }}
                     <div
                         data-setono-sylius-redirect-source-duplicate-warning
-                        data-check-url="{{ path('setono_sylius_redirect_admin_redirect_check_source') }}"
+                        data-check-url="{{ path('setono_sylius_redirect_admin_ajax_redirect_check_source') }}"
                         data-exclude-id="{{ hookable_metadata.context.resource.id|default('') }}"
                         data-message="{{ 'setono_sylius_redirect.ui.source_already_exists'|trans }}"
                         data-link-label="{{ 'setono_sylius_redirect.ui.view_existing_redirect'|trans }}"
@@ -82,7 +82,10 @@
             }
             let payload;
             try {
-                const response = await fetch(url.toString(), { credentials: 'same-origin' });
+                const response = await fetch(url.toString(), {
+                    credentials: 'same-origin',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                });
                 if (!response.ok) {
                     return;
                 }

@@ -1,0 +1,4 @@
+setono_sylius_redirect_admin_ajax_redirect_check_source:
+    path: /redirects/check-source
+    methods: [GET]
+    controller: 'Setono\SyliusRedirectPlugin\Controller\Admin\CheckSourceAction'
