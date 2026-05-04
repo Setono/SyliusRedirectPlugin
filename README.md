@@ -15,7 +15,7 @@ Gives you the ability to manage redirects in your Sylius shop.
 Open a command console, enter your project directory and execute the following command to download the latest stable version of this plugin:
 
 ```bash
-$ composer require setono/sylius-redirect-plugin
+composer require setono/sylius-redirect-plugin
 ```
 
 This command requires you to have Composer installed globally, as explained in the [installation chapter](https://getcomposer.org/doc/00-intro.md) of the Composer documentation.
@@ -42,7 +42,7 @@ return [
 
 It is **IMPORTANT** to add the plugin before the grid bundle else you will get a an exception saying `You have requested a non-existent parameter "setono_sylius_redirect.model.redirect.class".`
 
-### Step 3: Add configuration
+### Step 3: Import routes
 ```yaml
 # config/routes/setono_sylius_redirect.yaml
 
@@ -51,27 +51,18 @@ setono_sylius_redirect_admin:
     prefix: /%sylius_admin.path_name%
 ```
 
-```yaml
-# config/packages/setono_sylius_redirect.yaml
-imports:
-    # ...
-    
-    - { resource: "@SetonoSyliusRedirectPlugin/config/app/config.yaml" }
-    
-    # ...
-```
 ### Step 4: Update database
 
 Use Doctrine migrations to create a migration file and update the database.
 
 ```bash
-$ bin/console doctrine:migrations:diff
-$ bin/console doctrine:migrations:migrate
+bin/console doctrine:migrations:diff
+bin/console doctrine:migrations:migrate
 ```
 
 ### Step 5: Install assets
 ```bash
-$ bin/console assets:install
+bin/console assets:install
 ```
 
 ## What it does
@@ -153,7 +144,7 @@ final class BlogPostAutomaticRedirectUrlResolver implements AutomaticRedirectUrl
 }
 ```
 
-…then enable the alias under `automatic_redirects: app.blog_post: true`.
+...then enable the alias under `automatic_redirects: app.blog_post: true`.
 
 ## Development
 

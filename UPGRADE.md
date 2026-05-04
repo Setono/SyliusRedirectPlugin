@@ -107,6 +107,7 @@ attributes, create the redirect manually.
 | Translation key `setono_sylius_redirect.form.redirect.source.source_regex`               | (none)                                                                   |
 | `Setono\SyliusRedirectPlugin\Validator\Constraints\Source` (and `SourceValidator`)       | Split into `UniqueSource` (global redirects) and `UniqueSourcePerChannel` (channel-scoped redirects). Both ship with their own validators, both are registered on `Redirect` in `config/validation/Redirect.xml`. |
 | Translation key `setono_sylius_redirect.form.redirect.source_already_existing`           | Replaced by `setono_sylius_redirect.form.redirect.source.unique_globally` and `setono_sylius_redirect.form.redirect.source.unique_per_channel` (the latter exposes a `{{ channel }}` placeholder for the conflicting channel code). |
+| `@SetonoSyliusRedirectPlugin/config/app/config.yaml` (and the no-op `config/grids.yaml`) | Removed — the plugin's grid and twig-hook configuration is now registered automatically via `SetonoSyliusRedirectExtension::prepend()`. Drop the matching `imports:` entry from your `config/packages/setono_sylius_redirect.yaml`. |
 
 If you wrote your own slug-update handler subclassing `SlugUpdateHandler`
 or generating URLs via the abstract `generateUrl()`, port the URL logic

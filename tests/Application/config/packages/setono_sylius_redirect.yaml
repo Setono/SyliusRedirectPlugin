@@ -1,6 +1,3 @@
-imports:
-    - { resource: "@SetonoSyliusRedirectPlugin/config/app/config.yaml" }
-
 setono_sylius_redirect:
     remove_after: 1
     automatic_redirects:
